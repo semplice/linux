@@ -15,11 +15,9 @@ register a corresponding platform device whenever EFI runtime services
 are available.  This should trigger udev to load them.
 
 ---
-Index: pf-kernel/arch/x86/platform/efi/efi.c
-===================================================================
---- pf-kernel.orig/arch/x86/platform/efi/efi.c
-+++ pf-kernel/arch/x86/platform/efi/efi.c
-@@ -44,6 +44,7 @@
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -42,6 +42,7 @@
  #include <linux/io.h>
  #include <linux/reboot.h>
  #include <linux/bcd.h>
@@ -27,7 +25,7 @@ Index: pf-kernel/arch/x86/platform/efi/efi.c
  
  #include <asm/setup.h>
  #include <asm/efi.h>
-@@ -778,6 +779,20 @@ void __init efi_late_init(void)
+@@ -783,6 +784,20 @@ void __init efi_late_init(void)
  	efi_bgrt_init();
  }
  
@@ -48,10 +46,8 @@ Index: pf-kernel/arch/x86/platform/efi/efi.c
  void __init efi_set_executable(efi_memory_desc_t *md, bool executable)
  {
  	u64 addr, npages;
-Index: pf-kernel/drivers/firmware/efi/efivars.c
-===================================================================
---- pf-kernel.orig/drivers/firmware/efi/efivars.c
-+++ pf-kernel/drivers/firmware/efi/efivars.c
+--- a/drivers/firmware/efi/efivars.c
++++ b/drivers/firmware/efi/efivars.c
 @@ -77,6 +77,7 @@ MODULE_AUTHOR("Matt Domsch <Matt_Domsch@
  MODULE_DESCRIPTION("sysfs interface to EFI Variables");
  MODULE_LICENSE("GPL");
@@ -60,11 +56,9 @@ Index: pf-kernel/drivers/firmware/efi/efivars.c
  
  LIST_HEAD(efivar_sysfs_list);
  EXPORT_SYMBOL_GPL(efivar_sysfs_list);
-Index: pf-kernel/drivers/firmware/efi/efi-pstore.c
-===================================================================
---- pf-kernel.orig/drivers/firmware/efi/efi-pstore.c
-+++ pf-kernel/drivers/firmware/efi/efi-pstore.c
-@@ -400,3 +400,4 @@ module_exit(efivars_pstore_exit);
+--- a/drivers/firmware/efi/efi-pstore.c
++++ b/drivers/firmware/efi/efi-pstore.c
+@@ -250,3 +250,4 @@ module_exit(efivars_pstore_exit);
  
  MODULE_DESCRIPTION("EFI variable backend for pstore");
  MODULE_LICENSE("GPL");

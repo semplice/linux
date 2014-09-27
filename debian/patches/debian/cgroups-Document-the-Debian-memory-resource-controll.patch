@@ -3,11 +3,9 @@ Subject: cgroups: Document the Debian memory resource controller config change
 Forwarded: not-needed
 
 ---
-Index: pf-kernel/Documentation/cgroups/memory.txt
-===================================================================
---- pf-kernel.orig/Documentation/cgroups/memory.txt
-+++ pf-kernel/Documentation/cgroups/memory.txt
-@@ -47,6 +47,10 @@ Features:
+--- a/Documentation/cgroups/memory.txt
++++ b/Documentation/cgroups/memory.txt
+@@ -46,6 +46,10 @@ Features:
   Kernel memory support is a work in progress, and the current version provides
   basically functionality. (See Section 2.7)
  

@@ -7,11 +7,9 @@ For distribution binary packages we assume
 $DISTRIBUTION_OFFICIAL_BUILD, $DISTRIBUTOR and $DISTRIBUTION_VERSION
 are set.
 
-Index: pf-kernel/Makefile
-===================================================================
---- pf-kernel.orig/Makefile
-+++ pf-kernel/Makefile
-@@ -875,7 +875,7 @@ endif
+--- a/Makefile
++++ b/Makefile
+@@ -826,7 +826,7 @@ endif
  prepare2: prepare3 outputmakefile asm-generic
  
  prepare1: prepare2 $(version_h) include/generated/utsrelease.h \
@@ -20,7 +18,7 @@ Index: pf-kernel/Makefile
  	$(cmd_crmodverdir)
  
  archprepare: archheaders archscripts prepare1 scripts_basic
-@@ -907,12 +907,25 @@ define filechk_version.h
+@@ -858,12 +858,25 @@ define filechk_version.h
  	echo '#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + (c))';)
  endef
  
@@ -46,10 +44,8 @@ Index: pf-kernel/Makefile
  PHONY += headerdep
  headerdep:
  	$(Q)find $(srctree)/include/ -name '*.h' | xargs --max-args 1 \
-Index: pf-kernel/arch/x86/um/sysrq_64.c
-===================================================================
---- pf-kernel.orig/arch/x86/um/sysrq_64.c
-+++ pf-kernel/arch/x86/um/sysrq_64.c
+--- a/arch/x86/um/sysrq_64.c
++++ b/arch/x86/um/sysrq_64.c
 @@ -8,6 +8,7 @@
  #include <linux/module.h>
  #include <linux/sched.h>
@@ -58,7 +54,7 @@ Index: pf-kernel/arch/x86/um/sysrq_64.c
  #include <asm/current.h>
  #include <asm/ptrace.h>
  #include <asm/sysrq.h>
-@@ -16,8 +17,9 @@ void show_regs(struct pt_regs *regs)
+@@ -16,8 +17,9 @@ void __show_regs(struct pt_regs *regs)
  {
  	printk("\n");
  	print_modules();
@@ -70,10 +66,8 @@ Index: pf-kernel/arch/x86/um/sysrq_64.c
  	printk(KERN_INFO "RIP: %04lx:[<%016lx>]\n", PT_REGS_CS(regs) & 0xffff,
  	       PT_REGS_IP(regs));
  	printk(KERN_INFO "RSP: %016lx  EFLAGS: %08lx\n", PT_REGS_SP(regs),
-Index: pf-kernel/arch/ia64/kernel/process.c
-===================================================================
---- pf-kernel.orig/arch/ia64/kernel/process.c
-+++ pf-kernel/arch/ia64/kernel/process.c
+--- a/arch/ia64/kernel/process.c
++++ b/arch/ia64/kernel/process.c
 @@ -30,6 +30,7 @@
  #include <linux/utsname.h>
  #include <linux/tracehook.h>
@@ -94,11 +88,9 @@ Index: pf-kernel/arch/ia64/kernel/process.c
  	print_symbol("ip is at %s\n", ip);
  	printk("unat: %016lx pfs : %016lx rsc : %016lx\n",
  	       regs->ar_unat, regs->ar_pfs, regs->ar_rsc);
-Index: pf-kernel/arch/powerpc/kernel/process.c
-===================================================================
---- pf-kernel.orig/arch/powerpc/kernel/process.c
-+++ pf-kernel/arch/powerpc/kernel/process.c
-@@ -37,6 +37,7 @@
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -38,6 +38,7 @@
  #include <linux/personality.h>
  #include <linux/random.h>
  #include <linux/hw_breakpoint.h>
@@ -106,7 +98,7 @@ Index: pf-kernel/arch/powerpc/kernel/process.c
  
  #include <asm/pgtable.h>
  #include <asm/uaccess.h>
-@@ -996,8 +997,9 @@ void show_regs(struct pt_regs * regs)
+@@ -843,8 +844,9 @@ void show_regs(struct pt_regs * regs)
  
  	printk("NIP: "REG" LR: "REG" CTR: "REG"\n",
  	       regs->nip, regs->link, regs->ctr);
@@ -118,11 +110,9 @@ Index: pf-kernel/arch/powerpc/kernel/process.c
  	printk("MSR: "REG" ", regs->msr);
  	printbits(regs->msr, msr_bits);
  	printk("  CR: %08lx  XER: %08lx\n", regs->ccr, regs->xer);
-Index: pf-kernel/kernel/printk/printk.c
-===================================================================
---- pf-kernel.orig/kernel/printk/printk.c
-+++ pf-kernel/kernel/printk/printk.c
-@@ -46,6 +46,7 @@
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -45,6 +45,7 @@
  #include <linux/poll.h>
  #include <linux/irq_work.h>
  #include <linux/utsname.h>
@@ -130,7 +120,7 @@ Index: pf-kernel/kernel/printk/printk.c
  
  #include <asm/uaccess.h>
  
-@@ -2878,11 +2879,12 @@ void __init dump_stack_set_arch_desc(con
+@@ -2871,11 +2872,12 @@ void __init dump_stack_set_arch_desc(con
   */
  void dump_stack_print_info(const char *log_lvl)
  {

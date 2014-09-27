@@ -26,10 +26,8 @@ Therefore, perform a basic check for the existence of
 missing, except for the pre-R600 KMS case.
 
 ---
-Index: pf-kernel/drivers/gpu/drm/radeon/radeon_drv.c
-===================================================================
---- pf-kernel.orig/drivers/gpu/drm/radeon/radeon_drv.c
-+++ pf-kernel/drivers/gpu/drm/radeon/radeon_drv.c
+--- a/drivers/gpu/drm/radeon/radeon_drv.c
++++ b/drivers/gpu/drm/radeon/radeon_drv.c
 @@ -39,6 +39,9 @@
  #include <linux/pm_runtime.h>
  #include <linux/vga_switcheroo.h>
@@ -40,7 +38,7 @@ Index: pf-kernel/drivers/gpu/drm/radeon/radeon_drv.c
  /*
   * KMS wrapper.
   * - 2.0.0 - initial interface
-@@ -326,6 +329,37 @@ static struct drm_driver driver_old = {
+@@ -320,6 +323,37 @@ static struct drm_driver driver_old = {
  
  static struct drm_driver kms_driver;
  
@@ -78,7 +76,7 @@ Index: pf-kernel/drivers/gpu/drm/radeon/radeon_drv.c
  static int radeon_kick_out_firmware_fb(struct pci_dev *pdev)
  {
  	struct apertures_struct *ap;
-@@ -352,6 +386,12 @@ static int radeon_pci_probe(struct pci_d
+@@ -346,6 +380,12 @@ static int radeon_pci_probe(struct pci_d
  {
  	int ret;
  
@@ -91,7 +89,7 @@ Index: pf-kernel/drivers/gpu/drm/radeon/radeon_drv.c
  	/* Get rid of things like offb */
  	ret = radeon_kick_out_firmware_fb(pdev);
  	if (ret)
-@@ -572,6 +612,7 @@ static struct pci_driver *pdriver;
+@@ -577,6 +617,7 @@ static struct pci_driver *pdriver;
  static struct pci_driver radeon_pci_driver = {
  	.name = DRIVER_NAME,
  	.id_table = pciidlist,

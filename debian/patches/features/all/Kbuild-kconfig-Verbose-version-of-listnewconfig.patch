@@ -18,10 +18,8 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  scripts/kconfig/lkc_proto.h |    1 +
  4 files changed, 44 insertions(+), 10 deletions(-)
 
-Index: pf-kernel/scripts/kconfig/conf.c
-===================================================================
---- pf-kernel.orig/scripts/kconfig/conf.c
-+++ pf-kernel/scripts/kconfig/conf.c
+--- a/scripts/kconfig/conf.c
++++ b/scripts/kconfig/conf.c
 @@ -368,7 +368,6 @@ static void conf(struct menu *menu)
  		switch (prop->type) {
  		case P_MENU:
@@ -105,10 +103,8 @@ Index: pf-kernel/scripts/kconfig/conf.c
  		break;
  	}
  
-Index: pf-kernel/scripts/kconfig/confdata.c
-===================================================================
---- pf-kernel.orig/scripts/kconfig/confdata.c
-+++ pf-kernel/scripts/kconfig/confdata.c
+--- a/scripts/kconfig/confdata.c
++++ b/scripts/kconfig/confdata.c
 @@ -732,6 +732,14 @@ next_menu:
  	return 0;
  }
@@ -136,23 +132,19 @@ Index: pf-kernel/scripts/kconfig/confdata.c
  			continue;
  		switch (sym_get_type(sym)) {
  		case S_BOOLEAN:
-Index: pf-kernel/scripts/kconfig/expr.h
-===================================================================
---- pf-kernel.orig/scripts/kconfig/expr.h
-+++ pf-kernel/scripts/kconfig/expr.h
-@@ -109,6 +109,8 @@ struct symbol {
- /* choice values need to be set before calculating this symbol value */
- #define SYMBOL_NEED_SET_CHOICE_VALUES  0x100000
+--- a/scripts/kconfig/expr.h
++++ b/scripts/kconfig/expr.h
+@@ -112,6 +112,8 @@ struct symbol {
+ /* Set symbol to y if allnoconfig; used for symbols that hide others */
+ #define SYMBOL_ALLNOCONFIG_Y 0x200000
  
 +#define SYMBOL_NEW        0x200000 /* symbol is new (loaded config did not provide a value) */
 +
  #define SYMBOL_MAXLENGTH	256
  #define SYMBOL_HASHSIZE		9973
  
-Index: pf-kernel/scripts/kconfig/lkc_proto.h
-===================================================================
---- pf-kernel.orig/scripts/kconfig/lkc_proto.h
-+++ pf-kernel/scripts/kconfig/lkc_proto.h
+--- a/scripts/kconfig/lkc_proto.h
++++ b/scripts/kconfig/lkc_proto.h
 @@ -7,6 +7,7 @@ P(conf_read_simple,int,(const char *name
  P(conf_write_defconfig,int,(const char *name));
  P(conf_write,int,(const char *name));

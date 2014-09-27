@@ -14,11 +14,11 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  drivers/misc/Kconfig |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: pf-kernel/drivers/misc/Kconfig
-===================================================================
---- pf-kernel.orig/drivers/misc/Kconfig
-+++ pf-kernel/drivers/misc/Kconfig
-@@ -438,7 +438,7 @@ config ARM_CHARLCD
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index c002d86..7a68184 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -451,7 +451,7 @@ config ARM_CHARLCD
  	  still useful.
  
  config BMP085
