@@ -1,0 +1,21 @@
+[base]
+flavours:
+ desktop-amd64
+kernel-arch: x86
+
+[image]
+bootloaders: grub-pc extlinux grub-efi-amd64
+configs:
+ kernelarch-x86/config
+suggests: crda
+
+[desktop-amd64_build]
+debug-info: false
+
+[desktop-amd64_description]
+hardware: 64-bit PCs
+hardware-long: PCs with AMD64 or Intel 64 processors
+
+[desktop-amd64_image]
+configs:
+ kernelarch-x86/config-arch-64
