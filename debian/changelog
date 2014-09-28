@@ -1,3 +1,10 @@
+linux-semplice (3.16.3-1) devel; urgency=medium
+
+  * Updated to 3.16.3
+  * We aren't basing off pf- anymore (but the patches are roughly the same)
+
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Sun, 28 Sep 2014 16:37:44 +0200
+
 linux-semplice (3.14.6-2) unstable; urgency=medium
 
   * Use gcc-4.9.
