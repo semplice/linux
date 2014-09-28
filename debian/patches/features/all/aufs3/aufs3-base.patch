@@ -1,7 +1,7 @@
 From: J. R. Okajima <hooanon05@yahoo.co.jp>
 Date: Sat Aug 23 03:27:11 2014 +0900
 Subject: aufs3.16 base patch
-Origin: http://sourceforge.net/p/aufs/aufs3-standalone/ci/888949daf96bf7e2b857dc38e22029513f94d4ae/tree/
+Origin: http://sourceforge.net/p/aufs/aufs3-standalone/ci/ee7e0802aa2e4db4319bcb3e0865cd01c4427c6a/tree/
 Bug-Debian: https://bugs.debian.org/541828
 
 Patch headers added by debian/patches/features/all/aufs3/gen-patch
