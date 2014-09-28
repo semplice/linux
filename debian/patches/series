@@ -90,3 +90,12 @@ features/all/virtio-scsi-Implement-change_queue_depth-for-virtscs.patch
 debian/revert-staging-sm7xxfb-remove-driver.patch
 features/all/sfc-Adding-PCI-ID-for-Solarflare-7000-series-40G-net.patch
 features/all/sfc-Add-40G-link-capability-decoding.patch
+
+# Semplice patches
+semplice/features/all/aufs3/vfs-ino.patch
+semplice/features/all/aufs3/tmpfs-idr.patch
+semplice/features/all/bfs/3.16-sched-bfs-456.patch
+semplice/features/all/bfq/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r5-3.16.patch
+semplice/features/all/bfq/0002-block-introduce-the-BFQ-v7r5-I-O-sched-for-3.16.patch
+semplice/features/all/bfq/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r5-for-3.16.0.patch
+semplice/features/all/toi/tuxonice-for-linux-head-3.16.0-2014-08-07.patch
