@@ -18,9 +18,11 @@ removed in later patches.
 This does not cover the case where we fall back to a user-mode helper
 (which is no longer enabled in Debian).
 ---
---- a/drivers/base/firmware_class.c
-+++ b/drivers/base/firmware_class.c
-@@ -344,17 +344,20 @@ static int fw_get_filesystem_firmware(st
+Index: linux-semplice-3.17.2/drivers/base/firmware_class.c
+===================================================================
+--- linux-semplice-3.17.2.orig/drivers/base/firmware_class.c
++++ linux-semplice-3.17.2/drivers/base/firmware_class.c
+@@ -340,17 +340,20 @@ static int fw_get_filesystem_firmware(st
  		}
  		rc = fw_read_file_contents(file, buf);
  		fput(file);
@@ -46,7 +48,7 @@ This does not cover the case where we fall back to a user-mode helper
  		mutex_lock(&fw_lock);
  		set_bit(FW_STATUS_DONE, &buf->status);
  		complete_all(&buf->completion);
-@@ -1007,7 +1010,8 @@ _request_firmware_prepare(struct firmwar
+@@ -1026,7 +1029,8 @@ _request_firmware_prepare(struct firmwar
  	}
  
  	if (fw_get_builtin_firmware(firmware, name)) {
@@ -56,7 +58,7 @@ This does not cover the case where we fall back to a user-mode helper
  		return 0; /* assigned */
  	}
  
-@@ -1090,7 +1094,7 @@ _request_firmware(const struct firmware
+@@ -1112,7 +1116,7 @@ _request_firmware(const struct firmware
  	if (opt_flags & FW_OPT_NOWAIT) {
  		timeout = usermodehelper_read_lock_wait(timeout);
  		if (!timeout) {

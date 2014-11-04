@@ -1,0 +1,54 @@
+From 6531d1dca19b58b544fab697ac3b10ccd2ad5b40 Mon Sep 17 00:00:00 2001
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+Date: Thu, 21 Aug 2014 11:37:00 +0300
+Subject: [PATCH] ck-3.16: revert KVM workaround due to proper cond_resched()
+ fix
+
+---
+ arch/ia64/kvm/kvm-ia64.c     | 2 +-
+ arch/powerpc/kvm/book3s_hv.c | 2 +-
+ arch/x86/kvm/x86.c           | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/ia64/kvm/kvm-ia64.c b/arch/ia64/kvm/kvm-ia64.c
+index edeaaef..0729ba6 100644
+--- a/arch/ia64/kvm/kvm-ia64.c
++++ b/arch/ia64/kvm/kvm-ia64.c
+@@ -703,7 +703,7 @@ again:
+ out:
+ 	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 	if (r > 0) {
+-		schedule();
++		cond_resched();
+ 		idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 		goto again;
+ 	}
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 548c37c..27cced9 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -1734,7 +1734,7 @@ static void kvmppc_run_core(struct kvmppc_vcore *vc)
+ 	kvm_guest_exit();
+ 
+ 	preempt_enable();
+-	schedule();
++	cond_resched();
+ 
+ 	spin_lock(&vc->lock);
+ 	now = get_tb();
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 5fb65b8..8f1e22d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -6263,7 +6263,7 @@ static int __vcpu_run(struct kvm_vcpu *vcpu)
+ 		}
+ 		if (need_resched()) {
+ 			srcu_read_unlock(&kvm->srcu, vcpu->srcu_idx);
+-			schedule();
++			cond_resched();
+ 			vcpu->srcu_idx = srcu_read_lock(&kvm->srcu);
+ 		}
+ 	}
+-- 
+2.1.1
+

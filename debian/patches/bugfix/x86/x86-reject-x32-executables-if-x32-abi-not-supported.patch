@@ -15,9 +15,11 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  arch/x86/include/asm/elf.h | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/elf.h
-+++ b/arch/x86/include/asm/elf.h
-@@ -155,8 +155,9 @@ do {						\
+Index: linux-semplice-3.17.2/arch/x86/include/asm/elf.h
+===================================================================
+--- linux-semplice-3.17.2.orig/arch/x86/include/asm/elf.h
++++ linux-semplice-3.17.2/arch/x86/include/asm/elf.h
+@@ -160,8 +160,9 @@ do {						\
  #define elf_check_arch(x)			\
  	((x)->e_machine == EM_X86_64)
  

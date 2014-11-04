@@ -17,11 +17,11 @@ Signed-off-by: Michal Marek <mmarek@suse.cz>
  scripts/package/builddeb | 22 ++++++++++------------
  1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/scripts/package/builddeb b/scripts/package/builddeb
-index 35d5a58..7c0e6e4 100644
---- a/scripts/package/builddeb
-+++ b/scripts/package/builddeb
-@@ -152,18 +152,16 @@ if grep -q '^CONFIG_MODULES=y' $KCONFIG_CONFIG ; then
+Index: linux-semplice-3.17.2/scripts/package/builddeb
+===================================================================
+--- linux-semplice-3.17.2.orig/scripts/package/builddeb
++++ linux-semplice-3.17.2/scripts/package/builddeb
+@@ -161,18 +161,16 @@ if grep -q '^CONFIG_MODULES=y' $KCONFIG_
  		rmdir "$tmpdir/lib/modules/$version"
  	fi
  	if [ -n "$BUILD_DEBUG" ] ; then
