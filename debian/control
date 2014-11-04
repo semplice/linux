@@ -5,8 +5,8 @@ Maintainer: Eugenio Paolantonio (g7) <me@medesimo.eu>
 Uploaders: Giuseppe Corti <giuseppe@infiniteloop.pro>
 Standards-Version: 3.9.5
 Build-Depends: debhelper (>= 9.20120115), bc, cpio, python, liblz4-tool, gcc-4.9 [amd64 i386]
-Vcs-Git: https://github.com/semplice/pf-kernel.git
-Vcs-Browser: https://github.com/semplice/pf-kernel/tree/debian
+Vcs-Git: https://github.com/semplice/linux.git
+Vcs-Browser: https://github.com/semplice/linux
 Homepage: http://kernel.org/
 
 Package: linux-image-3.17-2.semplice.0-desktop-amd64
