@@ -1,3 +1,9 @@
+linux-semplice (3.17.2-1+preview) devel; urgency=medium
+
+  * Updated to 3.17.2.
+
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Tue, 04 Nov 2014 13:02:58 +0100
+
 linux-semplice (3.16.3-1) devel; urgency=medium
 
   * Updated to 3.16.3
