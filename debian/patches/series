@@ -65,10 +65,23 @@ features/all/efi-autoload-efivars.patch
 # Semplice patches
 semplice/features/all/aufs3/vfs-ino.patch
 semplice/features/all/aufs3/tmpfs-idr.patch
-semplice/features/all/bfs/3.16-sched-bfs-456-refreshed.patch
-semplice/features/all/bfs/bfs-456-3.17-porting.patch
-semplice/features/all/bfs/bfs-456-revert-KVM-workaround.patch
-semplice/features/all/bfs/bfs-456-refine-resched_best_idle-call-logic.patch
+debian/patches/semplice/features/all/bfs/3.18-sched-bfs-460-refreshed.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting_clean_up_wake_entry.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-cpu_rq_macro.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-fix_schedule.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-resched_curr.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-sched_getaffinity.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-sched_setscheduler.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-try_to_wake_up.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-priodl.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-refactor_needs_other_cpu.patch
+debian/patches/semplice/features/all/bfs/bfs-460-3.19-refactor_online_cpus.patch
+debian/patches/semplice/features/all/bfs/bfs-460-align_grq_cacheline.patch
+debian/patches/semplice/features/all/bfs/bfs-460-cpumask_based_cpu_selection.patch
+debian/patches/semplice/features/all/bfs/bfs-460-refactor-next_task_block.patch
+debian/patches/semplice/features/all/bfs/bfs-460-refactor_rq_dither_calculation.patch
+debian/patches/semplice/features/all/bfs/bfs-460-refactor_set_rq_task.patch
 semplice/features/all/bfq/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r7-3.19.patch
 semplice/features/all/bfq/0002-block-introduce-the-BFQ-v7r7-I-O-sched-for-3.19.patch
 semplice/features/all/bfq/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r7-for-3.19.0.patch

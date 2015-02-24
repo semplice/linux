@@ -1,0 +1,43 @@
+From ec06e1974860334c099d17de44ee6c26e9cd2ddb Mon Sep 17 00:00:00 2001
+From: Alfred Chen <cchalpha@gmail.com>
+Date: Tue, 10 Feb 2015 22:02:46 +0800
+Subject: [PATCH] bfs: [Fix] __schedule() instead of schedule()
+
+---
+ kernel/sched/bfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/sched/bfs.c b/kernel/sched/bfs.c
+index 656054f..e85e85d 100644
+--- a/kernel/sched/bfs.c
++++ b/kernel/sched/bfs.c
+@@ -3597,7 +3597,7 @@ asmlinkage __visible void __sched notrace preempt_schedule(void)
+ 
+ 	do {
+ 		__preempt_count_add(PREEMPT_ACTIVE);
+- 		schedule();
++		__schedule();
+ 		__preempt_count_sub(PREEMPT_ACTIVE);
+ 
+ 		/*
+@@ -3670,7 +3670,7 @@ asmlinkage __visible void __sched preempt_schedule_irq(void)
+ 	do {
+ 		__preempt_count_add(PREEMPT_ACTIVE);
+ 		local_irq_enable();
+-		schedule();
++		__schedule();
+ 		local_irq_disable();
+ 		__preempt_count_sub(PREEMPT_ACTIVE);
+ 
+@@ -4760,7 +4760,7 @@ SYSCALL_DEFINE0(sched_yield)
+ static void __cond_resched(void)
+ {
+ 	__preempt_count_add(PREEMPT_ACTIVE);
+- 	schedule();
++	__schedule();
+ 	__preempt_count_sub(PREEMPT_ACTIVE);
+ }
+ 
+-- 
+2.1.1
+

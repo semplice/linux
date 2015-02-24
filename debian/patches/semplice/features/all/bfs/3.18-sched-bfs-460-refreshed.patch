@@ -1,7 +1,7 @@
-From f9bf49826dda7530106b50e337b030514f9aadd6 Mon Sep 17 00:00:00 2001
+From 0e1086f3b77ec408637ebb3bee3c5da4da9f2593 Mon Sep 17 00:00:00 2001
 From: Alfred Chen <cchalpha@gmail.com>
-Date: Mon, 25 Aug 2014 10:43:55 +0800
-Subject: [PATCH] The Brain Fuck Scheduler v0.456 by Con Kolivas.
+Date: Thu, 11 Dec 2014 14:02:46 +0800
+Subject: [PATCH] The Brain Fuck Scheduler v0.460 by Con Kolivas.
 
 A single shared runqueue O(n) strict fairness earliest deadline first design.
 
@@ -31,17 +31,11 @@ Includes accurate sub-tick accounting of tasks so userspace reported
 cpu usage may be very different if you have very short lived tasks.
 
 -ck
-
-Conflicts:
-	fs/proc/base.c
 ---
  Documentation/scheduler/sched-BFS.txt     |  347 ++
  Documentation/sysctl/kernel.txt           |   26 +
- arch/ia64/kvm/kvm-ia64.c                  |    2 +-
- arch/powerpc/kvm/book3s_hv.c              |    2 +-
  arch/powerpc/platforms/cell/spufs/sched.c |    5 -
  arch/x86/Kconfig                          |   22 +-
- arch/x86/kvm/x86.c                        |    2 +-
  drivers/cpufreq/cpufreq.c                 |    7 +
  drivers/cpufreq/cpufreq_conservative.c    |    4 +-
  drivers/cpufreq/cpufreq_ondemand.c        |    4 +-
@@ -50,7 +44,7 @@ Conflicts:
  include/linux/init_task.h                 |   66 +-
  include/linux/ioprio.h                    |    2 +
  include/linux/jiffies.h                   |    2 +-
- include/linux/sched.h                     |   91 +-
+ include/linux/sched.h                     |   89 +-
  include/linux/sched/prio.h                |   12 +
  include/uapi/linux/sched.h                |    9 +-
  init/Kconfig                              |   57 +-
@@ -58,8 +52,8 @@ Conflicts:
  kernel/delayacct.c                        |    2 +-
  kernel/exit.c                             |    2 +-
  kernel/sched/Makefile                     |   11 +-
- kernel/sched/bfs.c                        | 7352 +++++++++++++++++++++++++++++
- kernel/sched/bfs_sched.h                  |  122 +
+ kernel/sched/bfs.c                        | 7369 +++++++++++++++++++++++++++++
+ kernel/sched/bfs_sched.h                  |  161 +
  kernel/sched/idle.c                       |    4 +
  kernel/sched/stats.c                      |    4 +
  kernel/stop_machine.c                     |    3 +-
@@ -67,15 +61,16 @@ Conflicts:
  kernel/time/Kconfig                       |    2 +-
  kernel/time/posix-cpu-timers.c            |   10 +-
  lib/Kconfig.debug                         |    2 +-
- 32 files changed, 8141 insertions(+), 78 deletions(-)
+ 29 files changed, 8191 insertions(+), 76 deletions(-)
  create mode 100644 Documentation/scheduler/sched-BFS.txt
  create mode 100644 kernel/sched/bfs.c
  create mode 100644 kernel/sched/bfs_sched.h
 
-Index: linux-semplice-3.17.2/Documentation/scheduler/sched-BFS.txt
-===================================================================
+diff --git a/Documentation/scheduler/sched-BFS.txt b/Documentation/scheduler/sched-BFS.txt
+new file mode 100644
+index 0000000..c10d956
 --- /dev/null
-+++ linux-semplice-3.17.2/Documentation/scheduler/sched-BFS.txt
++++ b/Documentation/scheduler/sched-BFS.txt
 @@ -0,0 +1,347 @@
 +BFS - The Brain Fuck Scheduler by Con Kolivas.
 +
@@ -424,10 +419,10 @@ Index: linux-semplice-3.17.2/Documentation/scheduler/sched-BFS.txt
 +
 +
 +Con Kolivas <kernel@kolivas.org> Tue, 5 Apr 2011
-Index: linux-semplice-3.17.2/Documentation/sysctl/kernel.txt
-===================================================================
---- linux-semplice-3.17.2.orig/Documentation/sysctl/kernel.txt
-+++ linux-semplice-3.17.2/Documentation/sysctl/kernel.txt
+diff --git a/Documentation/sysctl/kernel.txt b/Documentation/sysctl/kernel.txt
+index 75511ef..bd179f2 100644
+--- a/Documentation/sysctl/kernel.txt
++++ b/Documentation/sysctl/kernel.txt
 @@ -38,6 +38,7 @@ show up in /proc/sys/kernel:
  - hung_task_timeout_secs
  - hung_task_warnings
@@ -436,7 +431,7 @@ Index: linux-semplice-3.17.2/Documentation/sysctl/kernel.txt
  - kptr_restrict
  - kstack_depth_to_print       [ X86 only ]
  - l2cr                        [ PPC only ]
-@@ -65,6 +66,7 @@ show up in /proc/sys/kernel:
+@@ -66,6 +67,7 @@ show up in /proc/sys/kernel:
  - randomize_va_space
  - real-root-dev               ==> Documentation/initrd.txt
  - reboot-cmd                  [ SPARC only ]
@@ -444,7 +439,7 @@ Index: linux-semplice-3.17.2/Documentation/sysctl/kernel.txt
  - rtsig-max
  - rtsig-nr
  - sem
-@@ -377,6 +379,16 @@ kernel stack.
+@@ -382,6 +384,16 @@ kernel stack.
  
  ==============================================================
  
@@ -461,7 +456,7 @@ Index: linux-semplice-3.17.2/Documentation/sysctl/kernel.txt
  l2cr: (PPC only)
  
  This flag controls the L2 cache of G3 processor boards. If
-@@ -698,6 +710,20 @@ rebooting. ???
+@@ -714,6 +726,20 @@ rebooting. ???
  
  ==============================================================
  
@@ -482,36 +477,10 @@ Index: linux-semplice-3.17.2/Documentation/sysctl/kernel.txt
  rtsig-max & rtsig-nr:
  
  The file rtsig-max can be used to tune the maximum number
-Index: linux-semplice-3.17.2/arch/ia64/kvm/kvm-ia64.c
-===================================================================
---- linux-semplice-3.17.2.orig/arch/ia64/kvm/kvm-ia64.c
-+++ linux-semplice-3.17.2/arch/ia64/kvm/kvm-ia64.c
-@@ -703,7 +703,7 @@ again:
- out:
- 	srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 	if (r > 0) {
--		cond_resched();
-+		schedule();
- 		idx = srcu_read_lock(&vcpu->kvm->srcu);
- 		goto again;
- 	}
-Index: linux-semplice-3.17.2/arch/powerpc/kvm/book3s_hv.c
-===================================================================
---- linux-semplice-3.17.2.orig/arch/powerpc/kvm/book3s_hv.c
-+++ linux-semplice-3.17.2/arch/powerpc/kvm/book3s_hv.c
-@@ -1734,7 +1734,7 @@ static void kvmppc_run_core(struct kvmpp
- 	kvm_guest_exit();
- 
- 	preempt_enable();
--	cond_resched();
-+	schedule();
- 
- 	spin_lock(&vc->lock);
- 	now = get_tb();
-Index: linux-semplice-3.17.2/arch/powerpc/platforms/cell/spufs/sched.c
-===================================================================
---- linux-semplice-3.17.2.orig/arch/powerpc/platforms/cell/spufs/sched.c
-+++ linux-semplice-3.17.2/arch/powerpc/platforms/cell/spufs/sched.c
+diff --git a/arch/powerpc/platforms/cell/spufs/sched.c b/arch/powerpc/platforms/cell/spufs/sched.c
+index 998f632..5c80a0f 100644
+--- a/arch/powerpc/platforms/cell/spufs/sched.c
++++ b/arch/powerpc/platforms/cell/spufs/sched.c
 @@ -64,11 +64,6 @@ static struct timer_list spusched_timer;
  static struct timer_list spuloadavg_timer;
  
@@ -524,11 +493,11 @@ Index: linux-semplice-3.17.2/arch/powerpc/platforms/cell/spufs/sched.c
   * Frequency of the spu scheduler tick.  By default we do one SPU scheduler
   * tick for every 10 CPU scheduler ticks.
   */
-Index: linux-semplice-3.17.2/arch/x86/Kconfig
-===================================================================
---- linux-semplice-3.17.2.orig/arch/x86/Kconfig
-+++ linux-semplice-3.17.2/arch/x86/Kconfig
-@@ -794,10 +794,26 @@ config SCHED_SMT
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 0dc9d01..36d37ba 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -840,10 +840,26 @@ config SCHED_SMT
  	depends on X86_HT
  	---help---
  	  SMT scheduler support improves the CPU scheduler's decision making
@@ -556,7 +525,7 @@ Index: linux-semplice-3.17.2/arch/x86/Kconfig
  config SCHED_MC
  	def_bool y
  	prompt "Multi-core scheduler support"
-@@ -1809,7 +1825,7 @@ config HOTPLUG_CPU
+@@ -1903,7 +1919,7 @@ config HOTPLUG_CPU
  config BOOTPARAM_HOTPLUG_CPU0
  	bool "Set default setting of cpu0_hotpluggable"
  	default n
@@ -565,7 +534,7 @@ Index: linux-semplice-3.17.2/arch/x86/Kconfig
  	---help---
  	  Set whether default state of cpu0_hotpluggable is on or off.
  
-@@ -1838,7 +1854,7 @@ config BOOTPARAM_HOTPLUG_CPU0
+@@ -1932,7 +1948,7 @@ config BOOTPARAM_HOTPLUG_CPU0
  config DEBUG_HOTPLUG_CPU0
  	def_bool n
  	prompt "Debug CPU0 hotplug"
@@ -574,23 +543,10 @@ Index: linux-semplice-3.17.2/arch/x86/Kconfig
  	---help---
  	  Enabling this option offlines CPU0 (if CPU0 can be offlined) as
  	  soon as possible and boots up userspace with CPU0 offlined. User
-Index: linux-semplice-3.17.2/arch/x86/kvm/x86.c
-===================================================================
---- linux-semplice-3.17.2.orig/arch/x86/kvm/x86.c
-+++ linux-semplice-3.17.2/arch/x86/kvm/x86.c
-@@ -6263,7 +6263,7 @@ static int __vcpu_run(struct kvm_vcpu *v
- 		}
- 		if (need_resched()) {
- 			srcu_read_unlock(&kvm->srcu, vcpu->srcu_idx);
--			cond_resched();
-+			schedule();
- 			vcpu->srcu_idx = srcu_read_lock(&kvm->srcu);
- 		}
- 	}
-Index: linux-semplice-3.17.2/drivers/cpufreq/cpufreq.c
-===================================================================
---- linux-semplice-3.17.2.orig/drivers/cpufreq/cpufreq.c
-+++ linux-semplice-3.17.2/drivers/cpufreq/cpufreq.c
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 46bed4f..e578877 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
 @@ -25,6 +25,7 @@
  #include <linux/kernel_stat.h>
  #include <linux/module.h>
@@ -599,7 +555,7 @@ Index: linux-semplice-3.17.2/drivers/cpufreq/cpufreq.c
  #include <linux/slab.h>
  #include <linux/suspend.h>
  #include <linux/tick.h>
-@@ -1952,6 +1953,12 @@ int __cpufreq_driver_target(struct cpufr
+@@ -1986,6 +1987,12 @@ int __cpufreq_driver_target(struct cpufreq_policy *policy,
  	}
  
  out:
@@ -612,10 +568,10 @@ Index: linux-semplice-3.17.2/drivers/cpufreq/cpufreq.c
  	return retval;
  }
  EXPORT_SYMBOL_GPL(__cpufreq_driver_target);
-Index: linux-semplice-3.17.2/drivers/cpufreq/cpufreq_conservative.c
-===================================================================
---- linux-semplice-3.17.2.orig/drivers/cpufreq/cpufreq_conservative.c
-+++ linux-semplice-3.17.2/drivers/cpufreq/cpufreq_conservative.c
+diff --git a/drivers/cpufreq/cpufreq_conservative.c b/drivers/cpufreq/cpufreq_conservative.c
+index 25a70d0..7a8282a 100644
+--- a/drivers/cpufreq/cpufreq_conservative.c
++++ b/drivers/cpufreq/cpufreq_conservative.c
 @@ -15,8 +15,8 @@
  #include "cpufreq_governor.h"
  
@@ -627,10 +583,10 @@ Index: linux-semplice-3.17.2/drivers/cpufreq/cpufreq_conservative.c
  #define DEF_FREQUENCY_STEP			(5)
  #define DEF_SAMPLING_DOWN_FACTOR		(1)
  #define MAX_SAMPLING_DOWN_FACTOR		(10)
-Index: linux-semplice-3.17.2/drivers/cpufreq/cpufreq_ondemand.c
-===================================================================
---- linux-semplice-3.17.2.orig/drivers/cpufreq/cpufreq_ondemand.c
-+++ linux-semplice-3.17.2/drivers/cpufreq/cpufreq_ondemand.c
+diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
+index ad3f38f..9d6f4b2 100644
+--- a/drivers/cpufreq/cpufreq_ondemand.c
++++ b/drivers/cpufreq/cpufreq_ondemand.c
 @@ -19,7 +19,7 @@
  #include "cpufreq_governor.h"
  
@@ -640,7 +596,7 @@ Index: linux-semplice-3.17.2/drivers/cpufreq/cpufreq_ondemand.c
  #define DEF_SAMPLING_DOWN_FACTOR		(1)
  #define MAX_SAMPLING_DOWN_FACTOR		(100000)
  #define MICRO_FREQUENCY_UP_THRESHOLD		(95)
-@@ -148,7 +148,7 @@ static void dbs_freq_increase(struct cpu
+@@ -148,7 +148,7 @@ static void dbs_freq_increase(struct cpufreq_policy *policy, unsigned int freq)
  }
  
  /*
@@ -649,13 +605,13 @@ Index: linux-semplice-3.17.2/drivers/cpufreq/cpufreq_ondemand.c
   * (default), then we try to increase frequency. Else, we adjust the frequency
   * proportional to load.
   */
-Index: linux-semplice-3.17.2/drivers/cpufreq/intel_pstate.c
-===================================================================
---- linux-semplice-3.17.2.orig/drivers/cpufreq/intel_pstate.c
-+++ linux-semplice-3.17.2/drivers/cpufreq/intel_pstate.c
-@@ -396,8 +396,13 @@ static void byt_set_pstate(struct cpudat
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 742eefb..604854b 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -492,8 +492,13 @@ static void byt_set_pstate(struct cpudata *cpudata, int pstate)
  	vid_fp = clamp_t(int32_t, vid_fp, cpudata->vid.min, cpudata->vid.max);
- 	vid = fp_toint(vid_fp);
+ 	vid = ceiling_fp(vid_fp);
  
 -	if (pstate > cpudata->pstate.max_pstate)
 -		vid = cpudata->vid.turbo;
@@ -669,11 +625,11 @@ Index: linux-semplice-3.17.2/drivers/cpufreq/intel_pstate.c
  
  	val |= vid;
  
-Index: linux-semplice-3.17.2/fs/proc/base.c
-===================================================================
---- linux-semplice-3.17.2.orig/fs/proc/base.c
-+++ linux-semplice-3.17.2/fs/proc/base.c
-@@ -310,7 +310,7 @@ static int proc_pid_schedstat(struct seq
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 3f3d7ae..b336af0 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -310,7 +310,7 @@ static int proc_pid_schedstat(struct seq_file *m, struct pid_namespace *ns,
  			      struct pid *pid, struct task_struct *task)
  {
  	return seq_printf(m, "%llu %llu %lu\n",
@@ -682,11 +638,11 @@ Index: linux-semplice-3.17.2/fs/proc/base.c
  			(unsigned long long)task->sched_info.run_delay,
  			task->sched_info.pcount);
  }
-Index: linux-semplice-3.17.2/include/linux/init_task.h
-===================================================================
---- linux-semplice-3.17.2.orig/include/linux/init_task.h
-+++ linux-semplice-3.17.2/include/linux/init_task.h
-@@ -147,8 +147,6 @@ extern struct task_group root_task_group
+diff --git a/include/linux/init_task.h b/include/linux/init_task.h
+index 3037fc0..8b10703 100644
+--- a/include/linux/init_task.h
++++ b/include/linux/init_task.h
+@@ -156,8 +156,6 @@ extern struct task_group root_task_group;
  # define INIT_VTIME(tsk)
  #endif
  
@@ -695,7 +651,7 @@ Index: linux-semplice-3.17.2/include/linux/init_task.h
  #ifdef CONFIG_RT_MUTEXES
  # define INIT_RT_MUTEXES(tsk)						\
  	.pi_waiters = RB_ROOT,						\
-@@ -161,6 +159,68 @@ extern struct task_group root_task_group
+@@ -179,6 +177,68 @@ extern struct task_group root_task_group;
   *  INIT_TASK is used to set up the first task table, touch at
   * your own risk!. Base=0, limit=0x1fffff (=2MB)
   */
@@ -764,19 +720,19 @@ Index: linux-semplice-3.17.2/include/linux/init_task.h
  #define INIT_TASK(tsk)	\
  {									\
  	.state		= 0,						\
-@@ -228,7 +288,7 @@ extern struct task_group root_task_group
- 	INIT_RT_MUTEXES(tsk)						\
+@@ -248,7 +308,7 @@ extern struct task_group root_task_group;
  	INIT_VTIME(tsk)							\
+ 	INIT_NUMA_BALANCING(tsk)					\
  }
 -
 +#endif /* CONFIG_SCHED_BFS */
  
  #define INIT_CPU_TIMERS(cpu_timers)					\
  {									\
-Index: linux-semplice-3.17.2/include/linux/ioprio.h
-===================================================================
---- linux-semplice-3.17.2.orig/include/linux/ioprio.h
-+++ linux-semplice-3.17.2/include/linux/ioprio.h
+diff --git a/include/linux/ioprio.h b/include/linux/ioprio.h
+index beb9ce1..ce2fc3c 100644
+--- a/include/linux/ioprio.h
++++ b/include/linux/ioprio.h
 @@ -52,6 +52,8 @@ enum {
   */
  static inline int task_nice_ioprio(struct task_struct *task)
@@ -786,10 +742,10 @@ Index: linux-semplice-3.17.2/include/linux/ioprio.h
  	return (task_nice(task) + 20) / 5;
  }
  
-Index: linux-semplice-3.17.2/include/linux/jiffies.h
-===================================================================
---- linux-semplice-3.17.2.orig/include/linux/jiffies.h
-+++ linux-semplice-3.17.2/include/linux/jiffies.h
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index c367cbd..55feba7 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
 @@ -163,7 +163,7 @@ static inline u64 get_jiffies_64(void)
   * Have the 32 bit jiffies value wrap 5 minutes after boot
   * so jiffies wrap bugs show up earlier.
@@ -799,11 +755,11 @@ Index: linux-semplice-3.17.2/include/linux/jiffies.h
  
  /*
   * Change timeval to jiffies, trying to avoid the
-Index: linux-semplice-3.17.2/include/linux/sched.h
-===================================================================
---- linux-semplice-3.17.2.orig/include/linux/sched.h
-+++ linux-semplice-3.17.2/include/linux/sched.h
-@@ -288,8 +288,6 @@ extern asmlinkage void schedule_tail(str
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 8db31ef..b0e624de 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -329,8 +329,6 @@ extern asmlinkage void schedule_tail(struct task_struct *prev);
  extern void init_idle(struct task_struct *idle, int cpu);
  extern void init_idle_bootup_task(struct task_struct *idle);
  
@@ -812,7 +768,7 @@ Index: linux-semplice-3.17.2/include/linux/sched.h
  #if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
  extern void nohz_balance_enter_idle(int cpu);
  extern void set_cpu_sd_state_idle(void);
-@@ -1228,22 +1226,44 @@ struct task_struct {
+@@ -1278,9 +1276,11 @@ struct task_struct {
  	unsigned int flags;	/* per process flags, defined below */
  	unsigned int ptrace;
  
@@ -825,13 +781,11 @@ Index: linux-semplice-3.17.2/include/linux/sched.h
  	struct task_struct *last_wakee;
  	unsigned long wakee_flips;
  	unsigned long wakee_flip_decay_ts;
- 
+@@ -1288,12 +1288,29 @@ struct task_struct {
  	int wake_cpu;
  #endif
-+#ifndef CONFIG_SCHED_BFS
  	int on_rq;
-+#endif
- 
+-
  	int prio, static_prio, normal_prio;
  	unsigned int rt_priority;
 +#ifdef CONFIG_SCHED_BFS
@@ -858,7 +812,7 @@ Index: linux-semplice-3.17.2/include/linux/sched.h
  #ifdef CONFIG_CGROUP_SCHED
  	struct task_group *sched_task_group;
  #endif
-@@ -1349,6 +1369,9 @@ struct task_struct {
+@@ -1409,6 +1426,9 @@ struct task_struct {
  	int __user *clear_child_tid;		/* CLONE_CHILD_CLEARTID */
  
  	cputime_t utime, stime, utimescaled, stimescaled;
@@ -868,7 +822,7 @@ Index: linux-semplice-3.17.2/include/linux/sched.h
  	cputime_t gtime;
  #ifndef CONFIG_VIRT_CPU_ACCOUNTING_NATIVE
  	struct cputime prev_cputime;
-@@ -1646,6 +1669,64 @@ struct task_struct {
+@@ -1703,6 +1723,63 @@ struct task_struct {
  #endif
  };
  
@@ -877,7 +831,6 @@ Index: linux-semplice-3.17.2/include/linux/sched.h
 +void grq_unlock_wait(void);
 +void cpu_scaling(int cpu);
 +void cpu_nonscaling(int cpu);
-+bool above_background_load(void);
 +#define tsk_seruntime(t)		((t)->sched_time)
 +#define tsk_rttimeout(t)		((t)->rt_timeout)
 +
@@ -933,7 +886,7 @@ Index: linux-semplice-3.17.2/include/linux/sched.h
  /* Future-safe accessor for struct task_struct's cpus_allowed. */
  #define tsk_cpus_allowed(tsk) (&(tsk)->cpus_allowed)
  
-@@ -2142,7 +2223,7 @@ extern unsigned long long
+@@ -2195,7 +2272,7 @@ extern unsigned long long
  task_sched_runtime(struct task_struct *task);
  
  /* sched_exec is called by processes performing an exec */
@@ -942,7 +895,7 @@ Index: linux-semplice-3.17.2/include/linux/sched.h
  extern void sched_exec(void);
  #else
  #define sched_exec()   {}
-@@ -2931,7 +3012,7 @@ static inline unsigned int task_cpu(cons
+@@ -2991,7 +3068,7 @@ static inline unsigned int task_cpu(const struct task_struct *p)
  	return 0;
  }
  
@@ -951,10 +904,10 @@ Index: linux-semplice-3.17.2/include/linux/sched.h
  {
  }
  
-Index: linux-semplice-3.17.2/include/linux/sched/prio.h
-===================================================================
---- linux-semplice-3.17.2.orig/include/linux/sched/prio.h
-+++ linux-semplice-3.17.2/include/linux/sched/prio.h
+diff --git a/include/linux/sched/prio.h b/include/linux/sched/prio.h
+index d9cf5a5..7d5d0b8 100644
+--- a/include/linux/sched/prio.h
++++ b/include/linux/sched/prio.h
 @@ -19,8 +19,20 @@
   */
  
@@ -976,10 +929,10 @@ Index: linux-semplice-3.17.2/include/linux/sched/prio.h
  #define MAX_PRIO		(MAX_RT_PRIO + NICE_WIDTH)
  #define DEFAULT_PRIO		(MAX_RT_PRIO + NICE_WIDTH / 2)
  
-Index: linux-semplice-3.17.2/include/uapi/linux/sched.h
-===================================================================
---- linux-semplice-3.17.2.orig/include/uapi/linux/sched.h
-+++ linux-semplice-3.17.2/include/uapi/linux/sched.h
+diff --git a/include/uapi/linux/sched.h b/include/uapi/linux/sched.h
+index cc89dde..f63e1cd 100644
+--- a/include/uapi/linux/sched.h
++++ b/include/uapi/linux/sched.h
 @@ -37,9 +37,16 @@
  #define SCHED_FIFO		1
  #define SCHED_RR		2
@@ -998,10 +951,10 @@ Index: linux-semplice-3.17.2/include/uapi/linux/sched.h
  
  /* Can be ORed in to make sure the process is reverted back to SCHED_NORMAL on fork */
  #define SCHED_RESET_ON_FORK     0x40000000
-Index: linux-semplice-3.17.2/init/Kconfig
-===================================================================
---- linux-semplice-3.17.2.orig/init/Kconfig
-+++ linux-semplice-3.17.2/init/Kconfig
+diff --git a/init/Kconfig b/init/Kconfig
+index 9afb971..e5877c2 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
 @@ -28,6 +28,20 @@ config BUILDTIME_EXTABLE_SORT
  
  menu "General setup"
@@ -1040,7 +993,7 @@ Index: linux-semplice-3.17.2/init/Kconfig
  	select VIRT_CPU_ACCOUNTING
  	select CONTEXT_TRACKING
  	help
-@@ -520,7 +535,7 @@ config CONTEXT_TRACKING
+@@ -524,7 +539,7 @@ config CONTEXT_TRACKING
  
  config RCU_USER_QS
  	bool "Consider userspace as in RCU extended quiescent state"
@@ -1049,16 +1002,16 @@ Index: linux-semplice-3.17.2/init/Kconfig
  	select CONTEXT_TRACKING
  	help
  	  This option sets hooks on kernel / userspace boundaries and
-@@ -705,7 +720,7 @@ config RCU_BOOST_DELAY
+@@ -710,7 +725,7 @@ config RCU_BOOST_DELAY
  
  config RCU_NOCB_CPU
  	bool "Offload RCU callback processing from boot-selected CPUs"
--	depends on TREE_RCU || TREE_PREEMPT_RCU
-+	depends on (TREE_RCU || TREE_PREEMPT_RCU) && !SCHED_BFS
+-	depends on TREE_RCU || PREEMPT_RCU
++	depends on (TREE_RCU || PREEMPT_RCU) && !SCHED_BFS
  	default n
  	help
  	  Use this option to reduce OS jitter for aggressive HPC or
-@@ -913,6 +928,7 @@ config NUMA_BALANCING
+@@ -898,6 +913,7 @@ config NUMA_BALANCING
  	depends on ARCH_SUPPORTS_NUMA_BALANCING
  	depends on !ARCH_WANT_NUMA_VARIABLE_LOCALITY
  	depends on SMP && NUMA && MIGRATION
@@ -1066,7 +1019,7 @@ Index: linux-semplice-3.17.2/init/Kconfig
  	help
  	  This option adds support for automatic NUMA aware memory/task placement.
  	  The mechanism is quite primitive and is based on migrating memory when
-@@ -975,6 +991,7 @@ config PROC_PID_CPUSET
+@@ -968,6 +984,7 @@ config PROC_PID_CPUSET
  
  config CGROUP_CPUACCT
  	bool "Simple CPU accounting cgroup subsystem"
@@ -1074,7 +1027,7 @@ Index: linux-semplice-3.17.2/init/Kconfig
  	help
  	  Provides a simple Resource Controller for monitoring the
  	  total CPU consumed by the tasks in a cgroup.
-@@ -1088,6 +1105,7 @@ config CGROUP_PERF
+@@ -1059,6 +1076,7 @@ config CGROUP_PERF
  
  menuconfig CGROUP_SCHED
  	bool "Group CPU scheduler"
@@ -1082,7 +1035,7 @@ Index: linux-semplice-3.17.2/init/Kconfig
  	default n
  	help
  	  This feature lets CPU scheduler recognize task groups and control CPU
-@@ -1228,6 +1246,7 @@ endif # NAMESPACES
+@@ -1199,6 +1217,7 @@ endif # NAMESPACES
  
  config SCHED_AUTOGROUP
  	bool "Automatic process group scheduling"
@@ -1090,7 +1043,7 @@ Index: linux-semplice-3.17.2/init/Kconfig
  	select CGROUPS
  	select CGROUP_SCHED
  	select FAIR_GROUP_SCHED
-@@ -1653,38 +1672,8 @@ config COMPAT_BRK
+@@ -1664,38 +1683,8 @@ config COMPAT_BRK
  
  	  On non-ancient distros (post-2000 ones) N is usually a safe choice.
  
@@ -1130,11 +1083,11 @@ Index: linux-semplice-3.17.2/init/Kconfig
  
  config SLUB_CPU_PARTIAL
  	default y
-Index: linux-semplice-3.17.2/init/main.c
-===================================================================
---- linux-semplice-3.17.2.orig/init/main.c
-+++ linux-semplice-3.17.2/init/main.c
-@@ -805,7 +805,6 @@ int __init_or_module do_one_initcall(ini
+diff --git a/init/main.c b/init/main.c
+index 61b99376..a003010 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -812,7 +812,6 @@ int __init_or_module do_one_initcall(initcall_t fn)
  	return ret;
  }
  
@@ -1142,7 +1095,7 @@ Index: linux-semplice-3.17.2/init/main.c
  extern initcall_t __initcall_start[];
  extern initcall_t __initcall0_start[];
  extern initcall_t __initcall1_start[];
-@@ -942,6 +941,8 @@ static int __ref kernel_init(void *unuse
+@@ -948,6 +947,8 @@ static int __ref kernel_init(void *unused)
  
  	flush_delayed_fput();
  
@@ -1151,11 +1104,11 @@ Index: linux-semplice-3.17.2/init/main.c
  	if (ramdisk_execute_command) {
  		ret = run_init_process(ramdisk_execute_command);
  		if (!ret)
-Index: linux-semplice-3.17.2/kernel/delayacct.c
-===================================================================
---- linux-semplice-3.17.2.orig/kernel/delayacct.c
-+++ linux-semplice-3.17.2/kernel/delayacct.c
-@@ -104,7 +104,7 @@ int __delayacct_add_tsk(struct taskstats
+diff --git a/kernel/delayacct.c b/kernel/delayacct.c
+index ef90b04..d12807d 100644
+--- a/kernel/delayacct.c
++++ b/kernel/delayacct.c
+@@ -104,7 +104,7 @@ int __delayacct_add_tsk(struct taskstats *d, struct task_struct *tsk)
  	 */
  	t1 = tsk->sched_info.pcount;
  	t2 = tsk->sched_info.run_delay;
@@ -1164,24 +1117,24 @@ Index: linux-semplice-3.17.2/kernel/delayacct.c
  
  	d->cpu_count += t1;
  
-Index: linux-semplice-3.17.2/kernel/exit.c
-===================================================================
---- linux-semplice-3.17.2.orig/kernel/exit.c
-+++ linux-semplice-3.17.2/kernel/exit.c
-@@ -136,7 +136,7 @@ static void __exit_signal(struct task_st
- 		sig->inblock += task_io_get_inblock(tsk);
- 		sig->oublock += task_io_get_oublock(tsk);
- 		task_io_accounting_add(&sig->ioac, &tsk->ioac);
--		sig->sum_sched_runtime += tsk->se.sum_exec_runtime;
-+		sig->sum_sched_runtime += tsk_seruntime(tsk);
- 	}
- 
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 6806c55..dcd0141 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -135,7 +135,7 @@ static void __exit_signal(struct task_struct *tsk)
+ 	sig->inblock += task_io_get_inblock(tsk);
+ 	sig->oublock += task_io_get_oublock(tsk);
+ 	task_io_accounting_add(&sig->ioac, &tsk->ioac);
+-	sig->sum_sched_runtime += tsk->se.sum_exec_runtime;
++	sig->sum_sched_runtime += tsk_seruntime(tsk);
  	sig->nr_threads--;
-Index: linux-semplice-3.17.2/kernel/sched/Makefile
-===================================================================
---- linux-semplice-3.17.2.orig/kernel/sched/Makefile
-+++ linux-semplice-3.17.2/kernel/sched/Makefile
-@@ -11,11 +11,16 @@ ifneq ($(CONFIG_SCHED_OMIT_FRAME_POINTER
+ 	__unhash_process(tsk, group_dead);
+ 	write_sequnlock(&sig->stats_lock);
+diff --git a/kernel/sched/Makefile b/kernel/sched/Makefile
+index ab32b7b..5bb8ab8 100644
+--- a/kernel/sched/Makefile
++++ b/kernel/sched/Makefile
+@@ -11,11 +11,16 @@ ifneq ($(CONFIG_SCHED_OMIT_FRAME_POINTER),y)
  CFLAGS_core.o := $(PROFILING) -fno-omit-frame-pointer
  endif
  
@@ -1201,11 +1154,12 @@ Index: linux-semplice-3.17.2/kernel/sched/Makefile
 +obj-y += wait.o completion.o idle.o
 +obj-$(CONFIG_SMP) += cpupri.o
 +obj-$(CONFIG_SCHEDSTATS) += stats.o
-Index: linux-semplice-3.17.2/kernel/sched/bfs.c
-===================================================================
+diff --git a/kernel/sched/bfs.c b/kernel/sched/bfs.c
+new file mode 100644
+index 0000000..210772a
 --- /dev/null
-+++ linux-semplice-3.17.2/kernel/sched/bfs.c
-@@ -0,0 +1,7352 @@
++++ b/kernel/sched/bfs.c
+@@ -0,0 +1,7369 @@
 +/*
 + *  kernel/sched/bfs.c, was kernel/sched.c
 + *
@@ -1299,22 +1253,6 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +
 +#include "bfs_sched.h"
 +
-+#ifdef smp_mb__before_atomic
-+void __smp_mb__before_atomic(void)
-+{
-+	smp_mb__before_atomic();
-+}
-+EXPORT_SYMBOL(__smp_mb__before_atomic);
-+#endif
-+
-+#ifdef smp_mb__after_atomic
-+void __smp_mb__after_atomic(void)
-+{
-+	smp_mb__after_atomic();
-+}
-+EXPORT_SYMBOL(__smp_mb__after_atomic);
-+#endif
-+
 +#define rt_prio(prio)		unlikely((prio) < MAX_RT_PRIO)
 +#define rt_task(p)		rt_prio((p)->prio)
 +#define rt_queue(rq)		rt_prio((rq)->rq_prio)
@@ -1358,7 +1296,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +
 +void print_scheduler_version(void)
 +{
-+	printk(KERN_INFO "BFS CPU scheduler v0.456 by Con Kolivas.\n");
++	printk(KERN_INFO "BFS CPU scheduler v0.460 by Con Kolivas.\n");
 +}
 +
 +/*
@@ -1416,7 +1354,6 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +};
 +
 +#ifdef CONFIG_SMP
-+
 +/*
 + * We add the notion of a root-domain which will be used to define per-domain
 + * variables. Each exclusive cpuset essentially defines an island domain by
@@ -1451,15 +1388,14 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +/* There can be only one */
 +static struct global_rq grq;
 +
-+DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
 +static DEFINE_MUTEX(sched_hotcpu_mutex);
 +
++DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
 +#ifdef CONFIG_SMP
 +struct rq *cpu_rq(int cpu)
 +{
 +	return &per_cpu(runqueues, (cpu));
 +}
-+#define this_rq()		(&__get_cpu_var(runqueues))
 +#define task_rq(p)		cpu_rq(task_cpu(p))
 +#define cpu_curr(cpu)		(cpu_rq(cpu)->curr)
 +/*
@@ -1481,8 +1417,6 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +#endif /* CONFIG_SMP */
 +
 +static inline void update_rq_clock(struct rq *rq);
-+static unsigned long long do_task_sched_runtime(struct task_struct *p);
-+static u64 do_task_delta_exec(struct task_struct *p, struct rq *rq);
 +
 +/*
 + * Sanity check should sched_clock return bogus values. We make sure it does
@@ -1554,7 +1488,6 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	grq.niffies += ndiff;
 +}
 +#endif
-+#define raw_rq()	(&__raw_get_cpu_var(runqueues))
 +
 +#include "stats.h"
 +
@@ -1580,6 +1513,8 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +{
 +	s64 delta = sched_clock_cpu(cpu_of(rq)) - rq->clock;
 +
++	if (unlikely(delta < 0))
++		return;
 +	rq->clock += delta;
 +	update_rq_clock_task(rq, delta);
 +}
@@ -1714,28 +1649,6 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	grq_unlock();
 +}
 +
-+/*
-+ * Look for any tasks *anywhere* that are running nice 0 or better. We do
-+ * this lockless for overhead reasons since the occasional wrong result
-+ * is harmless.
-+ */
-+bool above_background_load(void)
-+{
-+	int cpu;
-+
-+	for_each_online_cpu(cpu) {
-+		struct task_struct *cpu_curr = cpu_rq(cpu)->curr;
-+
-+		if (unlikely(!cpu_curr))
-+			continue;
-+		if (PRIO_TO_NICE(cpu_curr->static_prio) < 1) {
-+			return true;
-+		}
-+	}
-+	return false;
-+}
-+
-+#ifndef __ARCH_WANT_UNLOCKED_CTXSW
 +static inline void prepare_lock_switch(struct rq *rq, struct task_struct *next)
 +{
 +}
@@ -1755,26 +1668,6 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +
 +	grq_unlock_irq();
 +}
-+
-+#else /* __ARCH_WANT_UNLOCKED_CTXSW */
-+
-+static inline void prepare_lock_switch(struct rq *rq, struct task_struct *next)
-+{
-+#ifdef __ARCH_WANT_INTERRUPTS_ON_CTXSW
-+	grq_unlock_irq();
-+#else
-+	grq_unlock();
-+#endif
-+}
-+
-+static inline void finish_lock_switch(struct rq *rq, struct task_struct *prev)
-+{
-+	smp_wmb();
-+#ifndef __ARCH_WANT_INTERRUPTS_ON_CTXSW
-+	local_irq_enable();
-+#endif
-+}
-+#endif /* __ARCH_WANT_UNLOCKED_CTXSW */
 +
 +static inline bool deadline_before(u64 deadline, u64 time)
 +{
@@ -1830,7 +1723,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +/*
 + * Adding to the global runqueue. Enter with grq locked.
 + */
-+static void enqueue_task(struct task_struct *p)
++static void enqueue_task(struct task_struct *p, struct rq *rq)
 +{
 +	if (!rt_task(p)) {
 +		/* Check it hasn't gotten rt from PI */
@@ -1842,15 +1735,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	}
 +	__set_bit(p->prio, grq.prio_bitmap);
 +	list_add_tail(&p->run_list, grq.queue + p->prio);
-+	sched_info_queued(task_rq(p), p);
-+}
-+
-+/* Only idle task does this as a real time task*/
-+static inline void enqueue_task_head(struct task_struct *p)
-+{
-+	__set_bit(p->prio, grq.prio_bitmap);
-+	list_add(&p->run_list, grq.queue + p->prio);
-+	sched_info_queued(task_rq(p), p);
++	sched_info_queued(rq, p);
 +}
 +
 +static inline void requeue_task(struct task_struct *p)
@@ -1875,6 +1760,13 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +static inline int task_timeslice(struct task_struct *p)
 +{
 +	return (rr_interval * task_prio_ratio(p) / 128);
++}
++
++static void resched_task(struct task_struct *p);
++
++static inline void resched_curr(struct rq *rq)
++{
++	resched_task(rq->curr);
 +}
 +
 +#ifdef CONFIG_SMP
@@ -1934,7 +1826,6 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +#define CPUIDLE_THROTTLED	(32)
 +#define CPUIDLE_DIFF_NODE	(64)
 +
-+static void resched_task(struct task_struct *p);
 +static inline bool scaling_rq(struct rq *rq);
 +
 +/*
@@ -2004,7 +1895,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +static void resched_best_mask(int best_cpu, struct rq *rq, cpumask_t *tmpmask)
 +{
 +	best_cpu = best_mask_cpu(best_cpu, rq, tmpmask);
-+	resched_task(cpu_rq(best_cpu)->curr);
++	resched_curr(cpu_rq(best_cpu));
 +}
 +
 +bool cpus_share_cache(int this_cpu, int that_cpu)
@@ -2093,7 +1984,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	if (!smt_should_schedule(p, best_cpu))
 +		return false;
 +#endif
-+	resched_task(cpu_rq(best_cpu)->curr);
++	resched_curr(cpu_rq(best_cpu));
 +	return true;
 +}
 +
@@ -2182,16 +2073,6 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +EXPORT_SYMBOL_GPL(cpu_scaling);
 +EXPORT_SYMBOL_GPL(cpu_nonscaling);
 +
-+/*
-+ * activate_idle_task - move idle task to the _front_ of runqueue.
-+ */
-+static inline void activate_idle_task(struct task_struct *p)
-+{
-+	enqueue_task_head(p);
-+	grq.nr_running++;
-+	inc_qnr();
-+}
-+
 +static inline int normal_prio(struct task_struct *p)
 +{
 +	if (has_rt_policy(p))
@@ -2243,7 +2124,9 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	p->prio = effective_prio(p);
 +	if (task_contributes_to_load(p))
 +		grq.nr_uninterruptible--;
-+	enqueue_task(p);
++	enqueue_task(p, rq);
++	rq->soft_affined++;
++	p->on_rq = 1;
 +	grq.nr_running++;
 +	inc_qnr();
 +}
@@ -2254,10 +2137,12 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 + * deactivate_task - If it's running, it's not on the grq and we can just
 + * decrement the nr_running. Enter with grq locked.
 + */
-+static inline void deactivate_task(struct task_struct *p)
++static inline void deactivate_task(struct task_struct *p, struct rq *rq)
 +{
 +	if (task_contributes_to_load(p))
 +		grq.nr_uninterruptible++;
++	rq->soft_affined--;
++	p->on_rq = 0;
 +	grq.nr_running--;
 +	clear_sticky(p);
 +}
@@ -2271,9 +2156,10 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	 */
 +	WARN_ON_ONCE(debug_locks && !lockdep_is_held(&grq.lock));
 +#endif
++	if (task_cpu(p) == cpu)
++		return;
 +	trace_sched_migrate_task(p, cpu);
-+	if (task_cpu(p) != cpu)
-+		perf_sw_event(PERF_COUNT_SW_CPU_MIGRATIONS, 1, NULL, 0);
++	perf_sw_event(PERF_COUNT_SW_CPU_MIGRATIONS, 1, NULL, 0);
 +
 +	/*
 +	 * After ->cpu is set up to a new value, task_grq_lock(p, ...) can be
@@ -2281,6 +2167,10 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	 * per-task data have been completed by this moment.
 +	 */
 +	smp_wmb();
++	if (p->on_rq) {
++		task_rq(p)->soft_affined--;
++		cpu_rq(cpu)->soft_affined++;
++	}
 +	task_thread_info(p)->cpu = cpu;
 +}
 +
@@ -2377,13 +2267,13 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 + * Returns a descheduling task to the grq runqueue unless it is being
 + * deactivated.
 + */
-+static inline void return_task(struct task_struct *p, bool deactivate)
++static inline void return_task(struct task_struct *p, struct rq *rq, bool deactivate)
 +{
 +	if (deactivate)
-+		deactivate_task(p);
++		deactivate_task(p, rq);
 +	else {
 +		inc_qnr();
-+		enqueue_task(p);
++		enqueue_task(p, rq);
 +	}
 +}
 +
@@ -2489,7 +2379,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +		rq = task_grq_lock(p, &flags);
 +		trace_sched_wait_task(p);
 +		running = task_running(p);
-+		on_rq = task_queued(p);
++		on_rq = p->on_rq;
 +		ncsw = 0;
 +		if (!match_state || p->state == match_state)
 +			ncsw = p->nvcsw | LONG_MIN; /* sets MSB */
@@ -2672,7 +2562,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +			return;
 +#endif
 +		if (can_preempt(p, highest_prio, highest_prio_rq->rq_deadline))
-+			resched_task(highest_prio_rq->curr);
++			resched_curr(highest_prio_rq);
 +	}
 +}
 +#else /* CONFIG_SMP */
@@ -2686,7 +2576,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	if (p->policy == SCHED_IDLEPRIO)
 +		return;
 +	if (can_preempt(p, uprq->rq_prio, uprq->rq_deadline))
-+		resched_task(uprq->curr);
++		resched_curr(uprq);
 +}
 +#endif /* CONFIG_SMP */
 +
@@ -2718,6 +2608,21 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +
 +	schedstat_inc(rq, ttwu_count);
 +#endif /* CONFIG_SCHEDSTATS */
++}
++
++void wake_up_if_idle(int cpu)
++{
++	struct rq *rq = cpu_rq(cpu);
++	unsigned long flags;
++
++	if (!is_idle_task(rq->curr))
++		return;
++
++	grq_lock_irqsave(&flags);
++	if (likely(is_idle_task(rq->curr)))
++		smp_send_reschedule(cpu);
++	/* Else cpu is not in idle, do nothing here */
++	grq_unlock_irqrestore(&flags);
 +}
 +
 +#ifdef CONFIG_SMP
@@ -2904,6 +2809,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	 */
 +
 +	/* Should be reset in fork.c but done here for ease of bfs patching */
++	p->on_rq =
 +	p->utime =
 +	p->stime =
 +	p->utimescaled =
@@ -3166,10 +3072,6 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	struct rq *rq = this_rq();
 +
 +	finish_task_switch(rq, prev);
-+#ifdef __ARCH_WANT_UNLOCKED_CTXSW
-+	/* In this case, finish_task_switch does not reenable preemption */
-+	preempt_enable();
-+#endif
 +	if (current->set_child_tid)
 +		put_user(task_pid_vnr(current), current->set_child_tid);
 +}
@@ -3212,9 +3114,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	 * of the scheduler it's an obvious special-case), so we
 +	 * do an early lockdep release here:
 +	 */
-+#ifndef __ARCH_WANT_UNLOCKED_CTXSW
 +	spin_release(&grq.lock.dep_map, 1, _THIS_IP_);
-+#endif
 +
 +	/* Here we just switch the register state and the stack. */
 +	context_tracking_task_switch(prev, next);
@@ -3255,6 +3155,18 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	return nu;
 +}
 +
++/*
++ * Check if only the current task is running on the cpu.
++ */
++bool single_task_running(void)
++{
++	if (cpu_rq(smp_processor_id())->soft_affined == 1)
++		return true;
++	else
++		return false;
++}
++EXPORT_SYMBOL(single_task_running);
++
 +unsigned long long nr_context_switches(void)
 +{
 +	long long ns = grq.nr_switches;
@@ -3286,11 +3198,15 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	return nr_running() + nr_uninterruptible();
 +}
 +
-+/* Beyond a task running on this CPU, load is equal everywhere on BFS */
-+unsigned long this_cpu_load(void)
++/* Beyond a task running on this CPU, load is equal everywhere on BFS, so we
++ * base it on the number of running or queued tasks with their ->rq pointer
++ * set to this cpu as being the CPU they're more likely to run on. */
++void get_iowait_load(unsigned long *nr_waiters, unsigned long *load)
 +{
-+	return this_rq()->rq_running +
-+		((queued_notrunning() + nr_uninterruptible()) / grq.noc);
++	struct rq *this = this_rq();
++
++	*nr_waiters = atomic_read(&this->nr_iowait);
++	*load = this->soft_affined;
 +}
 +
 +/* Variables and functions for calc_load */
@@ -3574,27 +3490,29 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	struct signal_struct *sig = tsk->signal;
 +	cputime_t utime, stime;
 +	struct task_struct *t;
++	unsigned int seq, nextseq;
 +	unsigned long flags;
 +
-+	times->utime = sig->utime;
-+	times->stime = sig->stime;
-+	times->sum_exec_runtime = sig->sum_sched_runtime;
-+
 +	rcu_read_lock();
-+	/* make sure we can trust tsk->thread_group list */
-+	if (!likely(pid_alive(tsk)))
-+		goto out;
-+
-+	t = tsk;
-+	grq_lock_irqsave(&flags);
++	/* Attempt a lockless read on the first round. */
++	nextseq = 0;
 +	do {
-+		task_cputime(t, &utime, &stime);
-+		times->utime += utime;
-+		times->stime += stime;
-+		times->sum_exec_runtime += do_task_sched_runtime(t);
-+	} while_each_thread(tsk, t);
-+	grq_unlock_irqrestore(&flags);
-+out:
++		seq = nextseq;
++		flags = read_seqbegin_or_lock_irqsave(&sig->stats_lock, &seq);
++		times->utime = sig->utime;
++		times->stime = sig->stime;
++		times->sum_exec_runtime = sig->sum_sched_runtime;
++
++		for_each_thread(tsk, t) {
++			task_cputime(t, &utime, &stime);
++			times->utime += utime;
++			times->stime += stime;
++			times->sum_exec_runtime += task_sched_runtime(t);
++		}
++		/* If lockless access failed, take the lock. */
++		nextseq = 1;
++	} while (need_seqretry(&sig->stats_lock, seq));
++	done_seqretry_irqrestore(&sig->stats_lock, seq, flags);
 +	rcu_read_unlock();
 +}
 +
@@ -3802,47 +3720,21 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 + *
 + * Called with task_grq_lock() held.
 + */
-+static u64 do_task_delta_exec(struct task_struct *p, struct rq *rq)
++static inline u64 do_task_delta_exec(struct task_struct *p, struct rq *rq)
 +{
 +	u64 ns = 0;
 +
-+	if (p == rq->curr) {
++	/*
++	 * Must be ->curr _and_ ->on_rq.  If dequeued, we would
++	 * project cycles that may never be accounted to this
++	 * thread, breaking clock_gettime().
++	 */
++	if (p == rq->curr && p->on_rq) {
 +		update_clocks(rq);
 +		ns = rq->clock_task - rq->rq_last_ran;
 +		if (unlikely((s64)ns < 0))
 +			ns = 0;
 +	}
-+
-+	return ns;
-+}
-+
-+unsigned long long task_delta_exec(struct task_struct *p)
-+{
-+	unsigned long flags;
-+	struct rq *rq;
-+	u64 ns;
-+
-+	rq = task_grq_lock(p, &flags);
-+	ns = do_task_delta_exec(p, rq);
-+	task_grq_unlock(&flags);
-+
-+	return ns;
-+}
-+
-+/*
-+ * Return accounted runtime for the task.
-+ * Return separately the current's pending runtime that have not been
-+ * accounted yet.
-+ *
-+ * grq lock already acquired.
-+ */
-+unsigned long long do_task_sched_runtime(struct task_struct *p)
-+{
-+	struct rq *rq;
-+	u64 ns;
-+
-+	rq = task_rq(p);
-+	ns = p->sched_time + do_task_delta_exec(p,rq);
 +
 +	return ns;
 +}
@@ -3868,8 +3760,10 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	 * If we race with it leaving cpu, we'll take a lock. So we're correct.
 +	 * If we race with it entering cpu, unaccounted time is 0. This is
 +	 * indistinguishable from the read occurring a few cycles earlier.
++	 * If we see ->on_cpu without ->on_rq, the task is leaving, and has
++	 * been accounted, so we're correct here as well.
 +	 */
-+	if (!p->on_cpu)
++	if (!p->on_cpu || !p->on_rq)
 +		return tsk_seruntime(p);
 +#endif
 +
@@ -4480,6 +4374,9 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 + */
 +static inline void schedule_debug(struct task_struct *prev)
 +{
++#ifdef CONFIG_SCHED_STACK_END_CHECK
++	BUG_ON(unlikely(task_stack_end_corrupted(prev)));
++#endif
 +	/*
 +	 * Test if we are atomic. Since do_exit() needs to call into
 +	 * schedule() atomically, we ignore that path. Otherwise whine
@@ -4613,7 +4510,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 + *          - return from syscall or exception to user-space
 + *          - return from interrupt-handler to user-space
 + */
-+asmlinkage __visible void __sched schedule(void)
++static void __sched __schedule(void)
 +{
 +	struct task_struct *prev, *next, *idle;
 +	unsigned long *switch_count;
@@ -4645,6 +4542,8 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +			prev->state = TASK_RUNNING;
 +		} else {
 +			deactivate = true;
++			prev->on_rq = 0;
++
 +			/*
 +			 * If a worker is going to sleep, notify and
 +			 * ask workqueue whether it wants to wake up a
@@ -4667,17 +4566,6 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +		switch_count = &prev->nvcsw;
 +	}
 +
-+	/*
-+	 * If we are going to sleep and we have plugged IO queued, make
-+	 * sure to submit it to avoid deadlocks.
-+	 */
-+	if (unlikely(deactivate && blk_needs_flush_plug(prev))) {
-+		grq_unlock_irq();
-+		preempt_enable_no_resched();
-+		blk_schedule_flush_plug(prev);
-+		goto need_resched;
-+	}
-+
 +	update_clocks(rq);
 +	update_cpu_clock_switch(rq, prev);
 +	if (rq->clock - rq->last_tick > HALF_JIFFY_NS)
@@ -4697,25 +4585,24 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +		prev->last_ran = rq->clock_task;
 +
 +		/* Task changed affinity off this CPU */
-+		if (needs_other_cpu(prev, cpu)) {
-+			if (!deactivate)
-+				resched_suitable_idle(prev);
-+		} else if (!deactivate) {
-+			if (!queued_notrunning()) {
-+				/*
-+				* We now know prev is the only thing that is
-+				* awaiting CPU so we can bypass rechecking for
-+				* the earliest deadline task and just run it
-+				* again.
-+				*/
-+				set_rq_task(rq, prev);
-+				check_smt_siblings(cpu);
-+				grq_unlock_irq();
-+				goto rerun_prev_unlocked;
-+			} else
-+				swap_sticky(rq, cpu, prev);
++		if (likely(!needs_other_cpu(prev, cpu))) {
++			if (!deactivate) {
++				if (!queued_notrunning()) {
++					/*
++					 * We now know prev is the only thing that is
++					 * awaiting CPU so we can bypass rechecking for
++					 * the earliest deadline task and just run it
++					 * again.
++					 */
++					set_rq_task(rq, prev);
++					check_smt_siblings(cpu);
++					grq_unlock_irq();
++					goto rerun_prev_unlocked;
++				} else
++					swap_sticky(rq, cpu, prev);
++			}
 +		}
-+		return_task(prev, deactivate);
++		return_task(prev, rq, deactivate);
 +	}
 +
 +	if (unlikely(!queued_notrunning())) {
@@ -4735,7 +4622,11 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	}
 +
 +	if (likely(prev != next)) {
-+		resched_suitable_idle(prev);
++		/*
++		 * Don't reschedule an idle task or deactivated tasks
++		 */
++		if ( prev != idle && !deactivate)
++			resched_suitable_idle(prev);
 +		/*
 +		 * Don't stick tasks when a real time task is going to run as
 +		 * they may literally get stuck.
@@ -4773,9 +4664,29 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	if (unlikely(need_resched()))
 +		goto need_resched;
 +}
++
++static inline void sched_submit_work(struct task_struct *tsk)
++{
++	if (!tsk->state || tsk_is_pi_blocked(tsk))
++		return;
++	/*
++	 * If we are going to sleep and we have plugged IO queued,
++	 * make sure to submit it to avoid deadlocks.
++	 */
++	if (blk_needs_flush_plug(tsk))
++		blk_schedule_flush_plug(tsk);
++}
++
++asmlinkage __visible void __sched schedule(void)
++{
++	struct task_struct *tsk = current;
++
++	sched_submit_work(tsk);
++	__schedule();
++}
 +EXPORT_SYMBOL(schedule);
 +
-+#ifdef CONFIG_RCU_USER_QS
++#ifdef CONFIG_CONTEXT_TRACKING
 +asmlinkage __visible void __sched schedule_user(void)
 +{
 +	/*
@@ -4783,10 +4694,14 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	 * or we have been woken up remotely but the IPI has not yet arrived,
 +	 * we haven't yet exited the RCU idle mode. Do it here manually until
 +	 * we find a better solution.
++	 *
++	 * NB: There are buggy callers of this function.  Ideally we
++	 * should warn if prev_state != IN_USER, but that will trigger
++	 * too frequently to make sense yet.
 +	 */
-+	user_exit();
++	enum ctx_state prev_state = exception_enter();
 +	schedule();
-+	user_enter();
++	exception_exit(prev_state);
 +}
 +#endif
 +
@@ -4831,6 +4746,47 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +}
 +NOKPROBE_SYMBOL(preempt_schedule);
 +EXPORT_SYMBOL(preempt_schedule);
++
++#ifdef CONFIG_CONTEXT_TRACKING
++/**
++ * preempt_schedule_context - preempt_schedule called by tracing
++ *
++ * The tracing infrastructure uses preempt_enable_notrace to prevent
++ * recursion and tracing preempt enabling caused by the tracing
++ * infrastructure itself. But as tracing can happen in areas coming
++ * from userspace or just about to enter userspace, a preempt enable
++ * can occur before user_exit() is called. This will cause the scheduler
++ * to be called when the system is still in usermode.
++ *
++ * To prevent this, the preempt_enable_notrace will use this function
++ * instead of preempt_schedule() to exit user context if needed before
++ * calling the scheduler.
++ */
++asmlinkage __visible void __sched notrace preempt_schedule_context(void)
++{
++	enum ctx_state prev_ctx;
++
++	if (likely(!preemptible()))
++		return;
++
++	do {
++		__preempt_count_add(PREEMPT_ACTIVE);
++		/*
++		 * Needs preempt disabled in case user_exit() is traced
++		 * and the tracer calls preempt_enable_notrace() causing
++		 * an infinite recursion.
++		 */
++		prev_ctx = exception_enter();
++		__schedule();
++		exception_exit(prev_ctx);
++
++		__preempt_count_sub(PREEMPT_ACTIVE);
++		barrier();
++	} while (need_resched());
++}
++EXPORT_SYMBOL_GPL(preempt_schedule_context);
++#endif /* CONFIG_CONTEXT_TRACKING */
++
 +#endif /* CONFIG_PREEMPT */
 +
 +/*
@@ -4922,7 +4878,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	if (task_running(p) && prio > oldprio)
 +		resched_task(p);
 +	if (queued) {
-+		enqueue_task(p);
++		enqueue_task(p, rq);
 +		try_preempt(p, rq);
 +	}
 +
@@ -4975,7 +4931,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	p->prio = effective_prio(p);
 +
 +	if (queued) {
-+		enqueue_task(p);
++		enqueue_task(p, rq);
 +		if (new_static < old_static)
 +			try_preempt(p, rq);
 +	} else if (task_running(p)) {
@@ -5293,7 +5249,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +		dequeue_task(p);
 +	__setscheduler(p, rq, policy, param->sched_priority);
 +	if (queued) {
-+		enqueue_task(p);
++		enqueue_task(p, rq);
 +		try_preempt(p, rq);
 +	}
 +	__task_grq_unlock();
@@ -5462,6 +5418,12 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	return do_sched_setscheduler(pid, policy, param);
 +}
 +
++/*
++ * sched_setparam() passes in -1 for its policy, to let the functions
++ * it calls know not to change it.
++ */
++#define SETPARAM_POLICY	-1
++
 +/**
 + * sys_sched_setparam - set/change the RT priority of a thread
 + * @pid: the pid in question.
@@ -5471,7 +5433,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 + */
 +SYSCALL_DEFINE2(sched_setparam, pid_t, pid, struct sched_param __user *, param)
 +{
-+	return do_sched_setscheduler(pid, -1, param);
++	return do_sched_setscheduler(pid, SETPARAM_POLICY, param);
 +}
 +
 +/**
@@ -5992,8 +5954,8 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	rq->rq_time_slice = 0;
 +	if (p->time_slice > timeslice())
 +		p->time_slice = timeslice();
-+	if (preempt && rq != rq)
-+		resched_task(p_rq->curr);
++	if (preempt && rq != p_rq)
++		resched_curr(p_rq);
 +out_unlock:
 +	grq_unlock_irqrestore(&flags);
 +
@@ -6188,7 +6150,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +		"  task                        PC stack   pid father\n");
 +#endif
 +	rcu_read_lock();
-+	do_each_thread(g, p) {
++	for_each_process_thread(g, p) {
 +		/*
 +		 * reset the NMI-timeout, listing all files on a slow
 +		 * console might take a lot of time:
@@ -6196,7 +6158,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +		touch_nmi_watchdog();
 +		if (!state_filter || (p->state & state_filter))
 +			sched_show_task(p);
-+	} while_each_thread(g, p);
++	}
 +
 +	touch_all_softlockup_watchdogs();
 +
@@ -7676,6 +7638,20 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +		sched_domain_level_max = max(sched_domain_level_max, sd->level);
 +		child->parent = sd;
 +		sd->child = child;
++
++		if (!cpumask_subset(sched_domain_span(child),
++				    sched_domain_span(sd))) {
++			pr_err("BUG: arch topology borken\n");
++#ifdef CONFIG_SCHED_DEBUG
++			pr_err("     the %s domain not a subset of the %s domain\n",
++					child->name, sd->name);
++#endif
++			/* Fixup, ensure @sd has at least @child cpus. */
++			cpumask_or(sched_domain_span(sd),
++				   sched_domain_span(sd),
++				   sched_domain_span(child));
++		}
++
 +	}
 +	set_domain_attribute(sd, attr);
 +
@@ -8287,29 +8263,24 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	struct rq *rq;
 +	int queued;
 +
-+	read_lock_irqsave(&tasklist_lock, flags);
-+
-+	do_each_thread(g, p) {
++	read_lock(&tasklist_lock);
++	for_each_process_thread(g, p) {
 +		if (!rt_task(p) && !iso_task(p))
 +			continue;
 +
-+		raw_spin_lock(&p->pi_lock);
-+		rq = __task_grq_lock(p);
-+
++		rq = task_grq_lock(p, &flags);
 +		queued = task_queued(p);
 +		if (queued)
 +			dequeue_task(p);
 +		__setscheduler(p, rq, SCHED_NORMAL, 0);
 +		if (queued) {
-+			enqueue_task(p);
++			enqueue_task(p, rq);
 +			try_preempt(p, rq);
 +		}
 +
-+		__task_grq_unlock();
-+		raw_spin_unlock(&p->pi_lock);
-+	} while_each_thread(g, p);
-+
-+	read_unlock_irqrestore(&tasklist_lock, flags);
++		task_grq_unlock(&flags);
++	}
++	read_unlock(&tasklist_lock);
 +}
 +#endif /* CONFIG_MAGIC_SYSRQ */
 +
@@ -8558,12 +8529,14 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs.c
 +	return smt_gain;
 +}
 +#endif
-Index: linux-semplice-3.17.2/kernel/sched/bfs_sched.h
-===================================================================
+diff --git a/kernel/sched/bfs_sched.h b/kernel/sched/bfs_sched.h
+new file mode 100644
+index 0000000..198108e
 --- /dev/null
-+++ linux-semplice-3.17.2/kernel/sched/bfs_sched.h
-@@ -0,0 +1,122 @@
++++ b/kernel/sched/bfs_sched.h
+@@ -0,0 +1,161 @@
 +#include <linux/sched.h>
++#include <linux/cpuidle.h>
 +
 +#ifndef BFS_SCHED_H
 +#define BFS_SCHED_H
@@ -8583,6 +8556,7 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs_sched.h
 +	u64 rq_last_ran;
 +	int rq_prio;
 +	bool rq_running; /* There is a task running */
++	int soft_affined; /* Running or queued tasks with this set as their rq */
 +#ifdef CONFIG_SMT_NICE
 +	int rq_smt_bias; /* Policy/nice level bias across smt siblings */
 +#endif
@@ -8644,6 +8618,10 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs_sched.h
 +	unsigned int ttwu_count;
 +	unsigned int ttwu_local;
 +#endif /* CONFIG_SCHEDSTATS */
++#ifdef CONFIG_CPU_IDLE
++	/* Must be inspected within a rcu lock section */
++	struct cpuidle_state *idle_state;
++#endif
 +};
 +
 +#ifdef CONFIG_SMP
@@ -8654,8 +8632,13 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs_sched.h
 +static struct rq *uprq;
 +#define cpu_rq(cpu)	(uprq)
 +#define this_rq()	(uprq)
++#define raw_rq()	(uprq)
 +#define task_rq(p)	(uprq)
 +#define cpu_curr(cpu)	((uprq)->curr)
++#else /* CONFIG_SMP */
++DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
++#define this_rq()		this_cpu_ptr(&runqueues)
++#define raw_rq()		raw_cpu_ptr(&runqueues)
 +#endif /* CONFIG_SMP */
 +
 +static inline u64 rq_clock(struct rq *rq)
@@ -8684,11 +8667,39 @@ Index: linux-semplice-3.17.2/kernel/sched/bfs_sched.h
 +
 +static inline void sched_ttwu_pending(void) { }
 +
++static inline int task_on_rq_queued(struct task_struct *p)
++{
++	return p->on_rq;
++}
++
++#ifdef CONFIG_CPU_IDLE
++static inline void idle_set_state(struct rq *rq,
++				  struct cpuidle_state *idle_state)
++{
++	rq->idle_state = idle_state;
++}
++
++static inline struct cpuidle_state *idle_get_state(struct rq *rq)
++{
++	WARN_ON(!rcu_read_lock_held());
++	return rq->idle_state;
++}
++#else
++static inline void idle_set_state(struct rq *rq,
++				  struct cpuidle_state *idle_state)
++{
++}
++
++static inline struct cpuidle_state *idle_get_state(struct rq *rq)
++{
++	return NULL;
++}
 +#endif
-Index: linux-semplice-3.17.2/kernel/sched/idle.c
-===================================================================
---- linux-semplice-3.17.2.orig/kernel/sched/idle.c
-+++ linux-semplice-3.17.2/kernel/sched/idle.c
++#endif /* BFS_SCHED_H */
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index c47fce7..a9ef9f1 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
 @@ -12,7 +12,11 @@
  
  #include <trace/events/power.h>
@@ -8701,10 +8712,10 @@ Index: linux-semplice-3.17.2/kernel/sched/idle.c
  
  static int __read_mostly cpu_idle_force_poll;
  
-Index: linux-semplice-3.17.2/kernel/sched/stats.c
-===================================================================
---- linux-semplice-3.17.2.orig/kernel/sched/stats.c
-+++ linux-semplice-3.17.2/kernel/sched/stats.c
+diff --git a/kernel/sched/stats.c b/kernel/sched/stats.c
+index a476bea..73d8cdd 100644
+--- a/kernel/sched/stats.c
++++ b/kernel/sched/stats.c
 @@ -4,7 +4,11 @@
  #include <linux/seq_file.h>
  #include <linux/proc_fs.h>
@@ -8717,10 +8728,10 @@ Index: linux-semplice-3.17.2/kernel/sched/stats.c
  
  /*
   * bump this up when changing the output format or the meaning of an existing
-Index: linux-semplice-3.17.2/kernel/stop_machine.c
-===================================================================
---- linux-semplice-3.17.2.orig/kernel/stop_machine.c
-+++ linux-semplice-3.17.2/kernel/stop_machine.c
+diff --git a/kernel/stop_machine.c b/kernel/stop_machine.c
+index 695f0c6..263b0e1 100644
+--- a/kernel/stop_machine.c
++++ b/kernel/stop_machine.c
 @@ -41,7 +41,8 @@ struct cpu_stopper {
  };
  
@@ -8731,11 +8742,11 @@ Index: linux-semplice-3.17.2/kernel/stop_machine.c
  static bool stop_machine_initialized = false;
  
  /*
-Index: linux-semplice-3.17.2/kernel/sysctl.c
-===================================================================
---- linux-semplice-3.17.2.orig/kernel/sysctl.c
-+++ linux-semplice-3.17.2/kernel/sysctl.c
-@@ -128,7 +128,12 @@ static int __maybe_unused one = 1;
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 137c7f6..f9cba15 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -125,7 +125,12 @@ static int __maybe_unused one = 1;
  static int __maybe_unused two = 2;
  static int __maybe_unused four = 4;
  static unsigned long one_ul = 1;
@@ -8749,7 +8760,7 @@ Index: linux-semplice-3.17.2/kernel/sysctl.c
  #ifdef CONFIG_PRINTK
  static int ten_thousand = 10000;
  #endif
-@@ -263,7 +268,7 @@ static struct ctl_table sysctl_base_tabl
+@@ -260,7 +265,7 @@ static struct ctl_table sysctl_base_table[] = {
  	{ }
  };
  
@@ -8758,7 +8769,7 @@ Index: linux-semplice-3.17.2/kernel/sysctl.c
  static int min_sched_granularity_ns = 100000;		/* 100 usecs */
  static int max_sched_granularity_ns = NSEC_PER_SEC;	/* 1 second */
  static int min_wakeup_granularity_ns;			/* 0 usecs */
-@@ -280,6 +285,7 @@ static int max_extfrag_threshold = 1000;
+@@ -277,6 +282,7 @@ static int max_extfrag_threshold = 1000;
  #endif
  
  static struct ctl_table kern_table[] = {
@@ -8766,7 +8777,7 @@ Index: linux-semplice-3.17.2/kernel/sysctl.c
  	{
  		.procname	= "sched_child_runs_first",
  		.data		= &sysctl_sched_child_runs_first,
-@@ -445,6 +451,7 @@ static struct ctl_table kern_table[] = {
+@@ -443,6 +449,7 @@ static struct ctl_table kern_table[] = {
  		.extra1		= &one,
  	},
  #endif
@@ -8774,7 +8785,7 @@ Index: linux-semplice-3.17.2/kernel/sysctl.c
  #ifdef CONFIG_PROVE_LOCKING
  	{
  		.procname	= "prove_locking",
-@@ -964,6 +971,26 @@ static struct ctl_table kern_table[] = {
+@@ -960,6 +967,26 @@ static struct ctl_table kern_table[] = {
  		.proc_handler	= proc_dointvec,
  	},
  #endif
@@ -8801,10 +8812,10 @@ Index: linux-semplice-3.17.2/kernel/sysctl.c
  #if defined(CONFIG_S390) && defined(CONFIG_SMP)
  	{
  		.procname	= "spin_retry",
-Index: linux-semplice-3.17.2/kernel/time/Kconfig
-===================================================================
---- linux-semplice-3.17.2.orig/kernel/time/Kconfig
-+++ linux-semplice-3.17.2/kernel/time/Kconfig
+diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
+index d626dc9..205a1a9 100644
+--- a/kernel/time/Kconfig
++++ b/kernel/time/Kconfig
 @@ -95,7 +95,7 @@ config NO_HZ_IDLE
  config NO_HZ_FULL
  	bool "Full dynticks system (tickless)"
@@ -8814,11 +8825,11 @@ Index: linux-semplice-3.17.2/kernel/time/Kconfig
  	# We need at least one periodic CPU for timekeeping
  	depends on SMP
  	# RCU_USER_QS dependency
-Index: linux-semplice-3.17.2/kernel/time/posix-cpu-timers.c
-===================================================================
---- linux-semplice-3.17.2.orig/kernel/time/posix-cpu-timers.c
-+++ linux-semplice-3.17.2/kernel/time/posix-cpu-timers.c
-@@ -439,7 +439,7 @@ static void cleanup_timers(struct list_h
+diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
+index a16b678..b7fa15e 100644
+--- a/kernel/time/posix-cpu-timers.c
++++ b/kernel/time/posix-cpu-timers.c
+@@ -425,7 +425,7 @@ static void cleanup_timers(struct list_head *head)
   */
  void posix_cpu_timers_exit(struct task_struct *tsk)
  {
@@ -8827,7 +8838,7 @@ Index: linux-semplice-3.17.2/kernel/time/posix-cpu-timers.c
  						sizeof(unsigned long long));
  	cleanup_timers(tsk->cpu_timers);
  
-@@ -861,7 +861,7 @@ static void check_thread_timers(struct t
+@@ -847,7 +847,7 @@ static void check_thread_timers(struct task_struct *tsk,
  	tsk_expires->virt_exp = expires_to_cputime(expires);
  
  	tsk_expires->sched_exp = check_timers_list(++timers, firing,
@@ -8836,7 +8847,7 @@ Index: linux-semplice-3.17.2/kernel/time/posix-cpu-timers.c
  
  	/*
  	 * Check for the special case thread timers.
-@@ -872,7 +872,7 @@ static void check_thread_timers(struct t
+@@ -858,7 +858,7 @@ static void check_thread_timers(struct task_struct *tsk,
  			ACCESS_ONCE(sig->rlim[RLIMIT_RTTIME].rlim_max);
  
  		if (hard != RLIM_INFINITY &&
@@ -8845,7 +8856,7 @@ Index: linux-semplice-3.17.2/kernel/time/posix-cpu-timers.c
  			/*
  			 * At the hard limit, we just die.
  			 * No need to calculate anything else now.
-@@ -880,7 +880,7 @@ static void check_thread_timers(struct t
+@@ -866,7 +866,7 @@ static void check_thread_timers(struct task_struct *tsk,
  			__group_send_sig_info(SIGKILL, SEND_SIG_PRIV, tsk);
  			return;
  		}
@@ -8854,7 +8865,7 @@ Index: linux-semplice-3.17.2/kernel/time/posix-cpu-timers.c
  			/*
  			 * At the soft limit, send a SIGXCPU every second.
  			 */
-@@ -1117,7 +1117,7 @@ static inline int fastpath_timer_check(s
+@@ -1103,7 +1103,7 @@ static inline int fastpath_timer_check(struct task_struct *tsk)
  		struct task_cputime task_sample = {
  			.utime = utime,
  			.stime = stime,
@@ -8863,11 +8874,11 @@ Index: linux-semplice-3.17.2/kernel/time/posix-cpu-timers.c
  		};
  
  		if (task_cputime_expired(&task_sample, &tsk->cputime_expires))
-Index: linux-semplice-3.17.2/lib/Kconfig.debug
-===================================================================
---- linux-semplice-3.17.2.orig/lib/Kconfig.debug
-+++ linux-semplice-3.17.2/lib/Kconfig.debug
-@@ -1185,7 +1185,7 @@ config TORTURE_TEST
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 5f2ce61..a5cd608 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1213,7 +1213,7 @@ config TORTURE_TEST
  
  config RCU_TORTURE_TEST
  	tristate "torture tests for RCU"
@@ -8876,3 +8887,6 @@ Index: linux-semplice-3.17.2/lib/Kconfig.debug
  	select TORTURE_TEST
  	default n
  	help
+-- 
+2.1.1
+
