@@ -72,5 +72,6 @@ semplice/features/all/bfs/bfs-456-refine-resched_best_idle-call-logic.patch
 semplice/features/all/bfq/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r7-3.19.patch
 semplice/features/all/bfq/0002-block-introduce-the-BFQ-v7r7-I-O-sched-for-3.19.patch
 semplice/features/all/bfq/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r7-for-3.19.0.patch
+semplice/features/all/bfq/add_early_queue_merge_BFQ-v7r7.patch
 #semplice/features/all/toi/tuxonice-for-linux-head-3.16.0-2014-08-07.patch
 #semplice/features/all/uksm/uksm-0.1.2.3-for-v3.16.ge.1.patch
