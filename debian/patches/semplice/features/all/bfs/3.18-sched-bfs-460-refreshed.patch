@@ -66,11 +66,10 @@ cpu usage may be very different if you have very short lived tasks.
  create mode 100644 kernel/sched/bfs.c
  create mode 100644 kernel/sched/bfs_sched.h
 
-diff --git a/Documentation/scheduler/sched-BFS.txt b/Documentation/scheduler/sched-BFS.txt
-new file mode 100644
-index 0000000..c10d956
+Index: linux-semplice-3.19/Documentation/scheduler/sched-BFS.txt
+===================================================================
 --- /dev/null
-+++ b/Documentation/scheduler/sched-BFS.txt
++++ linux-semplice-3.19/Documentation/scheduler/sched-BFS.txt
 @@ -0,0 +1,347 @@
 +BFS - The Brain Fuck Scheduler by Con Kolivas.
 +
@@ -419,10 +418,10 @@ index 0000000..c10d956
 +
 +
 +Con Kolivas <kernel@kolivas.org> Tue, 5 Apr 2011
-diff --git a/Documentation/sysctl/kernel.txt b/Documentation/sysctl/kernel.txt
-index 75511ef..bd179f2 100644
---- a/Documentation/sysctl/kernel.txt
-+++ b/Documentation/sysctl/kernel.txt
+Index: linux-semplice-3.19/Documentation/sysctl/kernel.txt
+===================================================================
+--- linux-semplice-3.19.orig/Documentation/sysctl/kernel.txt
++++ linux-semplice-3.19/Documentation/sysctl/kernel.txt
 @@ -38,6 +38,7 @@ show up in /proc/sys/kernel:
  - hung_task_timeout_secs
  - hung_task_warnings
@@ -477,10 +476,10 @@ index 75511ef..bd179f2 100644
  rtsig-max & rtsig-nr:
  
  The file rtsig-max can be used to tune the maximum number
-diff --git a/arch/powerpc/platforms/cell/spufs/sched.c b/arch/powerpc/platforms/cell/spufs/sched.c
-index 998f632..5c80a0f 100644
---- a/arch/powerpc/platforms/cell/spufs/sched.c
-+++ b/arch/powerpc/platforms/cell/spufs/sched.c
+Index: linux-semplice-3.19/arch/powerpc/platforms/cell/spufs/sched.c
+===================================================================
+--- linux-semplice-3.19.orig/arch/powerpc/platforms/cell/spufs/sched.c
++++ linux-semplice-3.19/arch/powerpc/platforms/cell/spufs/sched.c
 @@ -64,11 +64,6 @@ static struct timer_list spusched_timer;
  static struct timer_list spuloadavg_timer;
  
@@ -493,10 +492,10 @@ index 998f632..5c80a0f 100644
   * Frequency of the spu scheduler tick.  By default we do one SPU scheduler
   * tick for every 10 CPU scheduler ticks.
   */
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 0dc9d01..36d37ba 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
+Index: linux-semplice-3.19/arch/x86/Kconfig
+===================================================================
+--- linux-semplice-3.19.orig/arch/x86/Kconfig
++++ linux-semplice-3.19/arch/x86/Kconfig
 @@ -840,10 +840,26 @@ config SCHED_SMT
  	depends on X86_HT
  	---help---
@@ -543,10 +542,10 @@ index 0dc9d01..36d37ba 100644
  	---help---
  	  Enabling this option offlines CPU0 (if CPU0 can be offlined) as
  	  soon as possible and boots up userspace with CPU0 offlined. User
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 46bed4f..e578877 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
+Index: linux-semplice-3.19/drivers/cpufreq/cpufreq.c
+===================================================================
+--- linux-semplice-3.19.orig/drivers/cpufreq/cpufreq.c
++++ linux-semplice-3.19/drivers/cpufreq/cpufreq.c
 @@ -25,6 +25,7 @@
  #include <linux/kernel_stat.h>
  #include <linux/module.h>
@@ -555,7 +554,7 @@ index 46bed4f..e578877 100644
  #include <linux/slab.h>
  #include <linux/suspend.h>
  #include <linux/tick.h>
-@@ -1986,6 +1987,12 @@ int __cpufreq_driver_target(struct cpufreq_policy *policy,
+@@ -1986,6 +1987,12 @@ int __cpufreq_driver_target(struct cpufr
  	}
  
  out:
@@ -568,10 +567,10 @@ index 46bed4f..e578877 100644
  	return retval;
  }
  EXPORT_SYMBOL_GPL(__cpufreq_driver_target);
-diff --git a/drivers/cpufreq/cpufreq_conservative.c b/drivers/cpufreq/cpufreq_conservative.c
-index 25a70d0..7a8282a 100644
---- a/drivers/cpufreq/cpufreq_conservative.c
-+++ b/drivers/cpufreq/cpufreq_conservative.c
+Index: linux-semplice-3.19/drivers/cpufreq/cpufreq_conservative.c
+===================================================================
+--- linux-semplice-3.19.orig/drivers/cpufreq/cpufreq_conservative.c
++++ linux-semplice-3.19/drivers/cpufreq/cpufreq_conservative.c
 @@ -15,8 +15,8 @@
  #include "cpufreq_governor.h"
  
@@ -583,10 +582,10 @@ index 25a70d0..7a8282a 100644
  #define DEF_FREQUENCY_STEP			(5)
  #define DEF_SAMPLING_DOWN_FACTOR		(1)
  #define MAX_SAMPLING_DOWN_FACTOR		(10)
-diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
-index ad3f38f..9d6f4b2 100644
---- a/drivers/cpufreq/cpufreq_ondemand.c
-+++ b/drivers/cpufreq/cpufreq_ondemand.c
+Index: linux-semplice-3.19/drivers/cpufreq/cpufreq_ondemand.c
+===================================================================
+--- linux-semplice-3.19.orig/drivers/cpufreq/cpufreq_ondemand.c
++++ linux-semplice-3.19/drivers/cpufreq/cpufreq_ondemand.c
 @@ -19,7 +19,7 @@
  #include "cpufreq_governor.h"
  
@@ -596,7 +595,7 @@ index ad3f38f..9d6f4b2 100644
  #define DEF_SAMPLING_DOWN_FACTOR		(1)
  #define MAX_SAMPLING_DOWN_FACTOR		(100000)
  #define MICRO_FREQUENCY_UP_THRESHOLD		(95)
-@@ -148,7 +148,7 @@ static void dbs_freq_increase(struct cpufreq_policy *policy, unsigned int freq)
+@@ -148,7 +148,7 @@ static void dbs_freq_increase(struct cpu
  }
  
  /*
@@ -605,11 +604,11 @@ index ad3f38f..9d6f4b2 100644
   * (default), then we try to increase frequency. Else, we adjust the frequency
   * proportional to load.
   */
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 742eefb..604854b 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -492,8 +492,13 @@ static void byt_set_pstate(struct cpudata *cpudata, int pstate)
+Index: linux-semplice-3.19/drivers/cpufreq/intel_pstate.c
+===================================================================
+--- linux-semplice-3.19.orig/drivers/cpufreq/intel_pstate.c
++++ linux-semplice-3.19/drivers/cpufreq/intel_pstate.c
+@@ -492,8 +492,13 @@ static void byt_set_pstate(struct cpudat
  	vid_fp = clamp_t(int32_t, vid_fp, cpudata->vid.min, cpudata->vid.max);
  	vid = ceiling_fp(vid_fp);
  
@@ -625,11 +624,11 @@ index 742eefb..604854b 100644
  
  	val |= vid;
  
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 3f3d7ae..b336af0 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -310,7 +310,7 @@ static int proc_pid_schedstat(struct seq_file *m, struct pid_namespace *ns,
+Index: linux-semplice-3.19/fs/proc/base.c
+===================================================================
+--- linux-semplice-3.19.orig/fs/proc/base.c
++++ linux-semplice-3.19/fs/proc/base.c
+@@ -310,7 +310,7 @@ static int proc_pid_schedstat(struct seq
  			      struct pid *pid, struct task_struct *task)
  {
  	return seq_printf(m, "%llu %llu %lu\n",
@@ -638,11 +637,11 @@ index 3f3d7ae..b336af0 100644
  			(unsigned long long)task->sched_info.run_delay,
  			task->sched_info.pcount);
  }
-diff --git a/include/linux/init_task.h b/include/linux/init_task.h
-index 3037fc0..8b10703 100644
---- a/include/linux/init_task.h
-+++ b/include/linux/init_task.h
-@@ -156,8 +156,6 @@ extern struct task_group root_task_group;
+Index: linux-semplice-3.19/include/linux/init_task.h
+===================================================================
+--- linux-semplice-3.19.orig/include/linux/init_task.h
++++ linux-semplice-3.19/include/linux/init_task.h
+@@ -156,8 +156,6 @@ extern struct task_group root_task_group
  # define INIT_VTIME(tsk)
  #endif
  
@@ -651,7 +650,7 @@ index 3037fc0..8b10703 100644
  #ifdef CONFIG_RT_MUTEXES
  # define INIT_RT_MUTEXES(tsk)						\
  	.pi_waiters = RB_ROOT,						\
-@@ -179,6 +177,68 @@ extern struct task_group root_task_group;
+@@ -179,6 +177,68 @@ extern struct task_group root_task_group
   *  INIT_TASK is used to set up the first task table, touch at
   * your own risk!. Base=0, limit=0x1fffff (=2MB)
   */
@@ -720,7 +719,7 @@ index 3037fc0..8b10703 100644
  #define INIT_TASK(tsk)	\
  {									\
  	.state		= 0,						\
-@@ -248,7 +308,7 @@ extern struct task_group root_task_group;
+@@ -248,7 +308,7 @@ extern struct task_group root_task_group
  	INIT_VTIME(tsk)							\
  	INIT_NUMA_BALANCING(tsk)					\
  }
@@ -729,10 +728,10 @@ index 3037fc0..8b10703 100644
  
  #define INIT_CPU_TIMERS(cpu_timers)					\
  {									\
-diff --git a/include/linux/ioprio.h b/include/linux/ioprio.h
-index beb9ce1..ce2fc3c 100644
---- a/include/linux/ioprio.h
-+++ b/include/linux/ioprio.h
+Index: linux-semplice-3.19/include/linux/ioprio.h
+===================================================================
+--- linux-semplice-3.19.orig/include/linux/ioprio.h
++++ linux-semplice-3.19/include/linux/ioprio.h
 @@ -52,6 +52,8 @@ enum {
   */
  static inline int task_nice_ioprio(struct task_struct *task)
@@ -742,10 +741,10 @@ index beb9ce1..ce2fc3c 100644
  	return (task_nice(task) + 20) / 5;
  }
  
-diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
-index c367cbd..55feba7 100644
---- a/include/linux/jiffies.h
-+++ b/include/linux/jiffies.h
+Index: linux-semplice-3.19/include/linux/jiffies.h
+===================================================================
+--- linux-semplice-3.19.orig/include/linux/jiffies.h
++++ linux-semplice-3.19/include/linux/jiffies.h
 @@ -163,7 +163,7 @@ static inline u64 get_jiffies_64(void)
   * Have the 32 bit jiffies value wrap 5 minutes after boot
   * so jiffies wrap bugs show up earlier.
@@ -755,11 +754,11 @@ index c367cbd..55feba7 100644
  
  /*
   * Change timeval to jiffies, trying to avoid the
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 8db31ef..b0e624de 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -329,8 +329,6 @@ extern asmlinkage void schedule_tail(struct task_struct *prev);
+Index: linux-semplice-3.19/include/linux/sched.h
+===================================================================
+--- linux-semplice-3.19.orig/include/linux/sched.h
++++ linux-semplice-3.19/include/linux/sched.h
+@@ -329,8 +329,6 @@ extern asmlinkage void schedule_tail(str
  extern void init_idle(struct task_struct *idle, int cpu);
  extern void init_idle_bootup_task(struct task_struct *idle);
  
@@ -895,7 +894,7 @@ index 8db31ef..b0e624de 100644
  extern void sched_exec(void);
  #else
  #define sched_exec()   {}
-@@ -2991,7 +3068,7 @@ static inline unsigned int task_cpu(const struct task_struct *p)
+@@ -2991,7 +3068,7 @@ static inline unsigned int task_cpu(cons
  	return 0;
  }
  
@@ -904,10 +903,10 @@ index 8db31ef..b0e624de 100644
  {
  }
  
-diff --git a/include/linux/sched/prio.h b/include/linux/sched/prio.h
-index d9cf5a5..7d5d0b8 100644
---- a/include/linux/sched/prio.h
-+++ b/include/linux/sched/prio.h
+Index: linux-semplice-3.19/include/linux/sched/prio.h
+===================================================================
+--- linux-semplice-3.19.orig/include/linux/sched/prio.h
++++ linux-semplice-3.19/include/linux/sched/prio.h
 @@ -19,8 +19,20 @@
   */
  
@@ -929,10 +928,10 @@ index d9cf5a5..7d5d0b8 100644
  #define MAX_PRIO		(MAX_RT_PRIO + NICE_WIDTH)
  #define DEFAULT_PRIO		(MAX_RT_PRIO + NICE_WIDTH / 2)
  
-diff --git a/include/uapi/linux/sched.h b/include/uapi/linux/sched.h
-index cc89dde..f63e1cd 100644
---- a/include/uapi/linux/sched.h
-+++ b/include/uapi/linux/sched.h
+Index: linux-semplice-3.19/include/uapi/linux/sched.h
+===================================================================
+--- linux-semplice-3.19.orig/include/uapi/linux/sched.h
++++ linux-semplice-3.19/include/uapi/linux/sched.h
 @@ -37,9 +37,16 @@
  #define SCHED_FIFO		1
  #define SCHED_RR		2
@@ -951,10 +950,10 @@ index cc89dde..f63e1cd 100644
  
  /* Can be ORed in to make sure the process is reverted back to SCHED_NORMAL on fork */
  #define SCHED_RESET_ON_FORK     0x40000000
-diff --git a/init/Kconfig b/init/Kconfig
-index 9afb971..e5877c2 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
+Index: linux-semplice-3.19/init/Kconfig
+===================================================================
+--- linux-semplice-3.19.orig/init/Kconfig
++++ linux-semplice-3.19/init/Kconfig
 @@ -28,6 +28,20 @@ config BUILDTIME_EXTABLE_SORT
  
  menu "General setup"
@@ -1027,7 +1026,7 @@ index 9afb971..e5877c2 100644
  	help
  	  Provides a simple Resource Controller for monitoring the
  	  total CPU consumed by the tasks in a cgroup.
-@@ -1059,6 +1076,7 @@ config CGROUP_PERF
+@@ -1067,6 +1084,7 @@ config CGROUP_PERF
  
  menuconfig CGROUP_SCHED
  	bool "Group CPU scheduler"
@@ -1035,7 +1034,7 @@ index 9afb971..e5877c2 100644
  	default n
  	help
  	  This feature lets CPU scheduler recognize task groups and control CPU
-@@ -1199,6 +1217,7 @@ endif # NAMESPACES
+@@ -1207,6 +1225,7 @@ endif # NAMESPACES
  
  config SCHED_AUTOGROUP
  	bool "Automatic process group scheduling"
@@ -1043,7 +1042,7 @@ index 9afb971..e5877c2 100644
  	select CGROUPS
  	select CGROUP_SCHED
  	select FAIR_GROUP_SCHED
-@@ -1664,38 +1683,8 @@ config COMPAT_BRK
+@@ -1672,38 +1691,8 @@ config COMPAT_BRK
  
  	  On non-ancient distros (post-2000 ones) N is usually a safe choice.
  
@@ -1083,11 +1082,11 @@ index 9afb971..e5877c2 100644
  
  config SLUB_CPU_PARTIAL
  	default y
-diff --git a/init/main.c b/init/main.c
-index 61b99376..a003010 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -812,7 +812,6 @@ int __init_or_module do_one_initcall(initcall_t fn)
+Index: linux-semplice-3.19/init/main.c
+===================================================================
+--- linux-semplice-3.19.orig/init/main.c
++++ linux-semplice-3.19/init/main.c
+@@ -812,7 +812,6 @@ int __init_or_module do_one_initcall(ini
  	return ret;
  }
  
@@ -1095,7 +1094,7 @@ index 61b99376..a003010 100644
  extern initcall_t __initcall_start[];
  extern initcall_t __initcall0_start[];
  extern initcall_t __initcall1_start[];
-@@ -948,6 +947,8 @@ static int __ref kernel_init(void *unused)
+@@ -948,6 +947,8 @@ static int __ref kernel_init(void *unuse
  
  	flush_delayed_fput();
  
@@ -1104,11 +1103,11 @@ index 61b99376..a003010 100644
  	if (ramdisk_execute_command) {
  		ret = run_init_process(ramdisk_execute_command);
  		if (!ret)
-diff --git a/kernel/delayacct.c b/kernel/delayacct.c
-index ef90b04..d12807d 100644
---- a/kernel/delayacct.c
-+++ b/kernel/delayacct.c
-@@ -104,7 +104,7 @@ int __delayacct_add_tsk(struct taskstats *d, struct task_struct *tsk)
+Index: linux-semplice-3.19/kernel/delayacct.c
+===================================================================
+--- linux-semplice-3.19.orig/kernel/delayacct.c
++++ linux-semplice-3.19/kernel/delayacct.c
+@@ -104,7 +104,7 @@ int __delayacct_add_tsk(struct taskstats
  	 */
  	t1 = tsk->sched_info.pcount;
  	t2 = tsk->sched_info.run_delay;
@@ -1117,11 +1116,11 @@ index ef90b04..d12807d 100644
  
  	d->cpu_count += t1;
  
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 6806c55..dcd0141 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -135,7 +135,7 @@ static void __exit_signal(struct task_struct *tsk)
+Index: linux-semplice-3.19/kernel/exit.c
+===================================================================
+--- linux-semplice-3.19.orig/kernel/exit.c
++++ linux-semplice-3.19/kernel/exit.c
+@@ -135,7 +135,7 @@ static void __exit_signal(struct task_st
  	sig->inblock += task_io_get_inblock(tsk);
  	sig->oublock += task_io_get_oublock(tsk);
  	task_io_accounting_add(&sig->ioac, &tsk->ioac);
@@ -1130,11 +1129,11 @@ index 6806c55..dcd0141 100644
  	sig->nr_threads--;
  	__unhash_process(tsk, group_dead);
  	write_sequnlock(&sig->stats_lock);
-diff --git a/kernel/sched/Makefile b/kernel/sched/Makefile
-index ab32b7b..5bb8ab8 100644
---- a/kernel/sched/Makefile
-+++ b/kernel/sched/Makefile
-@@ -11,11 +11,16 @@ ifneq ($(CONFIG_SCHED_OMIT_FRAME_POINTER),y)
+Index: linux-semplice-3.19/kernel/sched/Makefile
+===================================================================
+--- linux-semplice-3.19.orig/kernel/sched/Makefile
++++ linux-semplice-3.19/kernel/sched/Makefile
+@@ -11,11 +11,16 @@ ifneq ($(CONFIG_SCHED_OMIT_FRAME_POINTER
  CFLAGS_core.o := $(PROFILING) -fno-omit-frame-pointer
  endif
  
@@ -1154,11 +1153,10 @@ index ab32b7b..5bb8ab8 100644
 +obj-y += wait.o completion.o idle.o
 +obj-$(CONFIG_SMP) += cpupri.o
 +obj-$(CONFIG_SCHEDSTATS) += stats.o
-diff --git a/kernel/sched/bfs.c b/kernel/sched/bfs.c
-new file mode 100644
-index 0000000..210772a
+Index: linux-semplice-3.19/kernel/sched/bfs.c
+===================================================================
 --- /dev/null
-+++ b/kernel/sched/bfs.c
++++ linux-semplice-3.19/kernel/sched/bfs.c
 @@ -0,0 +1,7369 @@
 +/*
 + *  kernel/sched/bfs.c, was kernel/sched.c
@@ -8529,11 +8527,10 @@ index 0000000..210772a
 +	return smt_gain;
 +}
 +#endif
-diff --git a/kernel/sched/bfs_sched.h b/kernel/sched/bfs_sched.h
-new file mode 100644
-index 0000000..198108e
+Index: linux-semplice-3.19/kernel/sched/bfs_sched.h
+===================================================================
 --- /dev/null
-+++ b/kernel/sched/bfs_sched.h
++++ linux-semplice-3.19/kernel/sched/bfs_sched.h
 @@ -0,0 +1,161 @@
 +#include <linux/sched.h>
 +#include <linux/cpuidle.h>
@@ -8696,10 +8693,10 @@ index 0000000..198108e
 +}
 +#endif
 +#endif /* BFS_SCHED_H */
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index c47fce7..a9ef9f1 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
+Index: linux-semplice-3.19/kernel/sched/idle.c
+===================================================================
+--- linux-semplice-3.19.orig/kernel/sched/idle.c
++++ linux-semplice-3.19/kernel/sched/idle.c
 @@ -12,7 +12,11 @@
  
  #include <trace/events/power.h>
@@ -8712,10 +8709,10 @@ index c47fce7..a9ef9f1 100644
  
  static int __read_mostly cpu_idle_force_poll;
  
-diff --git a/kernel/sched/stats.c b/kernel/sched/stats.c
-index a476bea..73d8cdd 100644
---- a/kernel/sched/stats.c
-+++ b/kernel/sched/stats.c
+Index: linux-semplice-3.19/kernel/sched/stats.c
+===================================================================
+--- linux-semplice-3.19.orig/kernel/sched/stats.c
++++ linux-semplice-3.19/kernel/sched/stats.c
 @@ -4,7 +4,11 @@
  #include <linux/seq_file.h>
  #include <linux/proc_fs.h>
@@ -8728,10 +8725,10 @@ index a476bea..73d8cdd 100644
  
  /*
   * bump this up when changing the output format or the meaning of an existing
-diff --git a/kernel/stop_machine.c b/kernel/stop_machine.c
-index 695f0c6..263b0e1 100644
---- a/kernel/stop_machine.c
-+++ b/kernel/stop_machine.c
+Index: linux-semplice-3.19/kernel/stop_machine.c
+===================================================================
+--- linux-semplice-3.19.orig/kernel/stop_machine.c
++++ linux-semplice-3.19/kernel/stop_machine.c
 @@ -41,7 +41,8 @@ struct cpu_stopper {
  };
  
@@ -8742,11 +8739,11 @@ index 695f0c6..263b0e1 100644
  static bool stop_machine_initialized = false;
  
  /*
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 137c7f6..f9cba15 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -125,7 +125,12 @@ static int __maybe_unused one = 1;
+Index: linux-semplice-3.19/kernel/sysctl.c
+===================================================================
+--- linux-semplice-3.19.orig/kernel/sysctl.c
++++ linux-semplice-3.19/kernel/sysctl.c
+@@ -128,7 +128,12 @@ static int __maybe_unused one = 1;
  static int __maybe_unused two = 2;
  static int __maybe_unused four = 4;
  static unsigned long one_ul = 1;
@@ -8760,7 +8757,7 @@ index 137c7f6..f9cba15 100644
  #ifdef CONFIG_PRINTK
  static int ten_thousand = 10000;
  #endif
-@@ -260,7 +265,7 @@ static struct ctl_table sysctl_base_table[] = {
+@@ -263,7 +268,7 @@ static struct ctl_table sysctl_base_tabl
  	{ }
  };
  
@@ -8769,7 +8766,7 @@ index 137c7f6..f9cba15 100644
  static int min_sched_granularity_ns = 100000;		/* 100 usecs */
  static int max_sched_granularity_ns = NSEC_PER_SEC;	/* 1 second */
  static int min_wakeup_granularity_ns;			/* 0 usecs */
-@@ -277,6 +282,7 @@ static int max_extfrag_threshold = 1000;
+@@ -280,6 +285,7 @@ static int max_extfrag_threshold = 1000;
  #endif
  
  static struct ctl_table kern_table[] = {
@@ -8777,7 +8774,7 @@ index 137c7f6..f9cba15 100644
  	{
  		.procname	= "sched_child_runs_first",
  		.data		= &sysctl_sched_child_runs_first,
-@@ -443,6 +449,7 @@ static struct ctl_table kern_table[] = {
+@@ -446,6 +452,7 @@ static struct ctl_table kern_table[] = {
  		.extra1		= &one,
  	},
  #endif
@@ -8785,7 +8782,7 @@ index 137c7f6..f9cba15 100644
  #ifdef CONFIG_PROVE_LOCKING
  	{
  		.procname	= "prove_locking",
-@@ -960,6 +967,26 @@ static struct ctl_table kern_table[] = {
+@@ -972,6 +979,26 @@ static struct ctl_table kern_table[] = {
  		.proc_handler	= proc_dointvec,
  	},
  #endif
@@ -8812,10 +8809,10 @@ index 137c7f6..f9cba15 100644
  #if defined(CONFIG_S390) && defined(CONFIG_SMP)
  	{
  		.procname	= "spin_retry",
-diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
-index d626dc9..205a1a9 100644
---- a/kernel/time/Kconfig
-+++ b/kernel/time/Kconfig
+Index: linux-semplice-3.19/kernel/time/Kconfig
+===================================================================
+--- linux-semplice-3.19.orig/kernel/time/Kconfig
++++ linux-semplice-3.19/kernel/time/Kconfig
 @@ -95,7 +95,7 @@ config NO_HZ_IDLE
  config NO_HZ_FULL
  	bool "Full dynticks system (tickless)"
@@ -8825,11 +8822,11 @@ index d626dc9..205a1a9 100644
  	# We need at least one periodic CPU for timekeeping
  	depends on SMP
  	# RCU_USER_QS dependency
-diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
-index a16b678..b7fa15e 100644
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -425,7 +425,7 @@ static void cleanup_timers(struct list_head *head)
+Index: linux-semplice-3.19/kernel/time/posix-cpu-timers.c
+===================================================================
+--- linux-semplice-3.19.orig/kernel/time/posix-cpu-timers.c
++++ linux-semplice-3.19/kernel/time/posix-cpu-timers.c
+@@ -425,7 +425,7 @@ static void cleanup_timers(struct list_h
   */
  void posix_cpu_timers_exit(struct task_struct *tsk)
  {
@@ -8838,7 +8835,7 @@ index a16b678..b7fa15e 100644
  						sizeof(unsigned long long));
  	cleanup_timers(tsk->cpu_timers);
  
-@@ -847,7 +847,7 @@ static void check_thread_timers(struct task_struct *tsk,
+@@ -847,7 +847,7 @@ static void check_thread_timers(struct t
  	tsk_expires->virt_exp = expires_to_cputime(expires);
  
  	tsk_expires->sched_exp = check_timers_list(++timers, firing,
@@ -8847,7 +8844,7 @@ index a16b678..b7fa15e 100644
  
  	/*
  	 * Check for the special case thread timers.
-@@ -858,7 +858,7 @@ static void check_thread_timers(struct task_struct *tsk,
+@@ -858,7 +858,7 @@ static void check_thread_timers(struct t
  			ACCESS_ONCE(sig->rlim[RLIMIT_RTTIME].rlim_max);
  
  		if (hard != RLIM_INFINITY &&
@@ -8856,7 +8853,7 @@ index a16b678..b7fa15e 100644
  			/*
  			 * At the hard limit, we just die.
  			 * No need to calculate anything else now.
-@@ -866,7 +866,7 @@ static void check_thread_timers(struct task_struct *tsk,
+@@ -866,7 +866,7 @@ static void check_thread_timers(struct t
  			__group_send_sig_info(SIGKILL, SEND_SIG_PRIV, tsk);
  			return;
  		}
@@ -8865,7 +8862,7 @@ index a16b678..b7fa15e 100644
  			/*
  			 * At the soft limit, send a SIGXCPU every second.
  			 */
-@@ -1103,7 +1103,7 @@ static inline int fastpath_timer_check(struct task_struct *tsk)
+@@ -1103,7 +1103,7 @@ static inline int fastpath_timer_check(s
  		struct task_cputime task_sample = {
  			.utime = utime,
  			.stime = stime,
@@ -8874,10 +8871,10 @@ index a16b678..b7fa15e 100644
  		};
  
  		if (task_cputime_expired(&task_sample, &tsk->cputime_expires))
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 5f2ce61..a5cd608 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
+Index: linux-semplice-3.19/lib/Kconfig.debug
+===================================================================
+--- linux-semplice-3.19.orig/lib/Kconfig.debug
++++ linux-semplice-3.19/lib/Kconfig.debug
 @@ -1213,7 +1213,7 @@ config TORTURE_TEST
  
  config RCU_TORTURE_TEST
@@ -8887,6 +8884,3 @@ index 5f2ce61..a5cd608 100644
  	select TORTURE_TEST
  	default n
  	help
--- 
-2.1.1
-

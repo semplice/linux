@@ -43,8 +43,6 @@ debian/snd-pcsp-disable-autoload.patch
 bugfix/x86/viafb-autoload-on-olpc-xo1.5-only.patch
 
 # Arch bug fixes
-bugfix/arm/omap-musb-choice.patch
-bugfix/x86/x86-reject-x32-executables-if-x32-abi-not-supported.patch
 
 # Arch features
 features/x86/x86-memtest-WARN-if-bad-RAM-found.patch
@@ -57,34 +55,35 @@ bugfix/all/kbuild-use-nostdinc-in-compile-tests.patch
 bugfix/all/disable-some-marvell-phys.patch
 debian/i2o-disable-i2o_ext_adaptec-on-64bit.patch
 bugfix/all/aic94xx-remove-broken-fallback-for-missing-ctrl-a.patch
-bugfix/all/builddeb-put-the-dbg-files-into-the-correct-director.patch
+bugfix/all/rtsx_usb_ms-use-msleep_interruptible-in-polling-loop.patch
+bugfix/all/net-mv643xx-disable-tso-by-default.patch
 
 # Miscellaneous features
-features/all/efi-autoload-efivars.patch
+features/all/efi-autoload-efi-pstore.patch
+features/all/efi-expose-underlying-uefi-firmware-platform-size-to.patch
 
 # Semplice patches
 semplice/features/all/aufs3/vfs-ino.patch
 semplice/features/all/aufs3/tmpfs-idr.patch
-debian/patches/semplice/features/all/bfs/3.18-sched-bfs-460-refreshed.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting_clean_up_wake_entry.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-cpu_rq_macro.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-fix_schedule.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-resched_curr.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-sched_getaffinity.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-sched_setscheduler.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-porting-try_to_wake_up.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-priodl.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-refactor_needs_other_cpu.patch
-debian/patches/semplice/features/all/bfs/bfs-460-3.19-refactor_online_cpus.patch
-debian/patches/semplice/features/all/bfs/bfs-460-align_grq_cacheline.patch
-debian/patches/semplice/features/all/bfs/bfs-460-cpumask_based_cpu_selection.patch
-debian/patches/semplice/features/all/bfs/bfs-460-refactor-next_task_block.patch
-debian/patches/semplice/features/all/bfs/bfs-460-refactor_rq_dither_calculation.patch
-debian/patches/semplice/features/all/bfs/bfs-460-refactor_set_rq_task.patch
+semplice/features/all/bfs/3.18-sched-bfs-460-refreshed.patch
+semplice/features/all/bfs/bfs-460-3.19-porting.patch
+semplice/features/all/bfs/bfs-460-3.19-porting-resched_curr.patch
+semplice/features/all/bfs/bfs-460-3.19-porting-sched_getaffinity.patch
+semplice/features/all/bfs/bfs-460-3.19-porting-sched_setscheduler.patch
+semplice/features/all/bfs/bfs-460-3.19-porting-fix_schedule.patch
+semplice/features/all/bfs/bfs-460-3.19-porting_clean_up_wake_entry.patch
+semplice/features/all/bfs/bfs-460-3.19-refactor_online_cpus.patch
+semplice/features/all/bfs/bfs-460-3.19-refactor_needs_other_cpu.patch
+semplice/features/all/bfs/bfs-460-3.19-priodl.patch
+semplice/features/all/bfs/bfs-460-cpumask_based_cpu_selection.patch
+semplice/features/all/bfs/bfs-460-3.19-porting-cpu_rq_macro.patch
+semplice/features/all/bfs/bfs-460-refactor-next_task_block.patch
+semplice/features/all/bfs/bfs-460-refactor_rq_dither_calculation.patch
+semplice/features/all/bfs/bfs-460-refactor_set_rq_task.patch
+semplice/features/all/bfs/bfs-460-align_grq_cacheline.patch
+semplice/features/all/bfs/bfs-460-3.19-porting-try_to_wake_up.patch
 semplice/features/all/bfq/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r7-3.19.patch
 semplice/features/all/bfq/0002-block-introduce-the-BFQ-v7r7-I-O-sched-for-3.19.patch
 semplice/features/all/bfq/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r7-for-3.19.0.patch
-semplice/features/all/bfq/add_early_queue_merge_BFQ-v7r7.patch
 #semplice/features/all/toi/tuxonice-for-linux-head-3.16.0-2014-08-07.patch
 #semplice/features/all/uksm/uksm-0.1.2.3-for-v3.16.ge.1.patch

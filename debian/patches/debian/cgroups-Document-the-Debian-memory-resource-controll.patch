@@ -3,11 +3,11 @@ Subject: cgroups: Document the Debian memory resource controller config change
 Forwarded: not-needed
 
 ---
-Index: linux-semplice-3.17.2/Documentation/cgroups/memory.txt
+Index: linux-semplice-3.19/Documentation/cgroups/memory.txt
 ===================================================================
---- linux-semplice-3.17.2.orig/Documentation/cgroups/memory.txt
-+++ linux-semplice-3.17.2/Documentation/cgroups/memory.txt
-@@ -47,6 +47,10 @@ Features:
+--- linux-semplice-3.19.orig/Documentation/cgroups/memory.txt
++++ linux-semplice-3.19/Documentation/cgroups/memory.txt
+@@ -52,6 +52,10 @@ Features:
   Kernel memory support is a work in progress, and the current version provides
   basically functionality. (See Section 2.7)
  

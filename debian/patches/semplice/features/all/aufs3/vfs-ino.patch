@@ -1,8 +1,8 @@
-Index: linux-semplice-3.17.2/fs/inode.c
+Index: linux-semplice-3.19/fs/inode.c
 ===================================================================
---- linux-semplice-3.17.2.orig/fs/inode.c
-+++ linux-semplice-3.17.2/fs/inode.c
-@@ -841,6 +841,8 @@ unsigned int get_next_ino(void)
+--- linux-semplice-3.19.orig/fs/inode.c
++++ linux-semplice-3.19/fs/inode.c
+@@ -843,6 +843,8 @@ unsigned int get_next_ino(void)
  	unsigned int *p = &get_cpu_var(last_ino);
  	unsigned int res = *p;
  
@@ -11,7 +11,7 @@ Index: linux-semplice-3.17.2/fs/inode.c
  #ifdef CONFIG_SMP
  	if (unlikely((res & (LAST_INO_BATCH-1)) == 0)) {
  		static atomic_t shared_last_ino;
-@@ -850,7 +852,9 @@ unsigned int get_next_ino(void)
+@@ -852,7 +854,9 @@ unsigned int get_next_ino(void)
  	}
  #endif
  

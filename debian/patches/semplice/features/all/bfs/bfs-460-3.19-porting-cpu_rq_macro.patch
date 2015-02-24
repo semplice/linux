@@ -8,10 +8,10 @@ Subject: [PATCH] bfs: [Sync] Make cpu_rq(cpu) a macro.
  kernel/sched/bfs_sched.h | 3 +++
  2 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/bfs.c b/kernel/sched/bfs.c
-index 74aa18f..7aa6663 100644
---- a/kernel/sched/bfs.c
-+++ b/kernel/sched/bfs.c
+Index: linux-semplice-3.19/kernel/sched/bfs.c
+===================================================================
+--- linux-semplice-3.19.orig/kernel/sched/bfs.c
++++ linux-semplice-3.19/kernel/sched/bfs.c
 @@ -230,12 +230,6 @@ static DEFINE_MUTEX(sched_hotcpu_mutex);
  
  DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
@@ -25,10 +25,10 @@ index 74aa18f..7aa6663 100644
  /*
   * sched_domains_mutex serialises calls to init_sched_domains,
   * detach_destroy_domains and partition_sched_domains.
-diff --git a/kernel/sched/bfs_sched.h b/kernel/sched/bfs_sched.h
-index f39509c..2a690c1 100644
---- a/kernel/sched/bfs_sched.h
-+++ b/kernel/sched/bfs_sched.h
+Index: linux-semplice-3.19/kernel/sched/bfs_sched.h
+===================================================================
+--- linux-semplice-3.19.orig/kernel/sched/bfs_sched.h
++++ linux-semplice-3.19/kernel/sched/bfs_sched.h
 @@ -93,8 +93,11 @@ static struct rq *uprq;
  #define cpu_curr(cpu)	((uprq)->curr)
  #else /* CONFIG_SMP */
@@ -41,6 +41,3 @@ index f39509c..2a690c1 100644
  #endif /* CONFIG_SMP */
  
  static inline u64 rq_clock(struct rq *rq)
--- 
-2.1.1
-

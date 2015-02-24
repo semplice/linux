@@ -13,10 +13,10 @@ issues are found, we have a fail-safe.
 Signed-off-by: Serge Hallyn <serge.hallyn@ubuntu.com>
 [bwh: Remove unneeded binary sysctl bits]
 ---
-Index: linux-semplice-3.17.2/kernel/fork.c
+Index: linux-semplice-3.19/kernel/fork.c
 ===================================================================
---- linux-semplice-3.17.2.orig/kernel/fork.c
-+++ linux-semplice-3.17.2/kernel/fork.c
+--- linux-semplice-3.19.orig/kernel/fork.c
++++ linux-semplice-3.19/kernel/fork.c
 @@ -86,6 +86,11 @@
  
  #define CREATE_TRACE_POINTS
@@ -29,7 +29,7 @@ Index: linux-semplice-3.17.2/kernel/fork.c
  
  /*
   * Protected counters by write_lock_irq(&tasklist_lock)
-@@ -1189,6 +1194,10 @@ static struct task_struct *copy_process(
+@@ -1198,6 +1203,10 @@ static struct task_struct *copy_process(
  	if ((clone_flags & (CLONE_NEWUSER|CLONE_FS)) == (CLONE_NEWUSER|CLONE_FS))
  		return ERR_PTR(-EINVAL);
  
@@ -40,7 +40,7 @@ Index: linux-semplice-3.17.2/kernel/fork.c
  	/*
  	 * Thread groups must share signals as well, and detached threads
  	 * can only be started up within the thread group.
-@@ -1884,6 +1893,12 @@ SYSCALL_DEFINE1(unshare, unsigned long,
+@@ -1893,6 +1902,12 @@ SYSCALL_DEFINE1(unshare, unsigned long,
  	if (unshare_flags & CLONE_NEWNS)
  		unshare_flags |= CLONE_FS;
  
@@ -53,10 +53,10 @@ Index: linux-semplice-3.17.2/kernel/fork.c
  	err = check_unshare_flags(unshare_flags);
  	if (err)
  		goto bad_unshare_out;
-Index: linux-semplice-3.17.2/kernel/sysctl.c
+Index: linux-semplice-3.19/kernel/sysctl.c
 ===================================================================
---- linux-semplice-3.17.2.orig/kernel/sysctl.c
-+++ linux-semplice-3.17.2/kernel/sysctl.c
+--- linux-semplice-3.19.orig/kernel/sysctl.c
++++ linux-semplice-3.19/kernel/sysctl.c
 @@ -103,6 +103,9 @@ extern int core_uses_pid;
  extern char core_pattern[];
  extern unsigned int core_pipe_limit;
@@ -67,7 +67,7 @@ Index: linux-semplice-3.17.2/kernel/sysctl.c
  extern int pid_max;
  extern int pid_max_min, pid_max_max;
  extern int percpu_pagelist_fraction;
-@@ -489,6 +492,15 @@ static struct ctl_table kern_table[] = {
+@@ -490,6 +493,15 @@ static struct ctl_table kern_table[] = {
  		.mode		= 0644,
  		.proc_handler	= proc_dointvec,
  	},
@@ -83,10 +83,10 @@ Index: linux-semplice-3.17.2/kernel/sysctl.c
  #endif
  #ifdef CONFIG_PROC_SYSCTL
  	{
-Index: linux-semplice-3.17.2/kernel/user_namespace.c
+Index: linux-semplice-3.19/kernel/user_namespace.c
 ===================================================================
---- linux-semplice-3.17.2.orig/kernel/user_namespace.c
-+++ linux-semplice-3.17.2/kernel/user_namespace.c
+--- linux-semplice-3.19.orig/kernel/user_namespace.c
++++ linux-semplice-3.19/kernel/user_namespace.c
 @@ -23,6 +23,9 @@
  #include <linux/projid.h>
  #include <linux/fs_struct.h>
@@ -95,5 +95,5 @@ Index: linux-semplice-3.17.2/kernel/user_namespace.c
 +int unprivileged_userns_clone;
 +
  static struct kmem_cache *user_ns_cachep __read_mostly;
+ static DEFINE_MUTEX(userns_state_mutex);
  
- static bool new_idmap_permitted(const struct file *file,

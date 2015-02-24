@@ -13,10 +13,10 @@ The -nostdinc option disables this, though it isn't explicitly
 documented.  This option is already used when actually building
 the kernel.
 
-Index: linux-semplice-3.17.2/scripts/Kbuild.include
+Index: linux-semplice-3.19/scripts/Kbuild.include
 ===================================================================
---- linux-semplice-3.17.2.orig/scripts/Kbuild.include
-+++ linux-semplice-3.17.2/scripts/Kbuild.include
+--- linux-semplice-3.19.orig/scripts/Kbuild.include
++++ linux-semplice-3.19/scripts/Kbuild.include
 @@ -111,12 +111,12 @@ as-instr = $(call try-run,\
  # Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
  
@@ -62,11 +62,11 @@ Index: linux-semplice-3.17.2/scripts/Kbuild.include
  
  # ar-option
  # Usage: KBUILD_ARFLAGS := $(call ar-option,D)
-Index: linux-semplice-3.17.2/Makefile
+Index: linux-semplice-3.19/Makefile
 ===================================================================
---- linux-semplice-3.17.2.orig/Makefile
-+++ linux-semplice-3.17.2/Makefile
-@@ -627,6 +627,8 @@ endif
+--- linux-semplice-3.19.orig/Makefile
++++ linux-semplice-3.19/Makefile
+@@ -624,6 +624,8 @@ endif
  # Tell gcc to never replace conditional load with a non-conditional one
  KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
  
@@ -75,7 +75,7 @@ Index: linux-semplice-3.17.2/Makefile
  ifdef CONFIG_READABLE_ASM
  # Disable optimizations that make assembler listings hard to read.
  # reorder blocks reorders the control in the function
-@@ -750,7 +752,7 @@ KBUILD_CFLAGS += $(call cc-option, -fno-
+@@ -747,7 +749,7 @@ KBUILD_CFLAGS += $(call cc-option, -fno-
  endif
  
  # arch Makefile may override CC so keep this after arch Makefile is included

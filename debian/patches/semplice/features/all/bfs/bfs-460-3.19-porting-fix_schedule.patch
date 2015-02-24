@@ -7,11 +7,11 @@ Subject: [PATCH] bfs: [Fix] __schedule() instead of schedule()
  kernel/sched/bfs.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/bfs.c b/kernel/sched/bfs.c
-index 656054f..e85e85d 100644
---- a/kernel/sched/bfs.c
-+++ b/kernel/sched/bfs.c
-@@ -3597,7 +3597,7 @@ asmlinkage __visible void __sched notrace preempt_schedule(void)
+Index: linux-semplice-3.19/kernel/sched/bfs.c
+===================================================================
+--- linux-semplice-3.19.orig/kernel/sched/bfs.c
++++ linux-semplice-3.19/kernel/sched/bfs.c
+@@ -3597,7 +3597,7 @@ asmlinkage __visible void __sched notrac
  
  	do {
  		__preempt_count_add(PREEMPT_ACTIVE);
@@ -20,7 +20,7 @@ index 656054f..e85e85d 100644
  		__preempt_count_sub(PREEMPT_ACTIVE);
  
  		/*
-@@ -3670,7 +3670,7 @@ asmlinkage __visible void __sched preempt_schedule_irq(void)
+@@ -3670,7 +3670,7 @@ asmlinkage __visible void __sched preemp
  	do {
  		__preempt_count_add(PREEMPT_ACTIVE);
  		local_irq_enable();
@@ -38,6 +38,3 @@ index 656054f..e85e85d 100644
  	__preempt_count_sub(PREEMPT_ACTIVE);
  }
  
--- 
-2.1.1
-

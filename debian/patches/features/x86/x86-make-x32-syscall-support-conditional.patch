@@ -2,6 +2,7 @@ From: Ben Hutchings <ben@decadent.org.uk>
 Date: Fri, 25 Jul 2014 01:16:15 +0100
 Subject: x86: Make x32 syscall support conditional on a kernel parameter
 Bug-Debian: https://bugs.debian.org/708070
+Forwarded: http://mid.gmane.org/1415245982.3398.53.camel@decadent.org.uk
 
 Enabling x32 in the standard amd64 kernel would increase its attack
 surface while provide no benefit to the vast majority of its users.
@@ -25,11 +26,11 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  arch/x86/kernel/syscall_64.c        | 43 +++++++++++++++++++++++++++++++++++++
  5 files changed, 88 insertions(+), 11 deletions(-)
 
-Index: linux-semplice-3.17.2/Documentation/kernel-parameters.txt
+Index: linux-semplice-3.19/Documentation/kernel-parameters.txt
 ===================================================================
---- linux-semplice-3.17.2.orig/Documentation/kernel-parameters.txt
-+++ linux-semplice-3.17.2/Documentation/kernel-parameters.txt
-@@ -3286,6 +3286,10 @@ bytes respectively. Such letter suffixes
+--- linux-semplice-3.19.orig/Documentation/kernel-parameters.txt
++++ linux-semplice-3.19/Documentation/kernel-parameters.txt
+@@ -3446,6 +3446,10 @@ bytes respectively. Such letter suffixes
  
  	switches=	[HW,M68k]
  
@@ -40,11 +41,11 @@ Index: linux-semplice-3.17.2/Documentation/kernel-parameters.txt
  	sysfs.deprecated=0|1 [KNL]
  			Enable/disable old style sysfs layout for old udev
  			on older distributions. When this option is enabled
-Index: linux-semplice-3.17.2/arch/x86/Kconfig
+Index: linux-semplice-3.19/arch/x86/Kconfig
 ===================================================================
---- linux-semplice-3.17.2.orig/arch/x86/Kconfig
-+++ linux-semplice-3.17.2/arch/x86/Kconfig
-@@ -2410,6 +2410,14 @@ config X86_X32
+--- linux-semplice-3.19.orig/arch/x86/Kconfig
++++ linux-semplice-3.19/arch/x86/Kconfig
+@@ -2504,6 +2504,14 @@ config X86_X32
  	  elf32_x86_64 support enabled to compile a kernel with this
  	  option set.
  
@@ -59,10 +60,10 @@ Index: linux-semplice-3.17.2/arch/x86/Kconfig
  config COMPAT
  	def_bool y
  	depends on IA32_EMULATION || X86_X32
-Index: linux-semplice-3.17.2/arch/x86/include/asm/elf.h
+Index: linux-semplice-3.19/arch/x86/include/asm/elf.h
 ===================================================================
---- linux-semplice-3.17.2.orig/arch/x86/include/asm/elf.h
-+++ linux-semplice-3.17.2/arch/x86/include/asm/elf.h
+--- linux-semplice-3.19.orig/arch/x86/include/asm/elf.h
++++ linux-semplice-3.19/arch/x86/include/asm/elf.h
 @@ -154,6 +154,12 @@ do {						\
  
  #else /* CONFIG_X86_32 */
@@ -85,10 +86,10 @@ Index: linux-semplice-3.17.2/arch/x86/include/asm/elf.h
  
  #if __USER32_DS != __USER_DS
  # error "The following code assumes __USER32_DS == __USER_DS"
-Index: linux-semplice-3.17.2/arch/x86/kernel/entry_64.S
+Index: linux-semplice-3.19/arch/x86/kernel/entry_64.S
 ===================================================================
---- linux-semplice-3.17.2.orig/arch/x86/kernel/entry_64.S
-+++ linux-semplice-3.17.2/arch/x86/kernel/entry_64.S
+--- linux-semplice-3.19.orig/arch/x86/kernel/entry_64.S
++++ linux-semplice-3.19/arch/x86/kernel/entry_64.S
 @@ -414,8 +414,12 @@ system_call_fastpath:
  #if __SYSCALL_MASK == ~0
  	cmpq $__NR_syscall_max,%rax
@@ -102,9 +103,9 @@ Index: linux-semplice-3.17.2/arch/x86/kernel/entry_64.S
 +	.byte P6_NOP4
 +system_call_fast_compare_end:
  #endif
- 	ja badsys
+ 	ja ret_from_sys_call  /* and return regs->ax */
  	movq %r10,%rcx
-@@ -533,8 +537,12 @@ tracesys:
+@@ -520,8 +524,12 @@ tracesys_phase2:
  #if __SYSCALL_MASK == ~0
  	cmpq $__NR_syscall_max,%rax
  #else
@@ -117,9 +118,9 @@ Index: linux-semplice-3.17.2/arch/x86/kernel/entry_64.S
 +	.byte P6_NOP4
 +system_call_trace_compare_end:
  #endif
- 	ja   int_ret_from_sys_call	/* RAX(%rsp) set to -ENOSYS above */
+ 	ja   int_ret_from_sys_call	/* RAX(%rsp) is already set */
  	movq %r10,%rcx	/* fixup for C */
-@@ -606,6 +614,16 @@ int_restore_rest:
+@@ -593,6 +601,16 @@ int_restore_rest:
  	CFI_ENDPROC
  END(system_call)
  
@@ -136,10 +137,10 @@ Index: linux-semplice-3.17.2/arch/x86/kernel/entry_64.S
  	.macro FORK_LIKE func
  ENTRY(stub_\func)
  	CFI_STARTPROC
-Index: linux-semplice-3.17.2/arch/x86/kernel/syscall_64.c
+Index: linux-semplice-3.19/arch/x86/kernel/syscall_64.c
 ===================================================================
---- linux-semplice-3.17.2.orig/arch/x86/kernel/syscall_64.c
-+++ linux-semplice-3.17.2/arch/x86/kernel/syscall_64.c
+--- linux-semplice-3.19.orig/arch/x86/kernel/syscall_64.c
++++ linux-semplice-3.19/arch/x86/kernel/syscall_64.c
 @@ -3,8 +3,14 @@
  #include <linux/linkage.h>
  #include <linux/sys.h>
