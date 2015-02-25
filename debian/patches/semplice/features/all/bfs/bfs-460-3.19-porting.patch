@@ -7,11 +7,11 @@ Subject: [PATCH] bfs: [Sync] Sync up with 3.19.
  kernel/sched/bfs.c | 144 ++++++++++++++++++++++++++++++++++++++++++-----------
  1 file changed, 115 insertions(+), 29 deletions(-)
 
-diff --git a/kernel/sched/bfs.c b/kernel/sched/bfs.c
-index 210772a..306a64a 100644
---- a/kernel/sched/bfs.c
-+++ b/kernel/sched/bfs.c
-@@ -988,12 +988,20 @@ static inline void deactivate_task(struct task_struct *p, struct rq *rq)
+Index: linux-semplice-3.19/kernel/sched/bfs.c
+===================================================================
+--- linux-semplice-3.19.orig/kernel/sched/bfs.c
++++ linux-semplice-3.19/kernel/sched/bfs.c
+@@ -988,12 +988,20 @@ static inline void deactivate_task(struc
  #ifdef CONFIG_SMP
  void set_task_cpu(struct task_struct *p, unsigned int cpu)
  {
@@ -54,7 +54,7 @@ index 210772a..306a64a 100644
  }
  
  #ifdef CONFIG_SMP
-@@ -1848,7 +1861,6 @@ prepare_task_switch(struct rq *rq, struct task_struct *prev,
+@@ -1848,7 +1861,6 @@ prepare_task_switch(struct rq *rq, struc
  
  /**
   * finish_task_switch - clean up after a task-switch
@@ -62,7 +62,7 @@ index 210772a..306a64a 100644
   * @prev: the thread we just switched away from.
   *
   * finish_task_switch must be called after the context switch, paired
-@@ -1860,10 +1872,16 @@ prepare_task_switch(struct rq *rq, struct task_struct *prev,
+@@ -1860,10 +1872,16 @@ prepare_task_switch(struct rq *rq, struc
   * so, we finish that here outside of the runqueue lock.  (Doing it
   * with the lock held can cause deadlocks; see schedule() for
   * details.)
@@ -80,7 +80,7 @@ index 210772a..306a64a 100644
  	struct mm_struct *mm = rq->prev_mm;
  	long prev_state;
  
-@@ -1898,6 +1916,8 @@ static inline void finish_task_switch(struct rq *rq, struct task_struct *prev)
+@@ -1898,6 +1916,8 @@ static inline void finish_task_switch(st
  		kprobe_flush_task(prev);
  		put_task_struct(prev);
  	}
@@ -89,7 +89,7 @@ index 210772a..306a64a 100644
  }
  
  /**
-@@ -1907,18 +1927,21 @@ static inline void finish_task_switch(struct rq *rq, struct task_struct *prev)
+@@ -1907,18 +1927,21 @@ static inline void finish_task_switch(st
  asmlinkage __visible void schedule_tail(struct task_struct *prev)
  	__releases(grq.lock)
  {
@@ -116,7 +116,7 @@ index 210772a..306a64a 100644
  context_switch(struct rq *rq, struct task_struct *prev,
  	       struct task_struct *next)
  {
-@@ -1959,12 +1982,8 @@ context_switch(struct rq *rq, struct task_struct *prev,
+@@ -1959,12 +1982,8 @@ context_switch(struct rq *rq, struct tas
  	switch_to(prev, next, prev);
  
  	barrier();
@@ -159,7 +159,7 @@ index 210772a..306a64a 100644
  	} else {
  		check_smt_siblings(cpu);
  		grq_unlock_irq();
-@@ -4965,8 +4976,10 @@ void sched_show_task(struct task_struct *p)
+@@ -4965,8 +4976,10 @@ void sched_show_task(struct task_struct
  #ifdef CONFIG_DEBUG_STACK_USAGE
  	free = stack_not_used(p);
  #endif
@@ -171,7 +171,42 @@ index 210772a..306a64a 100644
  	rcu_read_unlock();
  	printk(KERN_CONT "%5lu %5d %6d 0x%08lx\n", free,
  		task_pid_nr(p), ppid,
-@@ -6033,7 +6046,9 @@ static void claim_allocations(int cpu, struct sched_domain *sd)
+@@ -5070,6 +5083,34 @@ void resched_cpu(int cpu)
+ 	grq_unlock_irqrestore(&flags);
+ }
+ 
++int cpuset_cpumask_can_shrink(const struct cpumask *cur,
++			     const struct cpumask *trial)
++{
++	return 1;
++}
++
++int task_can_attach(struct task_struct *p,
++		   const struct cpumask *cs_cpus_allowed)
++{
++	int ret = 0;
++
++	/*
++	 * Kthreads which disallow setaffinity shouldn't be moved
++	 * to a new cpuset; we don't want to change their cpu
++	 * affinity and isolating such threads by their set of
++	 * allowed nodes is unnecessary.  Thus, cpusets are not
++	 * applicable for such threads.  This prevents checking for
++	 * success of set_cpus_allowed_ptr() on all attached tasks
++	 * before cpus_allowed may be changed.
++	 */
++	if (p->flags & PF_NO_SETAFFINITY) {
++		ret = -EINVAL;
++	}
++
++	return ret;
++}
++
++
+ #ifdef CONFIG_SMP
+ #ifdef CONFIG_NO_HZ_COMMON
+ void nohz_balance_enter_idle(int cpu)
+@@ -6033,7 +6074,9 @@ static void claim_allocations(int cpu, s
  
  #ifdef CONFIG_NUMA
  static int sched_domains_numa_levels;
@@ -181,7 +216,7 @@ index 210772a..306a64a 100644
  static struct cpumask ***sched_domains_numa_masks;
  static int sched_domains_curr_level;
  #endif
-@@ -6205,7 +6220,7 @@ static void sched_numa_warn(const char *str)
+@@ -6205,7 +6248,7 @@ static void sched_numa_warn(const char *
  	printk(KERN_WARNING "\n");
  }
  
@@ -190,7 +225,7 @@ index 210772a..306a64a 100644
  {
  	int i;
  
-@@ -6220,6 +6235,56 @@ static bool find_numa_distance(int distance)
+@@ -6220,6 +6263,56 @@ static bool find_numa_distance(int dista
  	return false;
  }
  
@@ -247,7 +282,7 @@ index 210772a..306a64a 100644
  static void sched_init_numa(void)
  {
  	int next_distance, curr_distance = node_distance(0, 0);
-@@ -6352,6 +6417,9 @@ static void sched_init_numa(void)
+@@ -6352,6 +6445,9 @@ static void sched_init_numa(void)
  	sched_domain_topology = tl;
  
  	sched_domains_numa_levels = level;
@@ -257,7 +292,7 @@ index 210772a..306a64a 100644
  }
  
  static void sched_domains_numa_masks_set(int cpu)
-@@ -7059,6 +7127,24 @@ static inline int preempt_count_equals(int preempt_offset)
+@@ -7059,6 +7155,24 @@ static inline int preempt_count_equals(i
  
  void __might_sleep(const char *file, int line, int preempt_offset)
  {
@@ -282,7 +317,7 @@ index 210772a..306a64a 100644
  	static unsigned long prev_jiffy;	/* ratelimiting */
  
  	rcu_sleep_check(); /* WARN_ON_ONCE() by default, no rate limit reqd. */
-@@ -7090,7 +7176,7 @@ void __might_sleep(const char *file, int line, int preempt_offset)
+@@ -7090,7 +7204,7 @@ void __might_sleep(const char *file, int
  #endif
  	dump_stack();
  }
@@ -291,6 +326,22 @@ index 210772a..306a64a 100644
  #endif
  
  #ifdef CONFIG_MAGIC_SYSRQ
--- 
-2.1.1
-
+Index: linux-semplice-3.19/kernel/sched/bfs_sched.h
+===================================================================
+--- linux-semplice-3.19.orig/kernel/sched/bfs_sched.h
++++ linux-semplice-3.19/kernel/sched/bfs_sched.h
+@@ -114,6 +114,14 @@ static inline u64 rq_clock_task(struct r
+ 	return rq->clock_task;
+ }
+ 
++#ifdef CONFIG_NUMA
++enum numa_topology_type {
++	NUMA_DIRECT,
++	NUMA_GLUELESS_MESH,
++	NUMA_BACKPLANE
++};
++#endif
++
+ #define rcu_dereference_check_sched_domain(p) \
+ 	rcu_dereference_check((p), \
+ 			      lockdep_is_held(&sched_domains_mutex))
