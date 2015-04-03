@@ -7,11 +7,11 @@ Subject: [PATCH] bfs: Refactor online_cpus() checking in try_preempt().
  kernel/sched/bfs.c | 23 +----------------------
  1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/kernel/sched/bfs.c b/kernel/sched/bfs.c
-index e85e85d..e80e9a11 100644
---- a/kernel/sched/bfs.c
-+++ b/kernel/sched/bfs.c
-@@ -1337,25 +1337,6 @@ can_preempt(struct task_struct *p, int prio, u64 deadline)
+Index: linux-semplice-3.19.3/kernel/sched/bfs.c
+===================================================================
+--- linux-semplice-3.19.3.orig/kernel/sched/bfs.c
++++ linux-semplice-3.19.3/kernel/sched/bfs.c
+@@ -1317,25 +1317,6 @@ can_preempt(struct task_struct *p, int p
  }
  
  #ifdef CONFIG_SMP
@@ -37,7 +37,7 @@ index e85e85d..e80e9a11 100644
  /*
   * Check to see if p can run on cpu, and if not, whether there are any online
   * CPUs it can run on instead.
-@@ -1391,9 +1372,7 @@ static void try_preempt(struct task_struct *p, struct rq *this_rq)
+@@ -1371,9 +1352,7 @@ static void try_preempt(struct task_stru
  	if (p->policy == SCHED_IDLEPRIO)
  		return;
  
@@ -48,6 +48,3 @@ index e85e85d..e80e9a11 100644
  		return;
  
  	highest_prio = latest_deadline = 0;
--- 
-2.1.1
-

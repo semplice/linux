@@ -65,13 +65,7 @@ features/all/efi-expose-underlying-uefi-firmware-platform-size-to.patch
 # Semplice patches
 semplice/features/all/aufs3/vfs-ino.patch
 semplice/features/all/aufs3/tmpfs-idr.patch
-semplice/features/all/bfs/3.18-sched-bfs-460-refreshed.patch
-semplice/features/all/bfs/bfs-460-3.19-porting.patch
-semplice/features/all/bfs/bfs-460-3.19-porting-resched_curr.patch
-semplice/features/all/bfs/bfs-460-3.19-porting-sched_getaffinity.patch
-semplice/features/all/bfs/bfs-460-3.19-porting-sched_setscheduler.patch
-semplice/features/all/bfs/bfs-460-3.19-porting-fix_schedule.patch
-semplice/features/all/bfs/bfs-460-3.19-porting_clean_up_wake_entry.patch
+semplice/features/all/bfs/3.19-sched-bfs-461.patch
 semplice/features/all/bfs/bfs-460-3.19-refactor_online_cpus.patch
 semplice/features/all/bfs/bfs-460-3.19-refactor_needs_other_cpu.patch
 semplice/features/all/bfs/bfs-460-3.19-priodl.patch

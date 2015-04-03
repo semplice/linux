@@ -7,11 +7,11 @@ Subject: [PATCH] bfs: Refactor needs_other_cpu().
  kernel/sched/bfs.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/sched/bfs.c b/kernel/sched/bfs.c
-index e80e9a11..44140ea 100644
---- a/kernel/sched/bfs.c
-+++ b/kernel/sched/bfs.c
-@@ -1343,9 +1343,7 @@ can_preempt(struct task_struct *p, int prio, u64 deadline)
+Index: linux-semplice-3.19.3/kernel/sched/bfs.c
+===================================================================
+--- linux-semplice-3.19.3.orig/kernel/sched/bfs.c
++++ linux-semplice-3.19.3/kernel/sched/bfs.c
+@@ -1323,9 +1323,7 @@ can_preempt(struct task_struct *p, int p
   */
  static inline bool needs_other_cpu(struct task_struct *p, int cpu)
  {
@@ -22,6 +22,3 @@ index e80e9a11..44140ea 100644
  }
  
  /*
--- 
-2.1.1
-

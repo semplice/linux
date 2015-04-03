@@ -12,11 +12,11 @@ try_preempt() calculation.
  kernel/sched/bfs_sched.h |  1 +
  3 files changed, 40 insertions(+), 35 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 0916cec..d41605a 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1295,6 +1295,7 @@ struct task_struct {
+Index: linux-semplice-3.19.3/include/linux/sched.h
+===================================================================
+--- linux-semplice-3.19.3.orig/include/linux/sched.h
++++ linux-semplice-3.19.3/include/linux/sched.h
+@@ -1293,6 +1293,7 @@ struct task_struct {
  #ifdef CONFIG_SCHED_BFS
  	int time_slice;
  	u64 deadline;
@@ -24,11 +24,11 @@ index 0916cec..d41605a 100644
  	struct list_head run_list;
  	u64 last_ran;
  	u64 sched_time; /* sched_clock time spent running */
-diff --git a/kernel/sched/bfs.c b/kernel/sched/bfs.c
-index 44140ea..282b68b 100644
---- a/kernel/sched/bfs.c
-+++ b/kernel/sched/bfs.c
-@@ -517,6 +517,11 @@ static inline bool deadline_after(u64 deadline, u64 time)
+Index: linux-semplice-3.19.3/kernel/sched/bfs.c
+===================================================================
+--- linux-semplice-3.19.3.orig/kernel/sched/bfs.c
++++ linux-semplice-3.19.3/kernel/sched/bfs.c
+@@ -517,6 +517,11 @@ static inline bool deadline_after(u64 de
  	return (deadline > time);
  }
  
@@ -40,7 +40,7 @@ index 44140ea..282b68b 100644
  /*
   * A task that is queued but not running will be on the grq run list.
   * A task that is not running or queued will not be on the grq run list.
-@@ -570,6 +575,7 @@ static void enqueue_task(struct task_struct *p, struct rq *rq)
+@@ -570,6 +575,7 @@ static void enqueue_task(struct task_str
  			p->prio = p->normal_prio;
  		else
  			p->prio = NORMAL_PRIO;
@@ -48,7 +48,7 @@ index 44140ea..282b68b 100644
  	}
  	__set_bit(p->prio, grq.prio_bitmap);
  	list_add_tail(&p->run_list, grq.queue + p->prio);
-@@ -1323,17 +1329,9 @@ EXPORT_SYMBOL_GPL(kick_process);
+@@ -1303,17 +1309,9 @@ EXPORT_SYMBOL_GPL(kick_process);
   * prio PRIO_LIMIT so it is always preempted.
   */
  static inline bool
@@ -68,7 +68,7 @@ index 44140ea..282b68b 100644
  }
  
  #ifdef CONFIG_SMP
-@@ -1351,9 +1349,9 @@ static inline bool needs_other_cpu(struct task_struct *p, int cpu)
+@@ -1331,9 +1329,9 @@ static inline bool needs_other_cpu(struc
   */
  static void try_preempt(struct task_struct *p, struct rq *this_rq)
  {
@@ -81,7 +81,7 @@ index 44140ea..282b68b 100644
  	cpumask_t tmp;
  
  	/*
-@@ -1373,34 +1371,29 @@ static void try_preempt(struct task_struct *p, struct rq *this_rq)
+@@ -1353,34 +1351,29 @@ static void try_preempt(struct task_stru
  	if (unlikely(!cpumask_and(&tmp, cpu_online_mask, &p->cpus_allowed)))
  		return;
  
@@ -130,7 +130,7 @@ index 44140ea..282b68b 100644
  }
  #else /* CONFIG_SMP */
  static inline bool needs_other_cpu(struct task_struct *p, int cpu)
-@@ -1412,7 +1405,7 @@ static void try_preempt(struct task_struct *p, struct rq *this_rq)
+@@ -1392,7 +1385,7 @@ static void try_preempt(struct task_stru
  {
  	if (p->policy == SCHED_IDLEPRIO)
  		return;
@@ -139,7 +139,7 @@ index 44140ea..282b68b 100644
  		resched_curr(uprq);
  }
  #endif /* CONFIG_SMP */
-@@ -1726,6 +1719,8 @@ void wake_up_new_task(struct task_struct *p)
+@@ -1706,6 +1699,8 @@ void wake_up_new_task(struct task_struct
  	 */
  	p->prio = rq->curr->normal_prio;
  
@@ -148,7 +148,7 @@ index 44140ea..282b68b 100644
  	activate_task(p, rq);
  	trace_sched_wakeup_new(p, 1);
  	if (unlikely(p->policy == SCHED_FIFO))
-@@ -3017,6 +3012,7 @@ static void time_slice_expired(struct task_struct *p)
+@@ -2997,6 +2992,7 @@ static void time_slice_expired(struct ta
  {
  	p->time_slice = timeslice();
  	p->deadline = grq.niffies + task_deadline_diff(p);
@@ -156,7 +156,7 @@ index 44140ea..282b68b 100644
  #ifdef CONFIG_SMT_NICE
  	if (!p->mm)
  		p->smt_bias = 0;
-@@ -3251,6 +3247,7 @@ static inline void set_rq_task(struct rq *rq, struct task_struct *p)
+@@ -3231,6 +3227,7 @@ static inline void set_rq_task(struct rq
  	rq->rq_last_ran = p->last_ran = rq->clock_task;
  	rq->rq_policy = p->policy;
  	rq->rq_prio = p->prio;
@@ -164,7 +164,7 @@ index 44140ea..282b68b 100644
  #ifdef CONFIG_SMT_NICE
  	rq->rq_smt_bias = p->smt_bias;
  #endif
-@@ -3264,6 +3261,8 @@ static void reset_rq_task(struct rq *rq, struct task_struct *p)
+@@ -3244,6 +3241,8 @@ static void reset_rq_task(struct rq *rq,
  {
  	rq->rq_policy = p->policy;
  	rq->rq_prio = p->prio;
@@ -173,7 +173,7 @@ index 44140ea..282b68b 100644
  #ifdef CONFIG_SMT_NICE
  	rq->rq_smt_bias = p->smt_bias;
  #endif
-@@ -3428,7 +3427,6 @@ need_resched:
+@@ -3419,7 +3418,6 @@ need_resched:
  	if (idle != prev) {
  		/* Update all the information stored on struct rq */
  		prev->time_slice = rq->rq_time_slice;
@@ -181,15 +181,15 @@ index 44140ea..282b68b 100644
  		check_deadline(prev);
  		prev->last_ran = rq->clock_task;
  
-@@ -3715,6 +3713,7 @@ void rt_mutex_setprio(struct task_struct *p, int prio)
+@@ -3688,6 +3686,7 @@ void rt_mutex_setprio(struct task_struct
  	if (queued)
  		dequeue_task(p);
  	p->prio = prio;
 +	update_task_priodl(p);
+ 	if (task_running(p) && prio > oldprio)
+ 		resched_task(p);
  	if (queued) {
- 		enqueue_task(p, rq);
- 		try_preempt(p, rq);
-@@ -3769,6 +3768,7 @@ void set_user_nice(struct task_struct *p, long nice)
+@@ -3742,6 +3741,7 @@ void set_user_nice(struct task_struct *p
  	old_static = p->static_prio;
  	p->static_prio = new_static;
  	p->prio = effective_prio(p);
@@ -197,15 +197,7 @@ index 44140ea..282b68b 100644
  
  	if (queued) {
  		enqueue_task(p, rq);
-@@ -3940,6 +3940,7 @@ static void __setscheduler(struct rq *rq, struct task_struct *p,
- 	 * task. It is safe to use the normal prio.
- 	 */
- 	p->prio = normal_prio(p);
-+	update_task_priodl(p);
- 
- 	if (task_running(p)) {
- 		reset_rq_task(rq, p);
-@@ -4852,8 +4853,10 @@ int __sched yield_to(struct task_struct *p, bool preempt)
+@@ -4761,8 +4761,10 @@ int __sched yield_to(struct task_struct
  
  	p_rq = task_rq(p);
  	yielded = 1;
@@ -217,10 +209,10 @@ index 44140ea..282b68b 100644
  	p->time_slice += rq->rq_time_slice;
  	rq->rq_time_slice = 0;
  	if (p->time_slice > timeslice())
-diff --git a/kernel/sched/bfs_sched.h b/kernel/sched/bfs_sched.h
-index 198108e..e0de5b0 100644
---- a/kernel/sched/bfs_sched.h
-+++ b/kernel/sched/bfs_sched.h
+Index: linux-semplice-3.19.3/kernel/sched/bfs_sched.h
+===================================================================
+--- linux-semplice-3.19.3.orig/kernel/sched/bfs_sched.h
++++ linux-semplice-3.19.3/kernel/sched/bfs_sched.h
 @@ -14,6 +14,7 @@ struct rq {
  
  	/* Stored data about rq->curr to work outside grq lock */
@@ -229,6 +221,3 @@ index 198108e..e0de5b0 100644
  	unsigned int rq_policy;
  	int rq_time_slice;
  	u64 rq_last_ran;
--- 
-2.1.1
-

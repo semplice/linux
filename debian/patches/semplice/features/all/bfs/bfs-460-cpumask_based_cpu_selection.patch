@@ -33,10 +33,10 @@ now follows below orders:
  kernel/sched/bfs_sched.h       |   8 -
  4 files changed, 203 insertions(+), 159 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index e578877..f74976b 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
+Index: linux-semplice-3.19.3/drivers/cpufreq/cpufreq.c
+===================================================================
+--- linux-semplice-3.19.3.orig/drivers/cpufreq/cpufreq.c
++++ linux-semplice-3.19.3/drivers/cpufreq/cpufreq.c
 @@ -1990,7 +1990,7 @@ out:
  	if (likely(retval != -EINVAL)) {
  		if (target_freq == policy->max)
@@ -46,11 +46,11 @@ index e578877..f74976b 100644
  			cpu_scaling(policy->cpu);
  	}
  	return retval;
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 604854b..8c118d6 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -492,12 +492,14 @@ static void byt_set_pstate(struct cpudata *cpudata, int pstate)
+Index: linux-semplice-3.19.3/drivers/cpufreq/intel_pstate.c
+===================================================================
+--- linux-semplice-3.19.3.orig/drivers/cpufreq/intel_pstate.c
++++ linux-semplice-3.19.3/drivers/cpufreq/intel_pstate.c
+@@ -492,12 +492,14 @@ static void byt_set_pstate(struct cpudat
  	vid_fp = clamp_t(int32_t, vid_fp, cpudata->vid.min, cpudata->vid.max);
  	vid = ceiling_fp(vid_fp);
  
@@ -69,10 +69,10 @@ index 604854b..8c118d6 100644
  	}
  
  	val |= vid;
-diff --git a/kernel/sched/bfs.c b/kernel/sched/bfs.c
-index 282b68b..74aa18f 100644
---- a/kernel/sched/bfs.c
-+++ b/kernel/sched/bfs.c
+Index: linux-semplice-3.19.3/kernel/sched/bfs.c
+===================================================================
+--- linux-semplice-3.19.3.orig/kernel/sched/bfs.c
++++ linux-semplice-3.19.3/kernel/sched/bfs.c
 @@ -180,7 +180,7 @@ struct global_rq {
  #ifdef CONFIG_SMP
  	unsigned long qnr; /* queued not running */
@@ -82,7 +82,7 @@ index 282b68b..74aa18f 100644
  #endif
  	int noc; /* num_online_cpus stored and updated when it changes */
  	u64 niffies; /* Nanosecond jiffies */
-@@ -637,104 +637,185 @@ static inline int queued_notrunning(void)
+@@ -642,104 +642,185 @@ static inline int queued_notrunning(void
   */
  static inline void set_cpuidle_map(int cpu)
  {
@@ -123,8 +123,7 @@ index 282b68b..74aa18f 100644
 - * The best idle CPU is chosen according to the CPUIDLE ranking above where the
 - * lowest value would give the most suitable CPU to schedule p onto next. The
 - * order works out to be the following:
-+ * The best idle cpu is first-matched by the following cpumask list
-  *
+- *
 - * Same core, idle or busy cache, idle or busy threads
 - * Other core, same cache, idle or busy cache, idle threads.
 - * Same node, other CPU, idle cache, idle threads.
@@ -148,9 +147,8 @@ index 282b68b..74aa18f 100644
 -	for_each_cpu_mask(cpu_tmp, *tmpmask) {
 -		int ranking, locality;
 -		struct rq *tmp_rq;
--
--		ranking = 0;
--		tmp_rq = cpu_rq(cpu_tmp);
++ * The best idle cpu is first-matched by the following cpumask list
++ *
 + * Non scaled same cpu as task originally runs on
 + * Non scaled SMT of the cup
 + * Non scaled cores/threads shares last level cache
@@ -164,7 +162,9 @@ index 282b68b..74aa18f 100644
 + * Scaled cpus/Cores within the local NODE
 + * All cpus avariable
 + */
-+
+ 
+-		ranking = 0;
+-		tmp_rq = cpu_rq(cpu_tmp);
 +static inline int llc_cpu_check(int cpu, cpumask_t *cpumask, cpumask_t *res_mask)
 +{
 +	return (
@@ -209,14 +209,16 @@ index 282b68b..74aa18f 100644
 -			ranking |= CPUIDLE_DIFF_THREAD;
 -		if (!(tmp_rq->siblings_idle(cpu_tmp)))
 -			ranking |= CPUIDLE_THREAD_BUSY;
- #endif
+-#endif
 -		if (scaling_rq(tmp_rq))
 -			ranking |= CPUIDLE_THROTTLED;
- 
+-
 -		if (ranking < best_ranking) {
 -			best_cpu = cpu_tmp;
 -			best_ranking = ranking;
 -		}
++#endif
++
 +	/* Cpus/Cores within the local NODE */
 +	cpumask_and(res_mask, cpumask, cpu_cpu_mask(cpu))
 +	);
@@ -341,7 +343,7 @@ index 282b68b..74aa18f 100644
  }
  
  bool cpus_share_cache(int this_cpu, int that_cpu)
-@@ -812,26 +893,46 @@ static bool smt_should_schedule(struct task_struct *p, int cpu)
+@@ -819,26 +900,46 @@ static bool smt_should_schedule(struct t
  #endif
  #endif
  
@@ -400,7 +402,7 @@ index 282b68b..74aa18f 100644
  /*
   * Flags to tell us whether this CPU is running a CPU frequency governor that
   * has slowed its speed or not. No locking required as the very rare wrongly
-@@ -840,11 +941,13 @@ static inline void resched_suitable_idle(struct task_struct *p)
+@@ -847,11 +948,13 @@ static inline void resched_suitable_idle
  void cpu_scaling(int cpu)
  {
  	cpu_rq(cpu)->scaling = true;
@@ -414,7 +416,7 @@ index 282b68b..74aa18f 100644
  }
  
  static inline bool scaling_rq(struct rq *rq)
-@@ -878,13 +981,14 @@ static inline void clear_cpuidle_map(int cpu)
+@@ -885,13 +988,14 @@ static inline void clear_cpuidle_map(int
  {
  }
  
@@ -432,7 +434,7 @@ index 282b68b..74aa18f 100644
  }
  
  void cpu_scaling(int __unused)
-@@ -1049,19 +1153,6 @@ static inline bool task_sticky(struct task_struct *p)
+@@ -1030,19 +1134,6 @@ static inline bool task_sticky(struct ta
  	return p->sticky;
  }
  
@@ -452,7 +454,7 @@ index 282b68b..74aa18f 100644
  /*
   * We set the sticky flag on a task that is descheduled involuntarily meaning
   * it is awaiting further CPU time. If the last sticky task is still sticky
-@@ -1361,7 +1452,7 @@ static void try_preempt(struct task_struct *p, struct rq *this_rq)
+@@ -1341,7 +1432,7 @@ static void try_preempt(struct task_stru
  	 */
  	clear_sticky(p);
  
@@ -461,16 +463,16 @@ index 282b68b..74aa18f 100644
  		return;
  
  	/* IDLEPRIO tasks never preempt anything but idle */
-@@ -3472,7 +3563,7 @@ need_resched:
+@@ -3463,7 +3554,7 @@ need_resched:
  		 * Don't reschedule an idle task or deactivated tasks
  		 */
- 		if ( prev != idle && !deactivate)
+ 		if (prev != idle && !deactivate)
 -			resched_suitable_idle(prev);
 +			resched_best_idle(prev);
  		/*
  		 * Don't stick tasks when a real time task is going to run as
  		 * they may literally get stuck.
-@@ -6927,37 +7018,11 @@ static int cpuset_cpu_inactive(struct notifier_block *nfb, unsigned long action,
+@@ -6806,37 +6897,11 @@ static int cpuset_cpu_inactive(struct no
  	return NOTIFY_OK;
  }
  
@@ -508,7 +510,7 @@ index 282b68b..74aa18f 100644
  #endif
  
  enum sched_domain_level {
-@@ -7028,23 +7093,15 @@ void __init sched_init_smp(void)
+@@ -6907,23 +6972,15 @@ void __init sched_init_smp(void)
  			}
  		}
  
@@ -533,7 +535,7 @@ index 282b68b..74aa18f 100644
  #endif
  	}
  	grq_unlock_irq();
-@@ -7095,7 +7152,6 @@ void __init sched_init(void)
+@@ -6974,7 +7031,6 @@ void __init sched_init(void)
  	grq.noc = 1;
  #ifdef CONFIG_SMP
  	init_defrootdomain();
@@ -541,7 +543,7 @@ index 282b68b..74aa18f 100644
  	cpumask_clear(&grq.cpu_idle_map);
  #else
  	uprq = &per_cpu(runqueues, 0);
-@@ -7127,12 +7183,6 @@ void __init sched_init(void)
+@@ -7006,12 +7062,6 @@ void __init sched_init(void)
  		int j;
  
  		rq = cpu_rq(i);
@@ -554,10 +556,10 @@ index 282b68b..74aa18f 100644
  		rq->cpu_locality = kmalloc(cpu_ids * sizeof(int *), GFP_ATOMIC);
  		for_each_possible_cpu(j) {
  			if (i == j)
-diff --git a/kernel/sched/bfs_sched.h b/kernel/sched/bfs_sched.h
-index e0de5b0..f39509c 100644
---- a/kernel/sched/bfs_sched.h
-+++ b/kernel/sched/bfs_sched.h
+Index: linux-semplice-3.19.3/kernel/sched/bfs_sched.h
+===================================================================
+--- linux-semplice-3.19.3.orig/kernel/sched/bfs_sched.h
++++ linux-semplice-3.19.3/kernel/sched/bfs_sched.h
 @@ -39,14 +39,6 @@ struct rq {
  	struct root_domain *rd;
  	struct sched_domain *sd;
@@ -573,6 +575,3 @@ index e0de5b0..f39509c 100644
  	u64 last_niffy; /* Last time this RQ updated grq.niffies */
  #endif /* CONFIG_SMP */
  #ifdef CONFIG_IRQ_TIME_ACCOUNTING
--- 
-2.1.1
-
