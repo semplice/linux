@@ -103,11 +103,11 @@ tp54
 (dp55
 S'abiname'
 p56
-S'3.19-0.semplice.0'
+S'3.19-3.semplice.0'
 p57
 sS'source'
 p58
-V3.19.0-1~devel
+V3.19.3-1
 p59
 ss(S'base'
 g5
@@ -149,7 +149,7 @@ tp77
 (dp78
 S'abiname'
 p79
-S'0.semplice.0'
+S'3.semplice.0'
 p80
 ss(S'image'
 g5

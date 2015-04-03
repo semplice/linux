@@ -1,3 +1,9 @@
+linux-semplice (3.19.3-1) devel; urgency=medium
+
+  * Updated to 3.19.3.
+
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Fri, 03 Apr 2015 20:37:13 +0200
+
 linux-semplice (3.19.0-1~devel) devel; urgency=medium
 
   * Updated to 3.19.0.
