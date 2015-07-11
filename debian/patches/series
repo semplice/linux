@@ -78,8 +78,8 @@ semplice/features/all/bfs/3.19-sched-bfs-461.patch
 #semplice/features/all/bfs/bfs-460-refactor_rq_dither_calculation.patch
 #semplice/features/all/bfs/bfs-460-refactor_set_rq_task.patch
 #semplice/features/all/bfs/bfs-460-align_grq_cacheline.patch
-semplice/features/all/bfq/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r7-3.19.patch
-semplice/features/all/bfq/0002-block-introduce-the-BFQ-v7r7-I-O-sched-for-3.19.patch
-semplice/features/all/bfq/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r7-for-3.19.0.patch
+semplice/features/all/bfq/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r8-4.1.patch
+semplice/features/all/bfq/0002-block-introduce-the-BFQ-v7r8-I-O-sched-for-4.1.patch
+semplice/features/all/bfq/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r8-for-4.1.0.patch
 #semplice/features/all/toi/tuxonice-for-linux-head-3.16.0-2014-08-07.patch
 #semplice/features/all/uksm/uksm-0.1.2.3-for-v3.16.ge.1.patch
