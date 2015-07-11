@@ -12,15 +12,11 @@ bugfix/all/firmware_class-log-every-success-and-failure.patch
 bugfix/all/firmware-remove-redundant-log-messages-from-drivers.patch
 bugfix/all/radeon-firmware-is-required-for-drm-and-kms-on-r600-onward.patch
 
-# Patches and source files from aufs3 repository, imported with
-# debian/patches/features/all/aufs3/gen-patch.
-features/all/aufs3/aufs3-kbuild.patch
-features/all/aufs3/aufs3-base.patch
-features/all/aufs3/aufs3-mmap.patch
-features/all/aufs3/aufs3-standalone.patch
-features/all/aufs3/aufs3-add.patch
-# Debian-specific changes
-debian/aufs3-mark-as-staging.patch
+# Patches and source files from aufs4 repository, imported with
+# debian/patches/features/all/aufs4/gen-patch.
+features/all/aufs3/aufs4-base.patch
+features/all/aufs3/aufs4-mmap.patch
+features/all/aufs3/aufs4-standalone.patch
 
 # Change some defaults for security reasons
 debian/af_802154-Disable-auto-loading-as-mitigation-against.patch
@@ -63,8 +59,8 @@ features/all/efi-autoload-efi-pstore.patch
 features/all/efi-expose-underlying-uefi-firmware-platform-size-to.patch
 
 # Semplice patches
-semplice/features/all/aufs3/vfs-ino.patch
-semplice/features/all/aufs3/tmpfs-idr.patch
+semplice/features/all/aufs4/vfs-ino.patch
+semplice/features/all/aufs4/tmpfs-idr.patch
 semplice/features/all/bfs/3.19-sched-bfs-461.patch
 #semplice/features/all/bfs/bfs-460-3.19-refactor_online_cpus.patch
 #semplice/features/all/bfs/bfs-460-3.19-refactor_needs_other_cpu.patch
