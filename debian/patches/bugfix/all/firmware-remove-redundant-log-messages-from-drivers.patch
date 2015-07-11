@@ -9,10 +9,8 @@ many other log messages can be removed from drivers.
 This will probably need to be split up into multiple patches prior to
 upstream submission.
 
-Index: linux-semplice-3.19.3/arch/arm/mach-netx/xc.c
-===================================================================
---- linux-semplice-3.19.3.orig/arch/arm/mach-netx/xc.c
-+++ linux-semplice-3.19.3/arch/arm/mach-netx/xc.c
+--- a/arch/arm/mach-netx/xc.c
++++ b/arch/arm/mach-netx/xc.c
 @@ -127,10 +127,8 @@ int xc_request_firmware(struct xc *x)
  
  	ret = request_firmware(&fw, name, x->dev);
@@ -25,10 +23,8 @@ Index: linux-semplice-3.19.3/arch/arm/mach-netx/xc.c
  
  	head = (struct fw_header *)fw->data;
  	if (head->magic != 0x4e657458) {
-Index: linux-semplice-3.19.3/arch/cris/arch-v32/drivers/iop_fw_load.c
-===================================================================
---- linux-semplice-3.19.3.orig/arch/cris/arch-v32/drivers/iop_fw_load.c
-+++ linux-semplice-3.19.3/arch/cris/arch-v32/drivers/iop_fw_load.c
+--- a/arch/cris/arch-v32/drivers/iop_fw_load.c
++++ b/arch/cris/arch-v32/drivers/iop_fw_load.c
 @@ -74,12 +74,7 @@ int iop_fw_load_spu(const unsigned char
  				  fw_name,
  				  &iop_spu_device[spu_inst]);
@@ -55,11 +51,9 @@ Index: linux-semplice-3.19.3/arch/cris/arch-v32/drivers/iop_fw_load.c
  	data = (u32 *) fw_entry->data;
  
  	/* disable MPU */
-Index: linux-semplice-3.19.3/arch/x86/kernel/cpu/microcode/amd.c
-===================================================================
---- linux-semplice-3.19.3.orig/arch/x86/kernel/cpu/microcode/amd.c
-+++ linux-semplice-3.19.3/arch/x86/kernel/cpu/microcode/amd.c
-@@ -433,10 +433,8 @@ static enum ucode_state request_microcod
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -432,10 +432,8 @@ static enum ucode_state request_microcod
  	if (c->x86 >= 0x15)
  		snprintf(fw_name, sizeof(fw_name), "amd-ucode/microcode_amd_fam%.2xh.bin", c->x86);
  
@@ -71,10 +65,8 @@ Index: linux-semplice-3.19.3/arch/x86/kernel/cpu/microcode/amd.c
  
  	ret = UCODE_ERROR;
  	if (*(u32 *)fw->data != UCODE_MAGIC) {
-Index: linux-semplice-3.19.3/drivers/atm/ambassador.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/atm/ambassador.c
-+++ linux-semplice-3.19.3/drivers/atm/ambassador.c
+--- a/drivers/atm/ambassador.c
++++ b/drivers/atm/ambassador.c
 @@ -1929,10 +1929,8 @@ static int ucode_init(loader_block *lb,
    int res;
  
@@ -87,11 +79,9 @@ Index: linux-semplice-3.19.3/drivers/atm/ambassador.c
  
    /* First record contains just the start address */
    rec = (const struct ihex_binrec *)fw->data;
-Index: linux-semplice-3.19.3/drivers/atm/fore200e.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/atm/fore200e.c
-+++ linux-semplice-3.19.3/drivers/atm/fore200e.c
-@@ -2505,10 +2505,9 @@ static int fore200e_load_and_start_fw(st
+--- a/drivers/atm/fore200e.c
++++ b/drivers/atm/fore200e.c
+@@ -2506,10 +2506,9 @@ static int fore200e_load_and_start_fw(st
  	return err;
  
      sprintf(buf, "%s%s", fore200e->bus->proc_name, FW_EXT);
@@ -104,11 +94,9 @@ Index: linux-semplice-3.19.3/drivers/atm/fore200e.c
  
      fw_data = (__le32 *) firmware->data;
      fw_size = firmware->size / sizeof(u32);
-Index: linux-semplice-3.19.3/drivers/bluetooth/ath3k.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/bluetooth/ath3k.c
-+++ linux-semplice-3.19.3/drivers/bluetooth/ath3k.c
-@@ -393,10 +393,8 @@ static int ath3k_load_patch(struct usb_d
+--- a/drivers/bluetooth/ath3k.c
++++ b/drivers/bluetooth/ath3k.c
+@@ -398,10 +398,8 @@ static int ath3k_load_patch(struct usb_d
  		 le32_to_cpu(fw_version.rom_version));
  
  	ret = request_firmware(&firmware, filename, &udev->dev);
@@ -120,7 +108,7 @@ Index: linux-semplice-3.19.3/drivers/bluetooth/ath3k.c
  
  	pt_rom_version = get_unaligned_le32(firmware->data +
  					    firmware->size - 8);
-@@ -456,10 +454,8 @@ static int ath3k_load_syscfg(struct usb_
+@@ -461,10 +459,8 @@ static int ath3k_load_syscfg(struct usb_
  		le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
  
  	ret = request_firmware(&firmware, filename, &udev->dev);
@@ -132,10 +120,8 @@ Index: linux-semplice-3.19.3/drivers/bluetooth/ath3k.c
  
  	ret = ath3k_load_fwfile(udev, firmware);
  	release_firmware(firmware);
-Index: linux-semplice-3.19.3/drivers/bluetooth/bcm203x.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/bluetooth/bcm203x.c
-+++ linux-semplice-3.19.3/drivers/bluetooth/bcm203x.c
+--- a/drivers/bluetooth/bcm203x.c
++++ b/drivers/bluetooth/bcm203x.c
 @@ -193,7 +193,6 @@ static int bcm203x_probe(struct usb_inte
  	}
  
@@ -152,10 +138,8 @@ Index: linux-semplice-3.19.3/drivers/bluetooth/bcm203x.c
  		usb_free_urb(data->urb);
  		kfree(data->buffer);
  		return -EIO;
-Index: linux-semplice-3.19.3/drivers/bluetooth/bfusb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/bluetooth/bfusb.c
-+++ linux-semplice-3.19.3/drivers/bluetooth/bfusb.c
+--- a/drivers/bluetooth/bfusb.c
++++ b/drivers/bluetooth/bfusb.c
 @@ -664,10 +664,8 @@ static int bfusb_probe(struct usb_interf
  	skb_queue_head_init(&data->pending_q);
  	skb_queue_head_init(&data->completed_q);
@@ -168,11 +152,9 @@ Index: linux-semplice-3.19.3/drivers/bluetooth/bfusb.c
  
  	BT_DBG("firmware data %p size %zu", firmware->data, firmware->size);
  
-Index: linux-semplice-3.19.3/drivers/bluetooth/bt3c_cs.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/bluetooth/bt3c_cs.c
-+++ linux-semplice-3.19.3/drivers/bluetooth/bt3c_cs.c
-@@ -571,10 +571,8 @@ static int bt3c_open(struct bt3c_info *i
+--- a/drivers/bluetooth/bt3c_cs.c
++++ b/drivers/bluetooth/bt3c_cs.c
+@@ -568,10 +568,8 @@ static int bt3c_open(struct bt3c_info *i
  
  	/* Load firmware */
  	err = request_firmware(&firmware, "BT3CPCC.bin", &info->p_dev->dev);
@@ -184,10 +166,8 @@ Index: linux-semplice-3.19.3/drivers/bluetooth/bt3c_cs.c
  
  	err = bt3c_load_firmware(info, firmware->data, firmware->size);
  
-Index: linux-semplice-3.19.3/drivers/bluetooth/btmrvl_sdio.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/bluetooth/btmrvl_sdio.c
-+++ linux-semplice-3.19.3/drivers/bluetooth/btmrvl_sdio.c
+--- a/drivers/bluetooth/btmrvl_sdio.c
++++ b/drivers/bluetooth/btmrvl_sdio.c
 @@ -355,8 +355,6 @@ static int btmrvl_sdio_download_helper(s
  	ret = request_firmware(&fw_helper, card->helper,
  						&card->func->dev);
@@ -206,10 +186,8 @@ Index: linux-semplice-3.19.3/drivers/bluetooth/btmrvl_sdio.c
  		ret = -ENOENT;
  		goto done;
  	}
-Index: linux-semplice-3.19.3/drivers/char/dsp56k.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/char/dsp56k.c
-+++ linux-semplice-3.19.3/drivers/char/dsp56k.c
+--- a/drivers/char/dsp56k.c
++++ b/drivers/char/dsp56k.c
 @@ -140,11 +140,8 @@ static int dsp56k_upload(u_char __user *
  	}
  	err = request_firmware(&fw, fw_name, &pdev->dev);
@@ -223,11 +201,9 @@ Index: linux-semplice-3.19.3/drivers/char/dsp56k.c
  	if (fw->size % 3) {
  		printk(KERN_ERR "Bogus length %d in image \"%s\"\n",
  		       fw->size, fw_name);
-Index: linux-semplice-3.19.3/drivers/dma/imx-sdma.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/dma/imx-sdma.c
-+++ linux-semplice-3.19.3/drivers/dma/imx-sdma.c
-@@ -1287,11 +1287,8 @@ static void sdma_load_firmware(const str
+--- a/drivers/dma/imx-sdma.c
++++ b/drivers/dma/imx-sdma.c
+@@ -1285,11 +1285,8 @@ static void sdma_load_firmware(const str
  	const struct sdma_script_start_addrs *addr;
  	unsigned short *ram_code;
  
@@ -240,10 +216,8 @@ Index: linux-semplice-3.19.3/drivers/dma/imx-sdma.c
  
  	if (fw->size < sizeof(*header))
  		goto err_firmware;
-Index: linux-semplice-3.19.3/drivers/gpu/drm/mga/mga_warp.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/gpu/drm/mga/mga_warp.c
-+++ linux-semplice-3.19.3/drivers/gpu/drm/mga/mga_warp.c
+--- a/drivers/gpu/drm/mga/mga_warp.c
++++ b/drivers/gpu/drm/mga/mga_warp.c
 @@ -79,11 +79,8 @@ int mga_warp_install_microcode(drm_mga_p
  	}
  	rc = request_ihex_firmware(&fw, firmware_name, &pdev->dev);
@@ -257,11 +231,9 @@ Index: linux-semplice-3.19.3/drivers/gpu/drm/mga/mga_warp.c
  
  	size = 0;
  	where = 0;
-Index: linux-semplice-3.19.3/drivers/gpu/drm/nouveau/core/engine/graph/nvc0.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/gpu/drm/nouveau/core/engine/graph/nvc0.c
-+++ linux-semplice-3.19.3/drivers/gpu/drm/nouveau/core/engine/graph/nvc0.c
-@@ -1496,10 +1496,8 @@ nvc0_graph_ctor_fw(struct nvc0_graph_pri
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c
+@@ -1521,10 +1521,8 @@ gf100_gr_ctor_fw(struct gf100_gr_priv *p
  	if (ret) {
  		snprintf(f, sizeof(f), "nouveau/%s", fwname);
  		ret = request_firmware(&fw, f, nv_device_base(device));
@@ -273,10 +245,8 @@ Index: linux-semplice-3.19.3/drivers/gpu/drm/nouveau/core/engine/graph/nvc0.c
  	}
  
  	fuc->size = fw->size;
-Index: linux-semplice-3.19.3/drivers/gpu/drm/r128/r128_cce.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/gpu/drm/r128/r128_cce.c
-+++ linux-semplice-3.19.3/drivers/gpu/drm/r128/r128_cce.c
+--- a/drivers/gpu/drm/r128/r128_cce.c
++++ b/drivers/gpu/drm/r128/r128_cce.c
 @@ -154,11 +154,8 @@ static int r128_cce_load_microcode(drm_r
  	}
  	rc = request_firmware(&fw, FIRMWARE_NAME, &pdev->dev);
@@ -290,11 +260,9 @@ Index: linux-semplice-3.19.3/drivers/gpu/drm/r128/r128_cce.c
  
  	if (fw->size != 256 * 8) {
  		printk(KERN_ERR
-Index: linux-semplice-3.19.3/drivers/gpu/drm/radeon/ni.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/gpu/drm/radeon/ni.c
-+++ linux-semplice-3.19.3/drivers/gpu/drm/radeon/ni.c
-@@ -811,10 +811,6 @@ int ni_init_microcode(struct radeon_devi
+--- a/drivers/gpu/drm/radeon/ni.c
++++ b/drivers/gpu/drm/radeon/ni.c
+@@ -812,10 +812,6 @@ int ni_init_microcode(struct radeon_devi
  
  out:
  	if (err) {
@@ -305,10 +273,8 @@ Index: linux-semplice-3.19.3/drivers/gpu/drm/radeon/ni.c
  		release_firmware(rdev->pfp_fw);
  		rdev->pfp_fw = NULL;
  		release_firmware(rdev->me_fw);
-Index: linux-semplice-3.19.3/drivers/gpu/drm/radeon/r100.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/gpu/drm/radeon/r100.c
-+++ linux-semplice-3.19.3/drivers/gpu/drm/radeon/r100.c
+--- a/drivers/gpu/drm/radeon/r100.c
++++ b/drivers/gpu/drm/radeon/r100.c
 @@ -1039,10 +1039,7 @@ static int r100_cp_init_microcode(struct
  	}
  
@@ -321,11 +287,9 @@ Index: linux-semplice-3.19.3/drivers/gpu/drm/radeon/r100.c
  		printk(KERN_ERR
  		       "radeon_cp: Bogus length %zu in firmware \"%s\"\n",
  		       rdev->me_fw->size, fw_name);
-Index: linux-semplice-3.19.3/drivers/gpu/drm/radeon/r600.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/gpu/drm/radeon/r600.c
-+++ linux-semplice-3.19.3/drivers/gpu/drm/radeon/r600.c
-@@ -2518,10 +2518,6 @@ int r600_init_microcode(struct radeon_de
+--- a/drivers/gpu/drm/radeon/r600.c
++++ b/drivers/gpu/drm/radeon/r600.c
+@@ -2545,10 +2545,6 @@ int r600_init_microcode(struct radeon_de
  
  out:
  	if (err) {
@@ -336,10 +300,8 @@ Index: linux-semplice-3.19.3/drivers/gpu/drm/radeon/r600.c
  		release_firmware(rdev->pfp_fw);
  		rdev->pfp_fw = NULL;
  		release_firmware(rdev->me_fw);
-Index: linux-semplice-3.19.3/drivers/gpu/drm/radeon/r600_cp.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/gpu/drm/radeon/r600_cp.c
-+++ linux-semplice-3.19.3/drivers/gpu/drm/radeon/r600_cp.c
+--- a/drivers/gpu/drm/radeon/r600_cp.c
++++ b/drivers/gpu/drm/radeon/r600_cp.c
 @@ -376,10 +376,6 @@ out:
  	platform_device_unregister(pdev);
  
@@ -351,10 +313,8 @@ Index: linux-semplice-3.19.3/drivers/gpu/drm/radeon/r600_cp.c
  		release_firmware(dev_priv->pfp_fw);
  		dev_priv->pfp_fw = NULL;
  		release_firmware(dev_priv->me_fw);
-Index: linux-semplice-3.19.3/drivers/gpu/drm/radeon/radeon_cp.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/gpu/drm/radeon/radeon_cp.c
-+++ linux-semplice-3.19.3/drivers/gpu/drm/radeon/radeon_cp.c
+--- a/drivers/gpu/drm/radeon/radeon_cp.c
++++ b/drivers/gpu/drm/radeon/radeon_cp.c
 @@ -530,10 +530,7 @@ static int radeon_cp_init_microcode(drm_
  
  	err = request_firmware(&dev_priv->me_fw, fw_name, &pdev->dev);
@@ -367,11 +327,9 @@ Index: linux-semplice-3.19.3/drivers/gpu/drm/radeon/radeon_cp.c
  		printk(KERN_ERR
  		       "radeon_cp: Bogus length %zu in firmware \"%s\"\n",
  		       dev_priv->me_fw->size, fw_name);
-Index: linux-semplice-3.19.3/drivers/infiniband/hw/qib/qib_sd7220.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/infiniband/hw/qib/qib_sd7220.c
-+++ linux-semplice-3.19.3/drivers/infiniband/hw/qib/qib_sd7220.c
-@@ -405,10 +405,8 @@ int qib_sd7220_init(struct qib_devdata *
+--- a/drivers/infiniband/hw/qib/qib_sd7220.c
++++ b/drivers/infiniband/hw/qib/qib_sd7220.c
+@@ -406,10 +406,8 @@ int qib_sd7220_init(struct qib_devdata *
  	}
  
  	ret = request_firmware(&fw, SD7220_FW_NAME, &dd->pcidev->dev);
@@ -383,11 +341,9 @@ Index: linux-semplice-3.19.3/drivers/infiniband/hw/qib/qib_sd7220.c
  
  	/* Substitute our deduced value for was_reset */
  	ret = qib_ibsd_ucode_loaded(dd->pport, fw);
-Index: linux-semplice-3.19.3/drivers/input/touchscreen/atmel_mxt_ts.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/input/touchscreen/atmel_mxt_ts.c
-+++ linux-semplice-3.19.3/drivers/input/touchscreen/atmel_mxt_ts.c
-@@ -1892,10 +1892,8 @@ static int mxt_load_fw(struct device *de
+--- a/drivers/input/touchscreen/atmel_mxt_ts.c
++++ b/drivers/input/touchscreen/atmel_mxt_ts.c
+@@ -2195,10 +2195,8 @@ static int mxt_load_fw(struct device *de
  	int ret;
  
  	ret = request_firmware(&fw, fn, dev);
@@ -399,10 +355,8 @@ Index: linux-semplice-3.19.3/drivers/input/touchscreen/atmel_mxt_ts.c
  
  	/* Check for incorrect enc file */
  	ret = mxt_check_firmware_format(dev, fw);
-Index: linux-semplice-3.19.3/drivers/isdn/hardware/mISDN/speedfax.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/isdn/hardware/mISDN/speedfax.c
-+++ linux-semplice-3.19.3/drivers/isdn/hardware/mISDN/speedfax.c
+--- a/drivers/isdn/hardware/mISDN/speedfax.c
++++ b/drivers/isdn/hardware/mISDN/speedfax.c
 @@ -392,11 +392,8 @@ setup_instance(struct sfax_hw *card)
  	card->isar.owner = THIS_MODULE;
  
@@ -416,10 +370,8 @@ Index: linux-semplice-3.19.3/drivers/isdn/hardware/mISDN/speedfax.c
  	if (debug & DEBUG_HW)
  		pr_notice("%s: got firmware %zu bytes\n",
  			  card->name, firmware->size);
-Index: linux-semplice-3.19.3/drivers/media/tuners/tuner-xc2028.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/tuners/tuner-xc2028.c
-+++ linux-semplice-3.19.3/drivers/media/tuners/tuner-xc2028.c
+--- a/drivers/media/tuners/tuner-xc2028.c
++++ b/drivers/media/tuners/tuner-xc2028.c
 @@ -1373,7 +1373,6 @@ static void load_firmware_cb(const struc
  
  	tuner_dbg("request_firmware_nowait(): %s\n", fw ? "OK" : "error");
@@ -428,11 +380,9 @@ Index: linux-semplice-3.19.3/drivers/media/tuners/tuner-xc2028.c
  		priv->state = XC2028_NODEV;
  		return;
  	}
-Index: linux-semplice-3.19.3/drivers/media/usb/dvb-usb/dib0700_devices.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/dvb-usb/dib0700_devices.c
-+++ linux-semplice-3.19.3/drivers/media/usb/dvb-usb/dib0700_devices.c
-@@ -2394,12 +2394,9 @@ static int stk9090m_frontend_attach(stru
+--- a/drivers/media/usb/dvb-usb/dib0700_devices.c
++++ b/drivers/media/usb/dvb-usb/dib0700_devices.c
+@@ -2391,12 +2391,9 @@ static int stk9090m_frontend_attach(stru
  
  	dib9000_i2c_enumeration(&adap->dev->i2c_adap, 1, 0x10, 0x80);
  
@@ -447,7 +397,7 @@ Index: linux-semplice-3.19.3/drivers/media/usb/dvb-usb/dib0700_devices.c
  	stk9090m_config.microcode_B_fe_size = state->frontend_firmware->size;
  	stk9090m_config.microcode_B_fe_buffer = state->frontend_firmware->data;
  
-@@ -2460,12 +2457,9 @@ static int nim9090md_frontend_attach(str
+@@ -2457,12 +2454,9 @@ static int nim9090md_frontend_attach(str
  	msleep(20);
  	dib0700_set_gpio(adap->dev, GPIO0, GPIO_OUT, 1);
  
@@ -462,10 +412,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/dvb-usb/dib0700_devices.c
  	nim9090md_config[0].microcode_B_fe_size = state->frontend_firmware->size;
  	nim9090md_config[0].microcode_B_fe_buffer = state->frontend_firmware->data;
  	nim9090md_config[1].microcode_B_fe_size = state->frontend_firmware->size;
-Index: linux-semplice-3.19.3/drivers/media/usb/dvb-usb/dvb-usb-firmware.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/dvb-usb/dvb-usb-firmware.c
-+++ linux-semplice-3.19.3/drivers/media/usb/dvb-usb/dvb-usb-firmware.c
+--- a/drivers/media/usb/dvb-usb/dvb-usb-firmware.c
++++ b/drivers/media/usb/dvb-usb/dvb-usb-firmware.c
 @@ -80,14 +80,9 @@ int dvb_usb_download_firmware(struct usb
  	int ret;
  	const struct firmware *fw = NULL;
@@ -483,10 +431,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/dvb-usb/dvb-usb-firmware.c
  
  	switch (props->usb_ctrl) {
  		case CYPRESS_AN2135:
-Index: linux-semplice-3.19.3/drivers/media/usb/dvb-usb/gp8psk.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/dvb-usb/gp8psk.c
-+++ linux-semplice-3.19.3/drivers/media/usb/dvb-usb/gp8psk.c
+--- a/drivers/media/usb/dvb-usb/gp8psk.c
++++ b/drivers/media/usb/dvb-usb/gp8psk.c
 @@ -116,20 +116,14 @@ static int gp8psk_load_bcm4500fw(struct
  	const u8 *ptr;
  	u8 *buf;
@@ -509,10 +455,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/dvb-usb/gp8psk.c
  	ptr = fw->data;
  	buf = kmalloc(64, GFP_KERNEL | GFP_DMA);
  	if (!buf) {
-Index: linux-semplice-3.19.3/drivers/media/usb/dvb-usb/opera1.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/dvb-usb/opera1.c
-+++ linux-semplice-3.19.3/drivers/media/usb/dvb-usb/opera1.c
+--- a/drivers/media/usb/dvb-usb/opera1.c
++++ b/drivers/media/usb/dvb-usb/opera1.c
 @@ -452,9 +452,6 @@ static int opera1_xilinx_load_firmware(s
  	info("start downloading fpga firmware %s",filename);
  
@@ -523,10 +467,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/dvb-usb/opera1.c
  		return ret;
  	} else {
  		p = kmalloc(fw->size, GFP_KERNEL);
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/af9013.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/af9013.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/af9013.c
+--- a/drivers/media/dvb-frontends/af9013.c
++++ b/drivers/media/dvb-frontends/af9013.c
 @@ -1372,16 +1372,8 @@ static int af9013_download_firmware(stru
  
  	/* request the firmware, this will block and timeout */
@@ -545,10 +487,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/af9013.c
  
  	/* calc checksum */
  	for (i = 0; i < fw->size; i++)
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/bcm3510.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/bcm3510.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/bcm3510.c
+--- a/drivers/media/dvb-frontends/bcm3510.c
++++ b/drivers/media/dvb-frontends/bcm3510.c
 @@ -635,10 +635,9 @@ static int bcm3510_download_firmware(str
  	int ret,i;
  
@@ -562,10 +502,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/bcm3510.c
  	deb_info("got firmware: %zu\n", fw->size);
  
  	b = fw->data;
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/cx24116.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/cx24116.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/cx24116.c
+--- a/drivers/media/dvb-frontends/cx24116.c
++++ b/drivers/media/dvb-frontends/cx24116.c
 @@ -493,13 +493,8 @@ static int cx24116_firmware_ondemand(str
  			__func__, CX24116_DEFAULT_FIRMWARE);
  		ret = request_firmware(&fw, CX24116_DEFAULT_FIRMWARE,
@@ -581,10 +519,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/cx24116.c
  
  		/* Make sure we don't recurse back through here
  		 * during loading */
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/drxd_hard.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/drxd_hard.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/drxd_hard.c
+--- a/drivers/media/dvb-frontends/drxd_hard.c
++++ b/drivers/media/dvb-frontends/drxd_hard.c
 @@ -905,10 +905,8 @@ static int load_firmware(struct drxd_sta
  {
  	const struct firmware *fw;
@@ -597,10 +533,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/drxd_hard.c
  
  	state->microcode = kmemdup(fw->data, fw->size, GFP_KERNEL);
  	if (state->microcode == NULL) {
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/drxk_hard.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/drxk_hard.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/drxk_hard.c
+--- a/drivers/media/dvb-frontends/drxk_hard.c
++++ b/drivers/media/dvb-frontends/drxk_hard.c
 @@ -6283,10 +6283,6 @@ static void load_firmware_cb(const struc
  
  	dprintk(1, ": %s\n", fw ? "firmware loaded" : "firmware not loaded");
@@ -612,10 +546,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/drxk_hard.c
  		state->microcode_name = NULL;
  
  		/*
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/ds3000.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/ds3000.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/ds3000.c
+--- a/drivers/media/dvb-frontends/ds3000.c
++++ b/drivers/media/dvb-frontends/ds3000.c
 @@ -362,12 +362,8 @@ static int ds3000_firmware_ondemand(stru
  				DS3000_DEFAULT_FIRMWARE);
  	ret = request_firmware(&fw, DS3000_DEFAULT_FIRMWARE,
@@ -630,10 +562,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/ds3000.c
  
  	ret = ds3000_load_firmware(fe, fw);
  	if (ret)
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/nxt200x.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/nxt200x.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/nxt200x.c
+--- a/drivers/media/dvb-frontends/nxt200x.c
++++ b/drivers/media/dvb-frontends/nxt200x.c
 @@ -891,12 +891,8 @@ static int nxt2002_init(struct dvb_front
  		 __func__, NXT2002_DEFAULT_FIRMWARE);
  	ret = request_firmware(&fw, NXT2002_DEFAULT_FIRMWARE,
@@ -662,10 +592,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/nxt200x.c
  
  	ret = nxt2004_load_firmware(fe, fw);
  	release_firmware(fw);
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/or51132.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/or51132.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/or51132.c
+--- a/drivers/media/dvb-frontends/or51132.c
++++ b/drivers/media/dvb-frontends/or51132.c
 @@ -341,11 +341,8 @@ static int or51132_set_parameters(struct
  		printk("or51132: Waiting for firmware upload(%s)...\n",
  		       fwname);
@@ -679,10 +607,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/or51132.c
  		ret = or51132_load_firmware(fe, fw);
  		release_firmware(fw);
  		if (ret) {
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/or51211.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/or51211.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/or51211.c
+--- a/drivers/media/dvb-frontends/or51211.c
++++ b/drivers/media/dvb-frontends/or51211.c
 @@ -375,12 +375,8 @@ static int or51211_init(struct dvb_front
  			OR51211_DEFAULT_FIRMWARE);
  		ret = config->request_firmware(fe, &fw,
@@ -697,10 +623,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/or51211.c
  
  		ret = or51211_load_firmware(fe, fw);
  		release_firmware(fw);
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/sp8870.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/sp8870.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/sp8870.c
+--- a/drivers/media/dvb-frontends/sp8870.c
++++ b/drivers/media/dvb-frontends/sp8870.c
 @@ -315,10 +315,8 @@ static int sp8870_init (struct dvb_front
  
  	/* request the firmware, this will block until someone uploads it */
@@ -713,10 +637,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/sp8870.c
  
  	if (sp8870_firmware_upload(state, fw)) {
  		printk("sp8870: writing firmware to device failed\n");
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/sp887x.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/sp887x.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/sp887x.c
+--- a/drivers/media/dvb-frontends/sp887x.c
++++ b/drivers/media/dvb-frontends/sp887x.c
 @@ -527,10 +527,8 @@ static int sp887x_init(struct dvb_fronte
  		/* request the firmware, this will block until someone uploads it */
  		printk("sp887x: waiting for firmware upload (%s)...\n", SP887X_DEFAULT_FIRMWARE);
@@ -729,10 +651,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/sp887x.c
  
  		ret = sp887x_initial_setup(fe, fw);
  		release_firmware(fw);
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/tda10048.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/tda10048.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/tda10048.c
+--- a/drivers/media/dvb-frontends/tda10048.c
++++ b/drivers/media/dvb-frontends/tda10048.c
 @@ -495,8 +495,6 @@ static int tda10048_firmware_upload(stru
  	ret = request_firmware(&fw, TDA10048_DEFAULT_FIRMWARE,
  		state->i2c->dev.parent);
@@ -742,10 +662,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/tda10048.c
  		return -EIO;
  	} else {
  		printk(KERN_INFO "%s: firmware read %Zu bytes.\n",
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/tda1004x.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/tda1004x.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/tda1004x.c
+--- a/drivers/media/dvb-frontends/tda1004x.c
++++ b/drivers/media/dvb-frontends/tda1004x.c
 @@ -401,10 +401,8 @@ static int tda10045_fwupload(struct dvb_
  	/* request the firmware, this will block until someone uploads it */
  	printk(KERN_INFO "tda1004x: waiting for firmware upload (%s)...\n", TDA10045_DEFAULT_FIRMWARE);
@@ -766,10 +684,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/tda1004x.c
  				return ret;
  			} else {
  				printk(KERN_INFO "tda1004x: please rename the firmware file to %s\n",
-Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/tda10071.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/dvb-frontends/tda10071.c
-+++ linux-semplice-3.19.3/drivers/media/dvb-frontends/tda10071.c
+--- a/drivers/media/dvb-frontends/tda10071.c
++++ b/drivers/media/dvb-frontends/tda10071.c
 @@ -956,12 +956,8 @@ static int tda10071_init(struct dvb_fron
  
  		/* request the firmware, this will block and timeout */
@@ -784,10 +700,8 @@ Index: linux-semplice-3.19.3/drivers/media/dvb-frontends/tda10071.c
  
  		/* init */
  		for (i = 0; i < ARRAY_SIZE(tab2); i++) {
-Index: linux-semplice-3.19.3/drivers/media/pci/ngene/ngene-core.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/ngene/ngene-core.c
-+++ linux-semplice-3.19.3/drivers/media/pci/ngene/ngene-core.c
+--- a/drivers/media/pci/ngene/ngene-core.c
++++ b/drivers/media/pci/ngene/ngene-core.c
 @@ -1260,13 +1260,8 @@ static int ngene_load_firm(struct ngene
  		break;
  	}
@@ -812,27 +726,23 @@ Index: linux-semplice-3.19.3/drivers/media/pci/ngene/ngene-core.c
  		ngene_fw = (u8 *) fw->data;
  		err = ngene_command_load_firmware(dev, ngene_fw, size);
  	}
-Index: linux-semplice-3.19.3/drivers/media/common/siano/smscoreapi.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/common/siano/smscoreapi.c
-+++ linux-semplice-3.19.3/drivers/media/common/siano/smscoreapi.c
-@@ -1164,10 +1164,8 @@ static int smscore_load_firmware_from_fi
+--- a/drivers/media/common/siano/smscoreapi.c
++++ b/drivers/media/common/siano/smscoreapi.c
+@@ -1162,10 +1162,8 @@ static int smscore_load_firmware_from_fi
  		return -EINVAL;
  
  	rc = request_firmware(&fw, fw_filename, coredev->device);
 -	if (rc < 0) {
--		sms_err("failed to open firmware file \"%s\"", fw_filename);
+-		pr_err("failed to open firmware file '%s'\n", fw_filename);
 +	if (rc)
  		return rc;
 -	}
- 	sms_info("read fw %s, buffer size=0x%zx", fw_filename, fw->size);
+ 	pr_debug("read fw %s, buffer size=0x%zx\n", fw_filename, fw->size);
  	fw_buf = kmalloc(ALIGN(fw->size, SMS_ALLOC_ALIGNMENT),
  			 GFP_KERNEL | GFP_DMA);
-Index: linux-semplice-3.19.3/drivers/media/pci/ttpci/av7110.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/ttpci/av7110.c
-+++ linux-semplice-3.19.3/drivers/media/pci/ttpci/av7110.c
-@@ -1531,16 +1531,9 @@ static int get_firmware(struct av7110* a
+--- a/drivers/media/pci/ttpci/av7110.c
++++ b/drivers/media/pci/ttpci/av7110.c
+@@ -1534,16 +1534,9 @@ static int get_firmware(struct av7110* a
  	/* request the av7110 firmware, this will block until someone uploads it */
  	ret = request_firmware(&fw, "dvb-ttpci-01.fw", &av7110->dev->pci->dev);
  	if (ret) {
@@ -851,10 +761,8 @@ Index: linux-semplice-3.19.3/drivers/media/pci/ttpci/av7110.c
  		return -EINVAL;
  	}
  
-Index: linux-semplice-3.19.3/drivers/media/pci/ttpci/av7110_hw.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/ttpci/av7110_hw.c
-+++ linux-semplice-3.19.3/drivers/media/pci/ttpci/av7110_hw.c
+--- a/drivers/media/pci/ttpci/av7110_hw.c
++++ b/drivers/media/pci/ttpci/av7110_hw.c
 @@ -251,11 +251,8 @@ int av7110_bootarm(struct av7110 *av7110
  	//saa7146_setgpio(dev, 3, SAA7146_GPIO_INPUT);
  
@@ -868,10 +776,8 @@ Index: linux-semplice-3.19.3/drivers/media/pci/ttpci/av7110_hw.c
  
  	mwdebi(av7110, DEBISWAB, DPRAM_BASE, fw->data, fw->size);
  	release_firmware(fw);
-Index: linux-semplice-3.19.3/drivers/media/usb/ttusb-budget/dvb-ttusb-budget.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/ttusb-budget/dvb-ttusb-budget.c
-+++ linux-semplice-3.19.3/drivers/media/usb/ttusb-budget/dvb-ttusb-budget.c
+--- a/drivers/media/usb/ttusb-budget/dvb-ttusb-budget.c
++++ b/drivers/media/usb/ttusb-budget/dvb-ttusb-budget.c
 @@ -296,10 +296,8 @@ static int ttusb_boot_dsp(struct ttusb *
  
  	err = request_firmware(&fw, "ttusb-budget/dspbootcode.bin",
@@ -884,10 +790,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/ttusb-budget/dvb-ttusb-budget.c
  
  	/* BootBlock */
  	b[0] = 0xaa;
-Index: linux-semplice-3.19.3/drivers/media/usb/ttusb-dec/ttusb_dec.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/ttusb-dec/ttusb_dec.c
-+++ linux-semplice-3.19.3/drivers/media/usb/ttusb-dec/ttusb_dec.c
+--- a/drivers/media/usb/ttusb-dec/ttusb_dec.c
++++ b/drivers/media/usb/ttusb-dec/ttusb_dec.c
 @@ -1297,11 +1297,8 @@ static int ttusb_dec_boot_dsp(struct ttu
  	dprintk("%s\n", __func__);
  
@@ -901,11 +805,9 @@ Index: linux-semplice-3.19.3/drivers/media/usb/ttusb-dec/ttusb_dec.c
  
  	firmware = fw_entry->data;
  	firmware_size = fw_entry->size;
-Index: linux-semplice-3.19.3/drivers/media/radio/radio-wl1273.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/radio/radio-wl1273.c
-+++ linux-semplice-3.19.3/drivers/media/radio/radio-wl1273.c
-@@ -512,11 +512,8 @@ static int wl1273_fm_upload_firmware_pat
+--- a/drivers/media/radio/radio-wl1273.c
++++ b/drivers/media/radio/radio-wl1273.c
+@@ -514,11 +514,8 @@ static int wl1273_fm_upload_firmware_pat
  	 * Uploading the firmware patch is not always necessary,
  	 * so we only print an info message.
  	 */
@@ -918,10 +820,8 @@ Index: linux-semplice-3.19.3/drivers/media/radio/radio-wl1273.c
  
  	ptr = (__u8 *) fw_p->data;
  	packet_num = ptr[0];
-Index: linux-semplice-3.19.3/drivers/media/radio/wl128x/fmdrv_common.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/radio/wl128x/fmdrv_common.c
-+++ linux-semplice-3.19.3/drivers/media/radio/wl128x/fmdrv_common.c
+--- a/drivers/media/radio/wl128x/fmdrv_common.c
++++ b/drivers/media/radio/wl128x/fmdrv_common.c
 @@ -1252,10 +1252,8 @@ static int fm_download_firmware(struct f
  
  	ret = request_firmware(&fw_entry, fw_name,
@@ -934,11 +834,9 @@ Index: linux-semplice-3.19.3/drivers/media/radio/wl128x/fmdrv_common.c
  	fmdbg("Firmware(%s) length : %zu bytes\n", fw_name, fw_entry->size);
  
  	fw_data = (void *)fw_entry->data;
-Index: linux-semplice-3.19.3/drivers/media/pci/bt8xx/bttv-cards.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/bt8xx/bttv-cards.c
-+++ linux-semplice-3.19.3/drivers/media/pci/bt8xx/bttv-cards.c
-@@ -3834,10 +3834,8 @@ static int pvr_boot(struct bttv *btv)
+--- a/drivers/media/pci/bt8xx/bttv-cards.c
++++ b/drivers/media/pci/bt8xx/bttv-cards.c
+@@ -3912,10 +3912,8 @@ static int pvr_boot(struct bttv *btv)
  	int rc;
  
  	rc = request_firmware(&fw_entry, "hcwamc.rbf", &btv->c.pci->dev);
@@ -950,10 +848,8 @@ Index: linux-semplice-3.19.3/drivers/media/pci/bt8xx/bttv-cards.c
  	rc = pvr_altera_load(btv, fw_entry->data, fw_entry->size);
  	pr_info("%d: altera firmware upload %s\n",
  		btv->c.nr, (rc < 0) ? "failed" : "ok");
-Index: linux-semplice-3.19.3/drivers/media/usb/cpia2/cpia2_core.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/cpia2/cpia2_core.c
-+++ linux-semplice-3.19.3/drivers/media/usb/cpia2/cpia2_core.c
+--- a/drivers/media/usb/cpia2/cpia2_core.c
++++ b/drivers/media/usb/cpia2/cpia2_core.c
 @@ -907,11 +907,8 @@ static int apply_vp_patch(struct camera_
  	struct cpia2_command cmd;
  
@@ -967,10 +863,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/cpia2/cpia2_core.c
  
  	cmd.req_mode = CAMERAACCESS_TYPE_REPEAT | CAMERAACCESS_VP;
  	cmd.direction = TRANSFER_WRITE;
-Index: linux-semplice-3.19.3/drivers/media/pci/cx18/cx18-av-firmware.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/cx18/cx18-av-firmware.c
-+++ linux-semplice-3.19.3/drivers/media/pci/cx18/cx18-av-firmware.c
+--- a/drivers/media/pci/cx18/cx18-av-firmware.c
++++ b/drivers/media/pci/cx18/cx18-av-firmware.c
 @@ -85,10 +85,8 @@ int cx18_av_loadfw(struct cx18 *cx)
  	int i;
  	int retries1 = 0;
@@ -983,10 +877,8 @@ Index: linux-semplice-3.19.3/drivers/media/pci/cx18/cx18-av-firmware.c
  
  	/* The firmware load often has byte errors, so allow for several
  	   retries, both at byte level and at the firmware load level. */
-Index: linux-semplice-3.19.3/drivers/media/pci/cx18/cx18-dvb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/cx18/cx18-dvb.c
-+++ linux-semplice-3.19.3/drivers/media/pci/cx18/cx18-dvb.c
+--- a/drivers/media/pci/cx18/cx18-dvb.c
++++ b/drivers/media/pci/cx18/cx18-dvb.c
 @@ -141,9 +141,7 @@ static int yuan_mpc718_mt352_reqfw(struc
  	int ret;
  
@@ -1007,10 +899,8 @@ Index: linux-semplice-3.19.3/drivers/media/pci/cx18/cx18-dvb.c
  		CX18_ERR("Run 'linux/Documentation/dvb/get_dvb_firmware "
  			  "mpc718' if you need the firmware\n");
  	}
-Index: linux-semplice-3.19.3/drivers/media/pci/cx18/cx18-firmware.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/cx18/cx18-firmware.c
-+++ linux-semplice-3.19.3/drivers/media/pci/cx18/cx18-firmware.c
+--- a/drivers/media/pci/cx18/cx18-firmware.c
++++ b/drivers/media/pci/cx18/cx18-firmware.c
 @@ -106,11 +106,8 @@ static int load_cpu_fw_direct(const char
  	u32 __iomem *dst = (u32 __iomem *)mem;
  	const u32 *src;
@@ -1033,10 +923,8 @@ Index: linux-semplice-3.19.3/drivers/media/pci/cx18/cx18-firmware.c
  		cx18_setup_page(cx, 0);
  		return -ENOMEM;
  	}
-Index: linux-semplice-3.19.3/drivers/media/usb/cx231xx/cx231xx-417.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/cx231xx/cx231xx-417.c
-+++ linux-semplice-3.19.3/drivers/media/usb/cx231xx/cx231xx-417.c
+--- a/drivers/media/usb/cx231xx/cx231xx-417.c
++++ b/drivers/media/usb/cx231xx/cx231xx-417.c
 @@ -995,14 +995,8 @@ static int cx231xx_load_firmware(struct
  	retval = request_firmware(&firmware, CX231xx_FIRM_IMAGE_NAME,
  				  dev->dev);
@@ -1053,10 +941,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/cx231xx/cx231xx-417.c
  
  	if (firmware->size != CX231xx_FIRM_IMAGE_SIZE) {
  		dev_err(dev->dev,
-Index: linux-semplice-3.19.3/drivers/media/pci/cx23885/cx23885-417.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/cx23885/cx23885-417.c
-+++ linux-semplice-3.19.3/drivers/media/pci/cx23885/cx23885-417.c
+--- a/drivers/media/pci/cx23885/cx23885-417.c
++++ b/drivers/media/pci/cx23885/cx23885-417.c
 @@ -931,14 +931,8 @@ static int cx23885_load_firmware(struct
  	retval = request_firmware(&firmware, CX23885_FIRM_IMAGE_NAME,
  				  &dev->pci->dev);
@@ -1073,11 +959,9 @@ Index: linux-semplice-3.19.3/drivers/media/pci/cx23885/cx23885-417.c
  
  	if (firmware->size != CX23885_FIRM_IMAGE_SIZE) {
  		printk(KERN_ERR "ERROR: Firmware size mismatch "
-Index: linux-semplice-3.19.3/drivers/media/pci/cx23885/cx23885-cards.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/cx23885/cx23885-cards.c
-+++ linux-semplice-3.19.3/drivers/media/pci/cx23885/cx23885-cards.c
-@@ -2122,11 +2122,7 @@ void cx23885_card_setup(struct cx23885_d
+--- a/drivers/media/pci/cx23885/cx23885-cards.c
++++ b/drivers/media/pci/cx23885/cx23885-cards.c
+@@ -2165,11 +2165,7 @@ void cx23885_card_setup(struct cx23885_d
  				cinfo.rev, filename);
  
  		ret = request_firmware(&fw, filename, &dev->pci->dev);
@@ -1090,10 +974,8 @@ Index: linux-semplice-3.19.3/drivers/media/pci/cx23885/cx23885-cards.c
  			altera_init(&netup_config, fw);
  
  		release_firmware(fw);
-Index: linux-semplice-3.19.3/drivers/media/i2c/cx25840/cx25840-firmware.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/i2c/cx25840/cx25840-firmware.c
-+++ linux-semplice-3.19.3/drivers/media/i2c/cx25840/cx25840-firmware.c
+--- a/drivers/media/i2c/cx25840/cx25840-firmware.c
++++ b/drivers/media/i2c/cx25840/cx25840-firmware.c
 @@ -126,10 +126,8 @@ int cx25840_loadfw(struct i2c_client *cl
  	if (is_cx231xx(state) && max_buf_size > 16)
  		max_buf_size = 16;
@@ -1106,10 +988,8 @@ Index: linux-semplice-3.19.3/drivers/media/i2c/cx25840/cx25840-firmware.c
  
  	start_fw_load(client);
  
-Index: linux-semplice-3.19.3/drivers/media/pci/cx88/cx88-blackbird.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/cx88/cx88-blackbird.c
-+++ linux-semplice-3.19.3/drivers/media/pci/cx88/cx88-blackbird.c
+--- a/drivers/media/pci/cx88/cx88-blackbird.c
++++ b/drivers/media/pci/cx88/cx88-blackbird.c
 @@ -444,12 +444,8 @@ static int blackbird_load_firmware(struc
  				  &dev->pci->dev);
  
@@ -1124,10 +1004,8 @@ Index: linux-semplice-3.19.3/drivers/media/pci/cx88/cx88-blackbird.c
  
  	if (firmware->size != BLACKBIRD_FIRM_IMAGE_SIZE) {
  		pr_err("Firmware size mismatch (have %zd, expected %d)\n",
-Index: linux-semplice-3.19.3/drivers/media/usb/gspca/vicam.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/gspca/vicam.c
-+++ linux-semplice-3.19.3/drivers/media/usb/gspca/vicam.c
+--- a/drivers/media/usb/gspca/vicam.c
++++ b/drivers/media/usb/gspca/vicam.c
 @@ -244,10 +244,8 @@ static int sd_init(struct gspca_dev *gsp
  
  	ret = request_ihex_firmware(&fw, VICAM_FIRMWARE,
@@ -1140,10 +1018,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/gspca/vicam.c
  
  	firmware_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
  	if (!firmware_buf) {
-Index: linux-semplice-3.19.3/drivers/media/pci/ivtv/ivtv-firmware.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/ivtv/ivtv-firmware.c
-+++ linux-semplice-3.19.3/drivers/media/pci/ivtv/ivtv-firmware.c
+--- a/drivers/media/pci/ivtv/ivtv-firmware.c
++++ b/drivers/media/pci/ivtv/ivtv-firmware.c
 @@ -80,8 +80,6 @@ retry:
  		release_firmware(fw);
  		return size;
@@ -1153,10 +1029,8 @@ Index: linux-semplice-3.19.3/drivers/media/pci/ivtv/ivtv-firmware.c
  	return -ENOMEM;
  }
  
-Index: linux-semplice-3.19.3/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
-+++ linux-semplice-3.19.3/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
+--- a/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
++++ b/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
 @@ -1382,29 +1382,6 @@ static int pvr2_locate_firmware(struct p
  			   "request_firmware fatal error with code=%d",ret);
  		return ret;
@@ -1187,11 +1061,9 @@ Index: linux-semplice-3.19.3/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
  	return ret;
  }
  
-Index: linux-semplice-3.19.3/drivers/media/usb/s2255/s2255drv.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/s2255/s2255drv.c
-+++ linux-semplice-3.19.3/drivers/media/usb/s2255/s2255drv.c
-@@ -2301,10 +2301,8 @@ static int s2255_probe(struct usb_interf
+--- a/drivers/media/usb/s2255/s2255drv.c
++++ b/drivers/media/usb/s2255/s2255drv.c
+@@ -2299,10 +2299,8 @@ static int s2255_probe(struct usb_interf
  	}
  	/* load the first chunk */
  	if (request_firmware(&dev->fw_data->fw,
@@ -1203,10 +1075,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/s2255/s2255drv.c
  	/* check the firmware is valid */
  	fw_size = dev->fw_data->fw->size;
  	pdata = (__le32 *) &dev->fw_data->fw->data[fw_size - 8];
-Index: linux-semplice-3.19.3/drivers/media/platform/s5p-mfc/s5p_mfc_ctrl.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/platform/s5p-mfc/s5p_mfc_ctrl.c
-+++ linux-semplice-3.19.3/drivers/media/platform/s5p-mfc/s5p_mfc_ctrl.c
+--- a/drivers/media/platform/s5p-mfc/s5p_mfc_ctrl.c
++++ b/drivers/media/platform/s5p-mfc/s5p_mfc_ctrl.c
 @@ -95,10 +95,8 @@ int s5p_mfc_load_firmware(struct s5p_mfc
  		}
  	}
@@ -1219,10 +1089,8 @@ Index: linux-semplice-3.19.3/drivers/media/platform/s5p-mfc/s5p_mfc_ctrl.c
  	if (fw_blob->size > dev->fw_size) {
  		mfc_err("MFC firmware is too big to be loaded\n");
  		release_firmware(fw_blob);
-Index: linux-semplice-3.19.3/drivers/media/pci/saa7164/saa7164-fw.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/pci/saa7164/saa7164-fw.c
-+++ linux-semplice-3.19.3/drivers/media/pci/saa7164/saa7164-fw.c
+--- a/drivers/media/pci/saa7164/saa7164-fw.c
++++ b/drivers/media/pci/saa7164/saa7164-fw.c
 @@ -420,11 +420,8 @@ int saa7164_downloadfirmware(struct saa7
  			__func__, fwname);
  
@@ -1236,27 +1104,9 @@ Index: linux-semplice-3.19.3/drivers/media/pci/saa7164/saa7164-fw.c
  
  		printk(KERN_INFO "%s() firmware read %Zu bytes.\n",
  			__func__, fw->size);
-Index: linux-semplice-3.19.3/drivers/staging/media/tlg2300/pd-main.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/staging/media/tlg2300/pd-main.c
-+++ linux-semplice-3.19.3/drivers/staging/media/tlg2300/pd-main.c
-@@ -219,10 +219,8 @@ static int firmware_download(struct usb_
- 	size_t max_packet_size;
- 
- 	ret = request_firmware(&fw, firmware_name, &udev->dev);
--	if (ret) {
--		log("download err : %d", ret);
-+	if (ret)
- 		return ret;
--	}
- 
- 	fwlength = fw->size;
- 
-Index: linux-semplice-3.19.3/drivers/misc/ti-st/st_kim.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/misc/ti-st/st_kim.c
-+++ linux-semplice-3.19.3/drivers/misc/ti-st/st_kim.c
-@@ -302,11 +302,8 @@ static long download_firmware(struct kim
+--- a/drivers/misc/ti-st/st_kim.c
++++ b/drivers/misc/ti-st/st_kim.c
+@@ -308,11 +308,8 @@ static long download_firmware(struct kim
  	    request_firmware(&kim_gdata->fw_entry, bts_scr_name,
  			     &kim_gdata->kim_pdev->dev);
  	if (unlikely((err != 0) || (kim_gdata->fw_entry->data == NULL) ||
@@ -1269,10 +1119,8 @@ Index: linux-semplice-3.19.3/drivers/misc/ti-st/st_kim.c
  	ptr = (void *)kim_gdata->fw_entry->data;
  	len = kim_gdata->fw_entry->size;
  	/* bts_header to remove out magic number and
-Index: linux-semplice-3.19.3/drivers/net/can/softing/softing_fw.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/can/softing/softing_fw.c
-+++ linux-semplice-3.19.3/drivers/net/can/softing/softing_fw.c
+--- a/drivers/net/can/softing/softing_fw.c
++++ b/drivers/net/can/softing/softing_fw.c
 @@ -237,11 +237,8 @@ int softing_load_app_fw(const char *file
  	int8_t type_end = 0, type_entrypoint = 0;
  
@@ -1286,10 +1134,8 @@ Index: linux-semplice-3.19.3/drivers/net/can/softing/softing_fw.c
  	dev_dbg(&card->pdev->dev, "firmware(%s) got %lu bytes\n",
  		file, (unsigned long)fw->size);
  	/* parse the firmware */
-Index: linux-semplice-3.19.3/drivers/net/ethernet/3com/typhoon.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/3com/typhoon.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/3com/typhoon.c
+--- a/drivers/net/ethernet/3com/typhoon.c
++++ b/drivers/net/ethernet/3com/typhoon.c
 @@ -1279,11 +1279,8 @@ typhoon_request_firmware(struct typhoon
  		return 0;
  
@@ -1303,10 +1149,8 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/3com/typhoon.c
  
  	image_data = typhoon_fw->data;
  	remaining = typhoon_fw->size;
-Index: linux-semplice-3.19.3/drivers/net/ethernet/adaptec/starfire.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/adaptec/starfire.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/adaptec/starfire.c
+--- a/drivers/net/ethernet/adaptec/starfire.c
++++ b/drivers/net/ethernet/adaptec/starfire.c
 @@ -1016,11 +1016,8 @@ static int netdev_open(struct net_device
  #endif /* VLAN_SUPPORT */
  
@@ -1333,10 +1177,8 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/adaptec/starfire.c
  	if (fw_tx->size % 4) {
  		printk(KERN_ERR "starfire: bogus length %zu in \"%s\"\n",
  		       fw_tx->size, FIRMWARE_TX);
-Index: linux-semplice-3.19.3/drivers/net/ethernet/alteon/acenic.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/alteon/acenic.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/alteon/acenic.c
+--- a/drivers/net/ethernet/alteon/acenic.c
++++ b/drivers/net/ethernet/alteon/acenic.c
 @@ -2888,11 +2888,8 @@ static int ace_load_firmware(struct net_
  		fw_name = "acenic/tg1.bin";
  
@@ -1350,10 +1192,8 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/alteon/acenic.c
  
  	fw_data = (void *)fw->data;
  
-Index: linux-semplice-3.19.3/drivers/net/ethernet/broadcom/bnx2.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/broadcom/bnx2.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/broadcom/bnx2.c
+--- a/drivers/net/ethernet/broadcom/bnx2.c
++++ b/drivers/net/ethernet/broadcom/bnx2.c
 @@ -3702,16 +3702,13 @@ static int bnx2_request_uncached_firmwar
  	}
  
@@ -1374,11 +1214,9 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/broadcom/bnx2.c
  	mips_fw = (const struct bnx2_mips_fw_file *) bp->mips_firmware->data;
  	rv2p_fw = (const struct bnx2_rv2p_fw_file *) bp->rv2p_firmware->data;
  	if (bp->mips_firmware->size < sizeof(*mips_fw) ||
-Index: linux-semplice-3.19.3/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
-@@ -12967,11 +12967,8 @@ static int bnx2x_init_firmware(struct bn
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
+@@ -12981,11 +12981,8 @@ static int bnx2x_init_firmware(struct bn
  	BNX2X_DEV_INFO("Loading %s\n", fw_file_name);
  
  	rc = request_firmware(&bp->firmware, fw_file_name, &bp->pdev->dev);
@@ -1391,11 +1229,9 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
  
  	rc = bnx2x_check_firmware(bp);
  	if (rc) {
-Index: linux-semplice-3.19.3/drivers/net/ethernet/broadcom/tg3.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/broadcom/tg3.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/broadcom/tg3.c
-@@ -11337,11 +11337,8 @@ static int tg3_request_firmware(struct t
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -11335,11 +11335,8 @@ static int tg3_request_firmware(struct t
  {
  	const struct tg3_firmware_hdr *fw_hdr;
  
@@ -1408,13 +1244,11 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/broadcom/tg3.c
  
  	fw_hdr = (struct tg3_firmware_hdr *)tp->fw->data;
  
-Index: linux-semplice-3.19.3/drivers/net/ethernet/brocade/bna/cna_fwimg.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/brocade/bna/cna_fwimg.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/brocade/bna/cna_fwimg.c
-@@ -30,10 +30,8 @@ cna_read_firmware(struct pci_dev *pdev,
- {
+--- a/drivers/net/ethernet/brocade/bna/cna_fwimg.c
++++ b/drivers/net/ethernet/brocade/bna/cna_fwimg.c
+@@ -32,10 +32,8 @@ cna_read_firmware(struct pci_dev *pdev,
  	const struct firmware *fw;
+ 	u32 n;
  
 -	if (request_firmware(&fw, fw_name, &pdev->dev)) {
 -		pr_alert("Can't locate firmware %s\n", fw_name);
@@ -1424,10 +1258,8 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/brocade/bna/cna_fwimg.c
  
  	*bfi_image = (u32 *)fw->data;
  	*bfi_image_size = fw->size/sizeof(u32);
-Index: linux-semplice-3.19.3/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
+--- a/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
 @@ -1034,12 +1034,8 @@ int t3_get_edc_fw(struct cphy *phy, int
  	snprintf(buf, sizeof(buf), get_edc_fw_name(edc_idx));
  
@@ -1468,10 +1300,8 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/chelsio/cxgb3/cxgb3_main.c
  
  	ret = t3_check_tpsram(adap, tpsram->data, tpsram->size);
  	if (ret)
-Index: linux-semplice-3.19.3/drivers/net/ethernet/intel/e100.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/intel/e100.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/intel/e100.c
+--- a/drivers/net/ethernet/intel/e100.c
++++ b/drivers/net/ethernet/intel/e100.c
 @@ -1290,9 +1290,6 @@ static const struct firmware *e100_reque
  
  	if (err) {
@@ -1482,11 +1312,9 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/intel/e100.c
  			return ERR_PTR(err);
  		} else {
  			netif_info(nic, probe, nic->netdev,
-Index: linux-semplice-3.19.3/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
-@@ -601,8 +601,6 @@ static int myri10ge_load_hotplug_firmwar
+--- a/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
++++ b/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
+@@ -596,8 +596,6 @@ static int myri10ge_load_hotplug_firmwar
  	unsigned i;
  
  	if ((status = request_firmware(&fw, mgp->fw_name, dev)) < 0) {
@@ -1495,10 +1323,8 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
  		status = -EINVAL;
  		goto abort_with_nothing;
  	}
-Index: linux-semplice-3.19.3/drivers/net/ethernet/smsc/smc91c92_cs.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/smsc/smc91c92_cs.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/smsc/smc91c92_cs.c
+--- a/drivers/net/ethernet/smsc/smc91c92_cs.c
++++ b/drivers/net/ethernet/smsc/smc91c92_cs.c
 @@ -647,10 +647,8 @@ static int osi_load_firmware(struct pcmc
  	int i, err;
  
@@ -1511,10 +1337,8 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/smsc/smc91c92_cs.c
  
  	/* Download the Seven of Diamonds firmware */
  	for (i = 0; i < fw->size; i++) {
-Index: linux-semplice-3.19.3/drivers/net/ethernet/sun/cassini.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/ethernet/sun/cassini.c
-+++ linux-semplice-3.19.3/drivers/net/ethernet/sun/cassini.c
+--- a/drivers/net/ethernet/sun/cassini.c
++++ b/drivers/net/ethernet/sun/cassini.c
 @@ -816,11 +816,8 @@ static void cas_saturn_firmware_init(str
  		return;
  
@@ -1528,10 +1352,8 @@ Index: linux-semplice-3.19.3/drivers/net/ethernet/sun/cassini.c
  	if (fw->size < 2) {
  		pr_err("bogus length %zu in \"%s\"\n",
  		       fw->size, fw_name);
-Index: linux-semplice-3.19.3/drivers/net/hamradio/yam.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/hamradio/yam.c
-+++ linux-semplice-3.19.3/drivers/net/hamradio/yam.c
+--- a/drivers/net/hamradio/yam.c
++++ b/drivers/net/hamradio/yam.c
 @@ -372,11 +372,8 @@ static unsigned char *add_mcs(unsigned c
  		}
  		err = request_firmware(&fw, fw_name[predef], &pdev->dev);
@@ -1545,10 +1367,8 @@ Index: linux-semplice-3.19.3/drivers/net/hamradio/yam.c
  		if (fw->size != YAM_FPGA_SIZE) {
  			printk(KERN_ERR "Bogus length %zu in firmware \"%s\"\n",
  			       fw->size, fw_name[predef]);
-Index: linux-semplice-3.19.3/drivers/net/usb/kaweth.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/usb/kaweth.c
-+++ linux-semplice-3.19.3/drivers/net/usb/kaweth.c
+--- a/drivers/net/usb/kaweth.c
++++ b/drivers/net/usb/kaweth.c
 @@ -396,10 +396,8 @@ static int kaweth_download_firmware(stru
  	int ret;
  
@@ -1561,10 +1381,8 @@ Index: linux-semplice-3.19.3/drivers/net/usb/kaweth.c
  
  	if (fw->size > KAWETH_FIRMWARE_BUF_SIZE) {
  		dev_err(&kaweth->intf->dev, "Firmware too big: %zu\n",
-Index: linux-semplice-3.19.3/drivers/net/wimax/i2400m/fw.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wimax/i2400m/fw.c
-+++ linux-semplice-3.19.3/drivers/net/wimax/i2400m/fw.c
+--- a/drivers/net/wimax/i2400m/fw.c
++++ b/drivers/net/wimax/i2400m/fw.c
 @@ -1582,11 +1582,8 @@ int i2400m_dev_bootstrap(struct i2400m *
  		}
  		d_printf(1, dev, "trying firmware %s (%d)\n", fw_name, itr);
@@ -1587,10 +1405,8 @@ Index: linux-semplice-3.19.3/drivers/net/wimax/i2400m/fw.c
  		kfree(i2400m_fw);
  		i2400m_fw = (void *) ~0;
  	} else
-Index: linux-semplice-3.19.3/drivers/net/wireless/at76c50x-usb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/at76c50x-usb.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/at76c50x-usb.c
+--- a/drivers/net/wireless/at76c50x-usb.c
++++ b/drivers/net/wireless/at76c50x-usb.c
 @@ -1622,13 +1622,8 @@ static struct fwentry *at76_load_firmwar
  
  	at76_dbg(DBG_FW, "downloading firmware %s", fwe->fwname);
@@ -1606,11 +1422,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/at76c50x-usb.c
  
  	at76_dbg(DBG_FW, "got it.");
  	fwh = (struct at76_fw_header *)(fwe->fw->data);
-Index: linux-semplice-3.19.3/drivers/net/wireless/ath/ath9k/hif_usb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -1084,12 +1084,8 @@ static void ath9k_hif_usb_firmware_cb(co
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -1085,12 +1085,8 @@ static void ath9k_hif_usb_firmware_cb(co
  	struct hif_device_usb *hif_dev = context;
  	int ret;
  
@@ -1624,10 +1438,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/ath/ath9k/hif_usb.c
  
  	hif_dev->htc_handle = ath9k_htc_hw_alloc(hif_dev, &hif_usb,
  						 &hif_dev->udev->dev);
-Index: linux-semplice-3.19.3/drivers/net/wireless/ath/carl9170/usb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/ath/carl9170/usb.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/ath/carl9170/usb.c
+--- a/drivers/net/wireless/ath/carl9170/usb.c
++++ b/drivers/net/wireless/ath/carl9170/usb.c
 @@ -1032,7 +1032,6 @@ static void carl9170_usb_firmware_step2(
  		return;
  	}
@@ -1636,11 +1448,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/ath/carl9170/usb.c
  	carl9170_usb_firmware_failed(ar);
  }
  
-Index: linux-semplice-3.19.3/drivers/net/wireless/atmel.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/atmel.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/atmel.c
-@@ -3927,12 +3927,8 @@ static int reset_atmel_card(struct net_d
+--- a/drivers/net/wireless/atmel.c
++++ b/drivers/net/wireless/atmel.c
+@@ -3917,12 +3917,8 @@ static int reset_atmel_card(struct net_d
  					strcpy(priv->firmware_id, "atmel_at76c502.bin");
  				}
  				err = request_firmware(&fw_entry, priv->firmware_id, priv->sys_dev);
@@ -1654,11 +1464,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/atmel.c
  			} else {
  				int fw_index = 0;
  				int success = 0;
-Index: linux-semplice-3.19.3/drivers/net/wireless/b43/main.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/b43/main.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/b43/main.c
-@@ -2215,19 +2215,8 @@ int b43_do_request_fw(struct b43_request
+--- a/drivers/net/wireless/b43/main.c
++++ b/drivers/net/wireless/b43/main.c
+@@ -2253,19 +2253,8 @@ int b43_do_request_fw(struct b43_request
  	}
  	err = request_firmware(&ctx->blob, ctx->fwname,
  			       ctx->dev->dev->dev);
@@ -1679,10 +1487,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/b43/main.c
  fw_ready:
  	if (ctx->blob->size < sizeof(struct b43_fw_header))
  		goto err_format;
-Index: linux-semplice-3.19.3/drivers/net/wireless/b43legacy/main.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/b43legacy/main.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/b43legacy/main.c
+--- a/drivers/net/wireless/b43legacy/main.c
++++ b/drivers/net/wireless/b43legacy/main.c
 @@ -1554,11 +1554,8 @@ static int do_request_fw(struct b43legac
  	} else {
  		err = request_firmware(fw, path, dev->dev->dev);
@@ -1696,10 +1502,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/b43legacy/main.c
  	if ((*fw)->size < sizeof(struct b43legacy_fw_header))
  		goto err_format;
  	hdr = (struct b43legacy_fw_header *)((*fw)->data);
-Index: linux-semplice-3.19.3/drivers/net/wireless/brcm80211/brcmsmac/mac80211_if.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/brcm80211/brcmsmac/mac80211_if.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/brcm80211/brcmsmac/mac80211_if.c
+--- a/drivers/net/wireless/brcm80211/brcmsmac/mac80211_if.c
++++ b/drivers/net/wireless/brcm80211/brcmsmac/mac80211_if.c
 @@ -379,19 +379,13 @@ static int brcms_request_fw(struct brcms
  		sprintf(fw_name, "%s-%d.fw", brcms_firmwares[i],
  			UCODE_LOADER_API_VER);
@@ -1722,10 +1526,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/brcm80211/brcmsmac/mac80211_if
  		wl->fw.hdr_num_entries[i] =
  		    wl->fw.fw_hdr[i]->size / (sizeof(struct firmware_hdr));
  	}
-Index: linux-semplice-3.19.3/drivers/net/wireless/ipw2x00/ipw2100.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/ipw2x00/ipw2100.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/ipw2x00/ipw2100.c
+--- a/drivers/net/wireless/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/ipw2x00/ipw2100.c
 @@ -8411,12 +8411,8 @@ static int ipw2100_get_firmware(struct i
  
  	rc = request_firmware(&fw->fw_entry, fw_name, &priv->pci_dev->dev);
@@ -1740,10 +1542,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/ipw2x00/ipw2100.c
  	IPW_DEBUG_INFO("firmware data %p size %zd\n", fw->fw_entry->data,
  		       fw->fw_entry->size);
  
-Index: linux-semplice-3.19.3/drivers/net/wireless/ipw2x00/ipw2200.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/ipw2x00/ipw2200.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/ipw2x00/ipw2200.c
+--- a/drivers/net/wireless/ipw2x00/ipw2200.c
++++ b/drivers/net/wireless/ipw2x00/ipw2200.c
 @@ -3418,10 +3418,8 @@ static int ipw_get_fw(struct ipw_priv *p
  
  	/* ask firmware_class module to get the boot firmware off disk */
@@ -1756,10 +1556,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/ipw2x00/ipw2200.c
  
  	if ((*raw)->size < sizeof(*fw)) {
  		IPW_ERROR("%s is too small (%zd)\n", name, (*raw)->size);
-Index: linux-semplice-3.19.3/drivers/net/wireless/iwlegacy/3945-mac.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/iwlegacy/3945-mac.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/iwlegacy/3945-mac.c
+--- a/drivers/net/wireless/iwlegacy/3945-mac.c
++++ b/drivers/net/wireless/iwlegacy/3945-mac.c
 @@ -1861,7 +1861,6 @@ il3945_read_ucode(struct il_priv *il)
  		sprintf(buf, "%s%u%s", name_pre, idx, ".ucode");
  		ret = request_firmware(&ucode_raw, buf, &il->pci_dev->dev);
@@ -1768,11 +1566,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/iwlegacy/3945-mac.c
  			if (ret == -ENOENT)
  				continue;
  			else
-Index: linux-semplice-3.19.3/drivers/net/wireless/iwlwifi/iwl-drv.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/iwlwifi/iwl-drv.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/iwlwifi/iwl-drv.c
-@@ -1096,13 +1096,8 @@ static void iwl_req_fw_callback(const st
+--- a/drivers/net/wireless/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/iwlwifi/iwl-drv.c
+@@ -1119,13 +1119,8 @@ static void iwl_req_fw_callback(const st
  	if (!pieces)
  		return;
  
@@ -1787,11 +1583,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/iwlwifi/iwl-drv.c
  
  	IWL_DEBUG_INFO(drv, "Loaded firmware file '%s' (%zd bytes).\n",
  		       drv->firmware_name, ucode_raw->size);
-Index: linux-semplice-3.19.3/drivers/net/wireless/libertas_tf/if_usb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/libertas_tf/if_usb.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/libertas_tf/if_usb.c
-@@ -825,8 +825,6 @@ static int if_usb_prog_firmware(struct i
+--- a/drivers/net/wireless/libertas_tf/if_usb.c
++++ b/drivers/net/wireless/libertas_tf/if_usb.c
+@@ -824,8 +824,6 @@ static int if_usb_prog_firmware(struct i
  	kparam_block_sysfs_write(fw_name);
  	ret = request_firmware(&cardp->fw, lbtf_fw_name, &cardp->udev->dev);
  	if (ret < 0) {
@@ -1800,11 +1594,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/libertas_tf/if_usb.c
  		kparam_unblock_sysfs_write(fw_name);
  		goto done;
  	}
-Index: linux-semplice-3.19.3/drivers/net/wireless/mwifiex/main.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/mwifiex/main.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/mwifiex/main.c
-@@ -400,11 +400,8 @@ static void mwifiex_fw_dpc(const struct
+--- a/drivers/net/wireless/mwifiex/main.c
++++ b/drivers/net/wireless/mwifiex/main.c
+@@ -454,11 +454,8 @@ static void mwifiex_fw_dpc(const struct
  	bool init_failed = false;
  	struct wireless_dev *wdev;
  
@@ -1817,10 +1609,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/mwifiex/main.c
  
  	memset(&fw, 0, sizeof(struct mwifiex_fw_image));
  	adapter->firmware = firmware;
-Index: linux-semplice-3.19.3/drivers/net/wireless/mwl8k.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/mwl8k.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/mwl8k.c
+--- a/drivers/net/wireless/mwl8k.c
++++ b/drivers/net/wireless/mwl8k.c
 @@ -5711,16 +5711,12 @@ static int mwl8k_firmware_load_success(s
  static void mwl8k_fw_state_machine(const struct firmware *fw, void *context)
  {
@@ -1864,10 +1654,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/mwl8k.c
  
  	if (nowait)
  		return rc;
-Index: linux-semplice-3.19.3/drivers/net/wireless/orinoco/fw.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/orinoco/fw.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/orinoco/fw.c
+--- a/drivers/net/wireless/orinoco/fw.c
++++ b/drivers/net/wireless/orinoco/fw.c
 @@ -132,7 +132,6 @@ orinoco_dl_firmware(struct orinoco_priva
  		err = request_firmware(&fw_entry, firmware, priv->dev);
  
@@ -1900,11 +1688,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/orinoco/fw.c
  	} else
  		fw_entry = orinoco_cached_fw_get(priv, false);
  
-Index: linux-semplice-3.19.3/drivers/net/wireless/orinoco/orinoco_usb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/orinoco/orinoco_usb.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/orinoco/orinoco_usb.c
-@@ -1669,7 +1669,6 @@ static int ezusb_probe(struct usb_interf
+--- a/drivers/net/wireless/orinoco/orinoco_usb.c
++++ b/drivers/net/wireless/orinoco/orinoco_usb.c
+@@ -1667,7 +1667,6 @@ static int ezusb_probe(struct usb_interf
  		if (ezusb_firmware_download(upriv, &firmware) < 0)
  			goto error;
  	} else {
@@ -1912,11 +1698,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/orinoco/orinoco_usb.c
  		goto error;
  	}
  
-Index: linux-semplice-3.19.3/drivers/net/wireless/p54/p54pci.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/p54/p54pci.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/p54/p54pci.c
-@@ -496,7 +496,6 @@ static void p54p_firmware_step2(const st
+--- a/drivers/net/wireless/p54/p54pci.c
++++ b/drivers/net/wireless/p54/p54pci.c
+@@ -499,7 +499,6 @@ static void p54p_firmware_step2(const st
  	int err;
  
  	if (!fw) {
@@ -1924,10 +1708,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/p54/p54pci.c
  		err = -ENOENT;
  		goto out;
  	}
-Index: linux-semplice-3.19.3/drivers/net/wireless/p54/p54spi.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/p54/p54spi.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/p54/p54spi.c
+--- a/drivers/net/wireless/p54/p54spi.c
++++ b/drivers/net/wireless/p54/p54spi.c
 @@ -170,10 +170,8 @@ static int p54spi_request_firmware(struc
  	/* FIXME: should driver use it's own struct device? */
  	ret = request_firmware(&priv->firmware, "3826.arm", &priv->spi->dev);
@@ -1940,10 +1722,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/p54/p54spi.c
  
  	ret = p54_parse_firmware(dev, priv->firmware);
  	if (ret) {
-Index: linux-semplice-3.19.3/drivers/net/wireless/p54/p54usb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/p54/p54usb.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/p54/p54usb.c
+--- a/drivers/net/wireless/p54/p54usb.c
++++ b/drivers/net/wireless/p54/p54usb.c
 @@ -929,7 +929,6 @@ static void p54u_load_firmware_cb(const
  		err = p54u_start_ops(priv);
  	} else {
@@ -1952,10 +1732,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/p54/p54usb.c
  	}
  
  	if (err) {
-Index: linux-semplice-3.19.3/drivers/net/wireless/prism54/islpci_dev.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/prism54/islpci_dev.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/prism54/islpci_dev.c
+--- a/drivers/net/wireless/prism54/islpci_dev.c
++++ b/drivers/net/wireless/prism54/islpci_dev.c
 @@ -92,12 +92,9 @@ isl_upload_firmware(islpci_private *priv
  		const u32 *fw_ptr;
  
@@ -1971,10 +1749,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/prism54/islpci_dev.c
  		/* prepare the Direct Memory Base register */
  		reg = ISL38XX_DEV_FIRMWARE_ADDRES;
  
-Index: linux-semplice-3.19.3/drivers/net/wireless/rt2x00/rt2x00firmware.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/rt2x00/rt2x00firmware.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/rt2x00/rt2x00firmware.c
+--- a/drivers/net/wireless/rt2x00/rt2x00firmware.c
++++ b/drivers/net/wireless/rt2x00/rt2x00firmware.c
 @@ -49,10 +49,8 @@ static int rt2x00lib_request_firmware(st
  	rt2x00_info(rt2x00dev, "Loading firmware file '%s'\n", fw_name);
  
@@ -1987,11 +1763,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/rt2x00/rt2x00firmware.c
  
  	if (!fw || !fw->size || !fw->data) {
  		rt2x00_err(rt2x00dev, "Failed to read Firmware\n");
-Index: linux-semplice-3.19.3/drivers/net/wireless/rtlwifi/core.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/rtlwifi/core.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/rtlwifi/core.c
-@@ -114,7 +114,6 @@ void rtl_fw_cb(const struct firmware *fi
+--- a/drivers/net/wireless/rtlwifi/core.c
++++ b/drivers/net/wireless/rtlwifi/core.c
+@@ -115,7 +115,6 @@ static void rtl_fw_do_work(const struct
  			if (!err)
  				goto found_alt;
  		}
@@ -1999,10 +1773,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/rtlwifi/core.c
  		rtlpriv->max_fw_size = 0;
  		return;
  	}
-Index: linux-semplice-3.19.3/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
+--- a/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
++++ b/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
 @@ -94,7 +94,6 @@ static void rtl92se_fw_cb(const struct f
  			 "Firmware callback routine entered!\n");
  	complete(&rtlpriv->firmware_loading_complete);
@@ -2011,10 +1783,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/rtlwifi/rtl8192se/sw.c
  		rtlpriv->max_fw_size = 0;
  		return;
  	}
-Index: linux-semplice-3.19.3/drivers/net/wireless/ti/wl1251/main.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/ti/wl1251/main.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/ti/wl1251/main.c
+--- a/drivers/net/wireless/ti/wl1251/main.c
++++ b/drivers/net/wireless/ti/wl1251/main.c
 @@ -71,10 +71,8 @@ static int wl1251_fetch_firmware(struct
  
  	ret = request_firmware(&fw, WL1251_FW_NAME, dev);
@@ -2039,11 +1809,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/ti/wl1251/main.c
  
  	if (fw->size % 4) {
  		wl1251_error("nvs size is not multiple of 32 bits: %zu",
-Index: linux-semplice-3.19.3/drivers/net/wireless/ti/wlcore/main.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/ti/wlcore/main.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/ti/wlcore/main.c
-@@ -749,10 +749,8 @@ static int wl12xx_fetch_firmware(struct
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -762,10 +762,8 @@ static int wl12xx_fetch_firmware(struct
  
  	ret = request_firmware(&fw, fw_name, wl->dev);
  
@@ -2055,10 +1823,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/ti/wlcore/main.c
  
  	if (fw->size % 4) {
  		wl1271_error("firmware size is not multiple of 32 bits: %zu",
-Index: linux-semplice-3.19.3/drivers/net/wireless/zd1201.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/zd1201.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/zd1201.c
+--- a/drivers/net/wireless/zd1201.c
++++ b/drivers/net/wireless/zd1201.c
 @@ -65,8 +65,6 @@ static int zd1201_fw_upload(struct usb_d
  
  	err = request_firmware(&fw_entry, fwfile, &dev->dev);
@@ -2068,10 +1834,8 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/zd1201.c
  		dev_err(&dev->dev, "Goto http://linux-lc100020.sourceforge.net for more info.\n");
  		return err;
  	}
-Index: linux-semplice-3.19.3/drivers/net/wireless/zd1211rw/zd_usb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/net/wireless/zd1211rw/zd_usb.c
-+++ linux-semplice-3.19.3/drivers/net/wireless/zd1211rw/zd_usb.c
+--- a/drivers/net/wireless/zd1211rw/zd_usb.c
++++ b/drivers/net/wireless/zd1211rw/zd_usb.c
 @@ -120,16 +120,9 @@ static void int_urb_complete(struct urb
  static int request_fw_file(
  	const struct firmware **fw, const char *name, struct device *device)
@@ -2090,11 +1854,9 @@ Index: linux-semplice-3.19.3/drivers/net/wireless/zd1211rw/zd_usb.c
  }
  
  static inline u16 get_bcdDevice(const struct usb_device *udev)
-Index: linux-semplice-3.19.3/drivers/scsi/advansys.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/advansys.c
-+++ linux-semplice-3.19.3/drivers/scsi/advansys.c
-@@ -4298,8 +4298,6 @@ static ushort AscInitAsc1000Driver(ASC_D
+--- a/drivers/scsi/advansys.c
++++ b/drivers/scsi/advansys.c
+@@ -4280,8 +4280,6 @@ static ushort AscInitAsc1000Driver(ASC_D
  
  	err = request_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
  	if (err) {
@@ -2103,7 +1865,7 @@ Index: linux-semplice-3.19.3/drivers/scsi/advansys.c
  		asc_dvc->err_code |= ASC_IERR_MCODE_CHKSUM;
  		return err;
  	}
-@@ -4631,8 +4629,6 @@ static int AdvInitAsc3550Driver(ADV_DVC_
+@@ -4613,8 +4611,6 @@ static int AdvInitAsc3550Driver(ADV_DVC_
  
  	err = request_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
  	if (err) {
@@ -2112,7 +1874,7 @@ Index: linux-semplice-3.19.3/drivers/scsi/advansys.c
  		asc_dvc->err_code = ASC_IERR_MCODE_CHKSUM;
  		return err;
  	}
-@@ -5147,8 +5143,6 @@ static int AdvInitAsc38C0800Driver(ADV_D
+@@ -5129,8 +5125,6 @@ static int AdvInitAsc38C0800Driver(ADV_D
  
  	err = request_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
  	if (err) {
@@ -2121,7 +1883,7 @@ Index: linux-semplice-3.19.3/drivers/scsi/advansys.c
  		asc_dvc->err_code = ASC_IERR_MCODE_CHKSUM;
  		return err;
  	}
-@@ -5649,8 +5643,6 @@ static int AdvInitAsc38C1600Driver(ADV_D
+@@ -5631,8 +5625,6 @@ static int AdvInitAsc38C1600Driver(ADV_D
  
  	err = request_firmware(&fw, fwname, asc_dvc->drv_ptr->dev);
  	if (err) {
@@ -2130,10 +1892,8 @@ Index: linux-semplice-3.19.3/drivers/scsi/advansys.c
  		asc_dvc->err_code = ASC_IERR_MCODE_CHKSUM;
  		return err;
  	}
-Index: linux-semplice-3.19.3/drivers/scsi/aic94xx/aic94xx_init.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/aic94xx/aic94xx_init.c
-+++ linux-semplice-3.19.3/drivers/scsi/aic94xx/aic94xx_init.c
+--- a/drivers/scsi/aic94xx/aic94xx_init.c
++++ b/drivers/scsi/aic94xx/aic94xx_init.c
 @@ -390,8 +390,6 @@ static ssize_t asd_store_update_bios(str
  				   filename_ptr,
  				   &asd_ha->pcidev->dev);
@@ -2143,10 +1903,8 @@ Index: linux-semplice-3.19.3/drivers/scsi/aic94xx/aic94xx_init.c
  		err = FAIL_OPEN_BIOS_FILE;
  		goto out1;
  	}
-Index: linux-semplice-3.19.3/drivers/scsi/aic94xx/aic94xx_seq.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/aic94xx/aic94xx_seq.c
-+++ linux-semplice-3.19.3/drivers/scsi/aic94xx/aic94xx_seq.c
+--- a/drivers/scsi/aic94xx/aic94xx_seq.c
++++ b/drivers/scsi/aic94xx/aic94xx_seq.c
 @@ -1317,11 +1317,8 @@ int asd_init_seqs(struct asd_ha_struct *
  
  	err = asd_request_firmware(asd_ha);
@@ -2160,11 +1918,9 @@ Index: linux-semplice-3.19.3/drivers/scsi/aic94xx/aic94xx_seq.c
  
  	err = asd_seq_download_seqs(asd_ha);
  	if (err) {
-Index: linux-semplice-3.19.3/drivers/scsi/bfa/bfad.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/bfa/bfad.c
-+++ linux-semplice-3.19.3/drivers/scsi/bfa/bfad.c
-@@ -1766,7 +1766,6 @@ bfad_read_firmware(struct pci_dev *pdev,
+--- a/drivers/scsi/bfa/bfad.c
++++ b/drivers/scsi/bfa/bfad.c
+@@ -1762,7 +1762,6 @@ bfad_read_firmware(struct pci_dev *pdev,
  	const struct firmware *fw;
  
  	if (request_firmware(&fw, fw_name, &pdev->dev)) {
@@ -2172,11 +1928,9 @@ Index: linux-semplice-3.19.3/drivers/scsi/bfa/bfad.c
  		*bfi_image = NULL;
  		goto out;
  	}
-Index: linux-semplice-3.19.3/drivers/scsi/ipr.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/ipr.c
-+++ linux-semplice-3.19.3/drivers/scsi/ipr.c
-@@ -3995,10 +3995,8 @@ static ssize_t ipr_store_update_fw(struc
+--- a/drivers/scsi/ipr.c
++++ b/drivers/scsi/ipr.c
+@@ -4004,10 +4004,8 @@ static ssize_t ipr_store_update_fw(struc
  	len = snprintf(fname, 99, "%s", buf);
  	fname[len-1] = '\0';
  
@@ -2188,10 +1942,8 @@ Index: linux-semplice-3.19.3/drivers/scsi/ipr.c
  
  	image_hdr = (struct ipr_ucode_image_header *)fw_entry->data;
  
-Index: linux-semplice-3.19.3/drivers/scsi/pm8001/pm8001_ctl.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/pm8001/pm8001_ctl.c
-+++ linux-semplice-3.19.3/drivers/scsi/pm8001/pm8001_ctl.c
+--- a/drivers/scsi/pm8001/pm8001_ctl.c
++++ b/drivers/scsi/pm8001/pm8001_ctl.c
 @@ -685,10 +685,6 @@ static ssize_t pm8001_store_update_fw(st
  			       pm8001_ha->dev);
  
@@ -2203,10 +1955,8 @@ Index: linux-semplice-3.19.3/drivers/scsi/pm8001/pm8001_ctl.c
  		pm8001_ha->fw_status = FAIL_OPEN_BIOS_FILE;
  		goto out;
  	}
-Index: linux-semplice-3.19.3/drivers/scsi/qla1280.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/qla1280.c
-+++ linux-semplice-3.19.3/drivers/scsi/qla1280.c
+--- a/drivers/scsi/qla1280.c
++++ b/drivers/scsi/qla1280.c
 @@ -1552,8 +1552,6 @@ qla1280_request_firmware(struct scsi_qla
  	err = request_firmware(&fw, fwname, &ha->pdev->dev);
  
@@ -2216,32 +1966,28 @@ Index: linux-semplice-3.19.3/drivers/scsi/qla1280.c
  		fw = ERR_PTR(err);
  		goto unlock;
  	}
-Index: linux-semplice-3.19.3/drivers/scsi/qla2xxx/qla_init.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/qla2xxx/qla_init.c
-+++ linux-semplice-3.19.3/drivers/scsi/qla2xxx/qla_init.c
-@@ -5363,8 +5363,6 @@ qla2x00_load_risc(scsi_qla_host_t *vha,
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -5414,8 +5414,6 @@ qla2x00_load_risc(scsi_qla_host_t *vha,
  	/* Load firmware blob. */
  	blob = qla2x00_request_firmware(vha);
  	if (!blob) {
 -		ql_log(ql_log_info, vha, 0x0083,
--		    "Fimware image unavailable.\n");
+-		    "Firmware image unavailable.\n");
  		ql_log(ql_log_info, vha, 0x0084,
  		    "Firmware images can be retrieved from: "QLA_FW_URL ".\n");
  		return QLA_FUNCTION_FAILED;
-@@ -5466,8 +5464,6 @@ qla24xx_load_risc_blob(scsi_qla_host_t *
+@@ -5517,8 +5515,6 @@ qla24xx_load_risc_blob(scsi_qla_host_t *
  	/* Load firmware blob. */
  	blob = qla2x00_request_firmware(vha);
  	if (!blob) {
 -		ql_log(ql_log_warn, vha, 0x0090,
--		    "Fimware image unavailable.\n");
+-		    "Firmware image unavailable.\n");
  		ql_log(ql_log_warn, vha, 0x0091,
  		    "Firmware images can be retrieved from: "
  		    QLA_FW_URL ".\n");
-Index: linux-semplice-3.19.3/drivers/scsi/qla2xxx/qla_nx.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/qla2xxx/qla_nx.c
-+++ linux-semplice-3.19.3/drivers/scsi/qla2xxx/qla_nx.c
+--- a/drivers/scsi/qla2xxx/qla_nx.c
++++ b/drivers/scsi/qla2xxx/qla_nx.c
 @@ -2459,11 +2459,8 @@ try_blob_fw:
  
  	/* Load firmware blob. */
@@ -2255,10 +2001,8 @@ Index: linux-semplice-3.19.3/drivers/scsi/qla2xxx/qla_nx.c
  
  	/* Validating firmware blob */
  	if (qla82xx_validate_firmware_blob(vha,
-Index: linux-semplice-3.19.3/drivers/scsi/qla2xxx/qla_os.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/qla2xxx/qla_os.c
-+++ linux-semplice-3.19.3/drivers/scsi/qla2xxx/qla_os.c
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
 @@ -5356,8 +5356,6 @@ qla2x00_request_firmware(scsi_qla_host_t
  		goto out;
  
@@ -2268,10 +2012,8 @@ Index: linux-semplice-3.19.3/drivers/scsi/qla2xxx/qla_os.c
  		blob->fw = NULL;
  		blob = NULL;
  		goto out;
-Index: linux-semplice-3.19.3/drivers/scsi/qlogicpti.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/scsi/qlogicpti.c
-+++ linux-semplice-3.19.3/drivers/scsi/qlogicpti.c
+--- a/drivers/scsi/qlogicpti.c
++++ b/drivers/scsi/qlogicpti.c
 @@ -475,11 +475,8 @@ static int qlogicpti_load_firmware(struc
  	int i, timeout;
  
@@ -2285,22 +2027,22 @@ Index: linux-semplice-3.19.3/drivers/scsi/qlogicpti.c
  	if (fw->size % 2) {
  		printk(KERN_ERR "Bogus length %zu in image \"%s\"\n",
  		       fw->size, fwname);
-Index: linux-semplice-3.19.3/drivers/staging/ft1000/ft1000-pcmcia/ft1000_hw.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/staging/ft1000/ft1000-pcmcia/ft1000_hw.c
-+++ linux-semplice-3.19.3/drivers/staging/ft1000/ft1000-pcmcia/ft1000_hw.c
-@@ -2152,16 +2152,12 @@ struct net_device *init_ft1000_card(stru
+--- a/drivers/staging/ft1000/ft1000-pcmcia/ft1000_hw.c
++++ b/drivers/staging/ft1000/ft1000-pcmcia/ft1000_hw.c
+@@ -2034,18 +2034,12 @@ struct net_device *init_ft1000_card(stru
  	info->AsicID = ft1000_read_reg(dev, FT1000_REG_ASIC_ID);
  	if (info->AsicID == ELECTRABUZZ_ID) {
  		pr_debug("ELECTRABUZZ ASIC\n");
--		if (request_firmware(&fw_entry, "ft1000.img", &link->dev) != 0) {
+-		if (request_firmware(&fw_entry, "ft1000.img",
+-				     &link->dev) != 0) {
 -			pr_info("Could not open ft1000.img\n");
 +		if (request_firmware(&fw_entry, "ft1000.img", &link->dev) != 0)
  			goto err_unreg;
 -		}
  	} else {
  		pr_debug("MAGNEMITE ASIC\n");
--		if (request_firmware(&fw_entry, "ft2000.img", &link->dev) != 0) {
+-		if (request_firmware(&fw_entry, "ft2000.img",
+-				     &link->dev) != 0) {
 -			pr_info("Could not open ft2000.img\n");
 +		if (request_firmware(&fw_entry, "ft2000.img", &link->dev) != 0)
  			goto err_unreg;
@@ -2308,26 +2050,22 @@ Index: linux-semplice-3.19.3/drivers/staging/ft1000/ft1000-pcmcia/ft1000_hw.c
  	}
  
  	ft1000_enable_interrupts(dev);
-Index: linux-semplice-3.19.3/drivers/staging/ft1000/ft1000-usb/ft1000_usb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/staging/ft1000/ft1000-usb/ft1000_usb.c
-+++ linux-semplice-3.19.3/drivers/staging/ft1000/ft1000-usb/ft1000_usb.c
+--- a/drivers/staging/ft1000/ft1000-usb/ft1000_usb.c
++++ b/drivers/staging/ft1000/ft1000-usb/ft1000_usb.c
 @@ -135,10 +135,8 @@ static int ft1000_probe(struct usb_inter
  		 ft1000dev->bulk_out_endpointAddr);
  
  	ret = request_firmware(&dsp_fw, "ft3000.img", &dev->dev);
 -	if (ret < 0) {
--		pr_err("Error request_firmware()\n");
+-		dev_err(interface->usb_dev, "Error request_firmware()\n");
 +	if (ret)
  		goto err_fw;
 -	}
  
  	size = max_t(uint, dsp_fw->size, 4096);
  	pFileStart = kmalloc(size, GFP_KERNEL);
-Index: linux-semplice-3.19.3/drivers/media/usb/go7007/go7007-driver.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/go7007/go7007-driver.c
-+++ linux-semplice-3.19.3/drivers/media/usb/go7007/go7007-driver.c
+--- a/drivers/media/usb/go7007/go7007-driver.c
++++ b/drivers/media/usb/go7007/go7007-driver.c
 @@ -92,10 +92,8 @@ static int go7007_load_encoder(struct go
  	u16 intr_val, intr_data;
  
@@ -2340,10 +2078,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/go7007/go7007-driver.c
  		if (fw_entry->size < 16 || memcmp(fw_entry->data, "WISGO7007FW", 11)) {
  			v4l2_err(go, "file \"%s\" does not appear to be go7007 firmware\n", fw_name);
  			release_firmware(fw_entry);
-Index: linux-semplice-3.19.3/drivers/media/usb/go7007/go7007-fw.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/go7007/go7007-fw.c
-+++ linux-semplice-3.19.3/drivers/media/usb/go7007/go7007-fw.c
+--- a/drivers/media/usb/go7007/go7007-fw.c
++++ b/drivers/media/usb/go7007/go7007-fw.c
 @@ -1570,12 +1570,8 @@ int go7007_construct_fw_image(struct go7
  	default:
  		return -1;
@@ -2358,10 +2094,8 @@ Index: linux-semplice-3.19.3/drivers/media/usb/go7007/go7007-fw.c
  	code = kzalloc(codespace * 2, GFP_KERNEL);
  	if (code == NULL)
  		goto fw_failed;
-Index: linux-semplice-3.19.3/drivers/media/usb/go7007/go7007-loader.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/media/usb/go7007/go7007-loader.c
-+++ linux-semplice-3.19.3/drivers/media/usb/go7007/go7007-loader.c
+--- a/drivers/media/usb/go7007/go7007-loader.c
++++ b/drivers/media/usb/go7007/go7007-loader.c
 @@ -75,11 +75,8 @@ static int go7007_loader_probe(struct us
  
  	dev_info(&interface->dev, "loading firmware %s\n", fw1);
@@ -2388,23 +2122,20 @@ Index: linux-semplice-3.19.3/drivers/media/usb/go7007/go7007-loader.c
  	ret = cypress_load_firmware(usbdev, fw, CYPRESS_FX2);
  	release_firmware(fw);
  	if (0 != ret) {
-Index: linux-semplice-3.19.3/drivers/staging/media/lirc/lirc_zilog.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/staging/media/lirc/lirc_zilog.c
-+++ linux-semplice-3.19.3/drivers/staging/media/lirc/lirc_zilog.c
-@@ -759,8 +759,6 @@ static int fw_load(struct IR_tx *tx)
+--- a/drivers/staging/media/lirc/lirc_zilog.c
++++ b/drivers/staging/media/lirc/lirc_zilog.c
+@@ -762,9 +762,6 @@ static int fw_load(struct IR_tx *tx)
  	/* Request codeset data file */
  	ret = request_firmware(&fw_entry, "haup-ir-blaster.bin", tx->ir->l.dev);
  	if (ret != 0) {
--		dev_err(tx->ir->l.dev, "firmware haup-ir-blaster.bin not available (%d)\n",
--			    ret);
+-		dev_err(tx->ir->l.dev,
+-			"firmware haup-ir-blaster.bin not available (%d)\n",
+-			ret);
  		ret = ret < 0 ? ret : -EFAULT;
  		goto out;
  	}
-Index: linux-semplice-3.19.3/drivers/staging/rtl8192u/r819xU_firmware.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/staging/rtl8192u/r819xU_firmware.c
-+++ linux-semplice-3.19.3/drivers/staging/rtl8192u/r819xU_firmware.c
+--- a/drivers/staging/rtl8192u/r819xU_firmware.c
++++ b/drivers/staging/rtl8192u/r819xU_firmware.c
 @@ -243,10 +243,8 @@ bool init_firmware(struct net_device *de
  		 */
  		if (rst_opt == OPT_SYSTEM_RESET) {
@@ -2417,10 +2148,8 @@ Index: linux-semplice-3.19.3/drivers/staging/rtl8192u/r819xU_firmware.c
  
  			if (fw_entry->size > sizeof(pfirmware->firmware_buf)) {
  				RT_TRACE(COMP_ERR, "img file size exceed the container buffer fail!\n");
-Index: linux-semplice-3.19.3/drivers/staging/rtl8712/hal_init.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/staging/rtl8712/hal_init.c
-+++ linux-semplice-3.19.3/drivers/staging/rtl8712/hal_init.c
+--- a/drivers/staging/rtl8712/hal_init.c
++++ b/drivers/staging/rtl8712/hal_init.c
 @@ -71,8 +71,6 @@ int rtl871x_load_fw(struct _adapter *pad
  	dev_info(dev, "r8712u: Loading firmware from \"%s\"\n", firmware_file);
  	rc = request_firmware_nowait(THIS_MODULE, 1, firmware_file, dev,
@@ -2430,11 +2159,9 @@ Index: linux-semplice-3.19.3/drivers/staging/rtl8712/hal_init.c
  	return rc;
  }
  MODULE_FIRMWARE("rtlwifi/rtl8712u.bin");
-Index: linux-semplice-3.19.3/drivers/staging/slicoss/slicoss.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/staging/slicoss/slicoss.c
-+++ linux-semplice-3.19.3/drivers/staging/slicoss/slicoss.c
-@@ -393,11 +393,8 @@ static int slic_card_download_gbrcv(stru
+--- a/drivers/staging/slicoss/slicoss.c
++++ b/drivers/staging/slicoss/slicoss.c
+@@ -391,11 +391,8 @@ static int slic_card_download_gbrcv(stru
  	}
  
  	ret = request_firmware(&fw, file, &adapter->pcidev->dev);
@@ -2447,7 +2174,7 @@ Index: linux-semplice-3.19.3/drivers/staging/slicoss/slicoss.c
  
  	rcvucodelen = *(u32 *)(fw->data + index);
  	index += 4;
-@@ -471,11 +468,8 @@ static int slic_card_download(struct ada
+@@ -469,11 +466,8 @@ static int slic_card_download(struct ada
  		return -ENOENT;
  	}
  	ret = request_firmware(&fw, file, &adapter->pcidev->dev);
@@ -2460,10 +2187,8 @@ Index: linux-semplice-3.19.3/drivers/staging/slicoss/slicoss.c
  	numsects = *(u32 *)(fw->data + index);
  	index += 4;
  	for (i = 0; i < numsects; i++) {
-Index: linux-semplice-3.19.3/drivers/staging/vt6656/firmware.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/staging/vt6656/firmware.c
-+++ linux-semplice-3.19.3/drivers/staging/vt6656/firmware.c
+--- a/drivers/staging/vt6656/firmware.c
++++ b/drivers/staging/vt6656/firmware.c
 @@ -53,11 +53,8 @@ int vnt_download_firmware(struct vnt_pri
  	dev_dbg(dev, "---->Download firmware\n");
  
@@ -2478,10 +2203,8 @@ Index: linux-semplice-3.19.3/drivers/staging/vt6656/firmware.c
  
  	buffer = kmalloc(FIRMWARE_CHUNK_SIZE, GFP_KERNEL);
  	if (!buffer)
-Index: linux-semplice-3.19.3/drivers/tty/cyclades.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/tty/cyclades.c
-+++ linux-semplice-3.19.3/drivers/tty/cyclades.c
+--- a/drivers/tty/cyclades.c
++++ b/drivers/tty/cyclades.c
 @@ -3522,10 +3522,8 @@ static int cyz_load_fw(struct pci_dev *p
  	int retval;
  
@@ -2494,10 +2217,8 @@ Index: linux-semplice-3.19.3/drivers/tty/cyclades.c
  
  	/* Check whether the firmware is already loaded and running. If
  	   positive, skip this board */
-Index: linux-semplice-3.19.3/drivers/tty/moxa.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/tty/moxa.c
-+++ linux-semplice-3.19.3/drivers/tty/moxa.c
+--- a/drivers/tty/moxa.c
++++ b/drivers/tty/moxa.c
 @@ -867,13 +867,8 @@ static int moxa_init_board(struct moxa_b
  	}
  
@@ -2513,10 +2234,8 @@ Index: linux-semplice-3.19.3/drivers/tty/moxa.c
  
  	ret = moxa_load_fw(brd, fw);
  
-Index: linux-semplice-3.19.3/drivers/tty/serial/icom.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/tty/serial/icom.c
-+++ linux-semplice-3.19.3/drivers/tty/serial/icom.c
+--- a/drivers/tty/serial/icom.c
++++ b/drivers/tty/serial/icom.c
 @@ -375,7 +375,6 @@ static void load_code(struct icom_port *
  
  	/* Load Call Setup into Adapter */
@@ -2541,10 +2260,8 @@ Index: linux-semplice-3.19.3/drivers/tty/serial/icom.c
  		status = -1;
  		goto load_code_exit;
  	}
-Index: linux-semplice-3.19.3/drivers/tty/serial/ucc_uart.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/tty/serial/ucc_uart.c
-+++ linux-semplice-3.19.3/drivers/tty/serial/ucc_uart.c
+--- a/drivers/tty/serial/ucc_uart.c
++++ b/drivers/tty/serial/ucc_uart.c
 @@ -1167,10 +1167,8 @@ static void uart_firmware_cont(const str
  	struct device *dev = context;
  	int ret;
@@ -2557,10 +2274,8 @@ Index: linux-semplice-3.19.3/drivers/tty/serial/ucc_uart.c
  
  	firmware = (struct qe_firmware *) fw->data;
  
-Index: linux-semplice-3.19.3/drivers/usb/atm/cxacru.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/usb/atm/cxacru.c
-+++ linux-semplice-3.19.3/drivers/usb/atm/cxacru.c
+--- a/drivers/usb/atm/cxacru.c
++++ b/drivers/usb/atm/cxacru.c
 @@ -1081,8 +1081,6 @@ static int cxacru_find_firmware(struct c
  		return -ENOENT;
  	}
@@ -2570,10 +2285,8 @@ Index: linux-semplice-3.19.3/drivers/usb/atm/cxacru.c
  	return 0;
  }
  
-Index: linux-semplice-3.19.3/drivers/usb/atm/ueagle-atm.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/usb/atm/ueagle-atm.c
-+++ linux-semplice-3.19.3/drivers/usb/atm/ueagle-atm.c
+--- a/drivers/usb/atm/ueagle-atm.c
++++ b/drivers/usb/atm/ueagle-atm.c
 @@ -649,10 +649,8 @@ static void uea_upload_pre_firmware(cons
  	int ret, size;
  
@@ -2648,10 +2361,8 @@ Index: linux-semplice-3.19.3/drivers/usb/atm/ueagle-atm.c
  
  	pfw = fw_entry->data;
  	size = fw_entry->size;
-Index: linux-semplice-3.19.3/drivers/usb/misc/emi26.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/usb/misc/emi26.c
-+++ linux-semplice-3.19.3/drivers/usb/misc/emi26.c
+--- a/drivers/usb/misc/emi26.c
++++ b/drivers/usb/misc/emi26.c
 @@ -88,21 +88,17 @@ static int emi26_load_firmware (struct u
  
  	err = request_ihex_firmware(&loader_fw, "emi26/loader.fw", &dev->dev);
@@ -2677,10 +2388,8 @@ Index: linux-semplice-3.19.3/drivers/usb/misc/emi26.c
  
  	/* Assert reset (stop the CPU in the EMI) */
  	err = emi26_set_reset(dev,1);
-Index: linux-semplice-3.19.3/drivers/usb/misc/ezusb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/usb/misc/ezusb.c
-+++ linux-semplice-3.19.3/drivers/usb/misc/ezusb.c
+--- a/drivers/usb/misc/ezusb.c
++++ b/drivers/usb/misc/ezusb.c
 @@ -79,12 +79,8 @@ static int ezusb_ihex_firmware_download(
  	const struct ihex_binrec *record;
  
@@ -2695,10 +2404,8 @@ Index: linux-semplice-3.19.3/drivers/usb/misc/ezusb.c
  
  	ret = ezusb_set_reset(dev, fx.cpucs_reg, 0);
  	if (ret < 0)
-Index: linux-semplice-3.19.3/drivers/usb/misc/isight_firmware.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/usb/misc/isight_firmware.c
-+++ linux-semplice-3.19.3/drivers/usb/misc/isight_firmware.c
+--- a/drivers/usb/misc/isight_firmware.c
++++ b/drivers/usb/misc/isight_firmware.c
 @@ -48,7 +48,6 @@ static int isight_firmware_load(struct u
  		return -ENOMEM;
  
@@ -2707,10 +2414,8 @@ Index: linux-semplice-3.19.3/drivers/usb/misc/isight_firmware.c
  		ret = -ENODEV;
  		goto out;
  	}
-Index: linux-semplice-3.19.3/drivers/usb/serial/io_edgeport.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/usb/serial/io_edgeport.c
-+++ linux-semplice-3.19.3/drivers/usb/serial/io_edgeport.c
+--- a/drivers/usb/serial/io_edgeport.c
++++ b/drivers/usb/serial/io_edgeport.c
 @@ -299,11 +299,8 @@ static void update_edgeport_E2PROM(struc
  
  	response = request_ihex_firmware(&fw, fw_name,
@@ -2724,10 +2429,8 @@ Index: linux-semplice-3.19.3/drivers/usb/serial/io_edgeport.c
  
  	rec = (const struct ihex_binrec *)fw->data;
  	BootMajorVersion = rec->data[0];
-Index: linux-semplice-3.19.3/drivers/usb/serial/io_ti.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/usb/serial/io_ti.c
-+++ linux-semplice-3.19.3/drivers/usb/serial/io_ti.c
+--- a/drivers/usb/serial/io_ti.c
++++ b/drivers/usb/serial/io_ti.c
 @@ -784,8 +784,6 @@ static int build_i2c_fw_hdr(__u8 *header
  
  	err = request_firmware(&fw, fw_name, dev);
@@ -2746,10 +2449,8 @@ Index: linux-semplice-3.19.3/drivers/usb/serial/io_ti.c
  			kfree(buffer);
  			return err;
  		}
-Index: linux-semplice-3.19.3/drivers/usb/serial/ti_usb_3410_5052.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/usb/serial/ti_usb_3410_5052.c
-+++ linux-semplice-3.19.3/drivers/usb/serial/ti_usb_3410_5052.c
+--- a/drivers/usb/serial/ti_usb_3410_5052.c
++++ b/drivers/usb/serial/ti_usb_3410_5052.c
 @@ -1485,10 +1485,8 @@ static int ti_download_firmware(struct t
  		}
  		status = request_firmware(&fw_p, buf, &dev->dev);
@@ -2762,10 +2463,8 @@ Index: linux-semplice-3.19.3/drivers/usb/serial/ti_usb_3410_5052.c
  	if (fw_p->size > TI_FIRMWARE_BUF_SIZE) {
  		dev_err(&dev->dev, "%s - firmware too large %zu\n", __func__, fw_p->size);
  		release_firmware(fw_p);
-Index: linux-semplice-3.19.3/drivers/video/fbdev/broadsheetfb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/video/fbdev/broadsheetfb.c
-+++ linux-semplice-3.19.3/drivers/video/fbdev/broadsheetfb.c
+--- a/drivers/video/fbdev/broadsheetfb.c
++++ b/drivers/video/fbdev/broadsheetfb.c
 @@ -743,10 +743,8 @@ static ssize_t broadsheet_loadstore_wave
  		return -EINVAL;
  
@@ -2778,10 +2477,8 @@ Index: linux-semplice-3.19.3/drivers/video/fbdev/broadsheetfb.c
  
  	/* try to enforce reasonable min max on waveform */
  	if ((fw_entry->size < 8*1024) || (fw_entry->size > 64*1024)) {
-Index: linux-semplice-3.19.3/drivers/video/fbdev/metronomefb.c
-===================================================================
---- linux-semplice-3.19.3.orig/drivers/video/fbdev/metronomefb.c
-+++ linux-semplice-3.19.3/drivers/video/fbdev/metronomefb.c
+--- a/drivers/video/fbdev/metronomefb.c
++++ b/drivers/video/fbdev/metronomefb.c
 @@ -677,10 +677,8 @@ static int metronomefb_probe(struct plat
  		a) request the waveform file from userspace
  		b) process waveform and decode into metromem */
@@ -2794,10 +2491,8 @@ Index: linux-semplice-3.19.3/drivers/video/fbdev/metronomefb.c
  
  	retval = load_waveform((u8 *) fw_entry->data, fw_entry->size, 3, 31,
  				par);
-Index: linux-semplice-3.19.3/sound/drivers/vx/vx_hwdep.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/drivers/vx/vx_hwdep.c
-+++ linux-semplice-3.19.3/sound/drivers/vx/vx_hwdep.c
+--- a/sound/drivers/vx/vx_hwdep.c
++++ b/sound/drivers/vx/vx_hwdep.c
 @@ -71,10 +71,8 @@ int snd_vx_setup_firmware(struct vx_core
  		if (! fw_files[chip->type][i])
  			continue;
@@ -2810,10 +2505,8 @@ Index: linux-semplice-3.19.3/sound/drivers/vx/vx_hwdep.c
  		err = chip->ops->load_dsp(chip, i, fw);
  		if (err < 0) {
  			release_firmware(fw);
-Index: linux-semplice-3.19.3/sound/isa/msnd/msnd_pinnacle.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/isa/msnd/msnd_pinnacle.c
-+++ linux-semplice-3.19.3/sound/isa/msnd/msnd_pinnacle.c
+--- a/sound/isa/msnd/msnd_pinnacle.c
++++ b/sound/isa/msnd/msnd_pinnacle.c
 @@ -389,15 +389,11 @@ static int upload_dsp_code(struct snd_ca
  	outb(HPBLKSEL_0, chip->io + HP_BLKS);
  
@@ -2832,11 +2525,9 @@ Index: linux-semplice-3.19.3/sound/isa/msnd/msnd_pinnacle.c
  
  	memcpy_toio(chip->mappedbase, perm_fw->data, perm_fw->size);
  	if (snd_msnd_upload_host(chip, init_fw->data, init_fw->size) < 0) {
-Index: linux-semplice-3.19.3/sound/isa/sscape.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/isa/sscape.c
-+++ linux-semplice-3.19.3/sound/isa/sscape.c
-@@ -543,10 +543,8 @@ static int sscape_upload_bootblock(struc
+--- a/sound/isa/sscape.c
++++ b/sound/isa/sscape.c
+@@ -544,10 +544,8 @@ static int sscape_upload_bootblock(struc
  	int ret;
  
  	ret = request_firmware(&init_fw, "scope.cod", card->dev);
@@ -2848,7 +2539,7 @@ Index: linux-semplice-3.19.3/sound/isa/sscape.c
  	ret = upload_dma_data(sscape, init_fw->data, init_fw->size);
  
  	release_firmware(init_fw);
-@@ -583,11 +581,8 @@ static int sscape_upload_microcode(struc
+@@ -584,11 +582,8 @@ static int sscape_upload_microcode(struc
  	snprintf(name, sizeof(name), "sndscape.co%d", version);
  
  	err = request_firmware(&init_fw, name, card->dev);
@@ -2861,10 +2552,8 @@ Index: linux-semplice-3.19.3/sound/isa/sscape.c
  	err = upload_dma_data(sscape, init_fw->data, init_fw->size);
  	if (err == 0)
  		snd_printk(KERN_INFO "sscape: MIDI firmware loaded %d KBs\n",
-Index: linux-semplice-3.19.3/sound/isa/wavefront/wavefront_synth.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/isa/wavefront/wavefront_synth.c
-+++ linux-semplice-3.19.3/sound/isa/wavefront/wavefront_synth.c
+--- a/sound/isa/wavefront/wavefront_synth.c
++++ b/sound/isa/wavefront/wavefront_synth.c
 @@ -1947,10 +1947,8 @@ wavefront_download_firmware (snd_wavefro
  	const struct firmware *firmware;
  
@@ -2877,10 +2566,8 @@ Index: linux-semplice-3.19.3/sound/isa/wavefront/wavefront_synth.c
  
  	len = 0;
  	buf = firmware->data;
-Index: linux-semplice-3.19.3/sound/pci/asihpi/hpidspcd.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/pci/asihpi/hpidspcd.c
-+++ linux-semplice-3.19.3/sound/pci/asihpi/hpidspcd.c
+--- a/sound/pci/asihpi/hpidspcd.c
++++ b/sound/pci/asihpi/hpidspcd.c
 @@ -46,8 +46,6 @@ short hpi_dsp_code_open(u32 adapter, voi
  	err = request_firmware(&firmware, fw_name, &dev->dev);
  
@@ -2890,10 +2577,8 @@ Index: linux-semplice-3.19.3/sound/pci/asihpi/hpidspcd.c
  		goto error1;
  	}
  	if (firmware->size < sizeof(header)) {
-Index: linux-semplice-3.19.3/sound/pci/echoaudio/echoaudio.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/pci/echoaudio/echoaudio.c
-+++ linux-semplice-3.19.3/sound/pci/echoaudio/echoaudio.c
+--- a/sound/pci/echoaudio/echoaudio.c
++++ b/sound/pci/echoaudio/echoaudio.c
 @@ -60,11 +60,8 @@ static int get_firmware(const struct fir
  		"firmware requested: %s\n", card_fw[fw_index].data);
  	snprintf(name, sizeof(name), "ea/%s", card_fw[fw_index].data);
@@ -2907,11 +2592,9 @@ Index: linux-semplice-3.19.3/sound/pci/echoaudio/echoaudio.c
  		chip->fw_cache[fw_index] = *fw_entry;
  #endif
  	return err;
-Index: linux-semplice-3.19.3/sound/pci/emu10k1/emu10k1_main.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/pci/emu10k1/emu10k1_main.c
-+++ linux-semplice-3.19.3/sound/pci/emu10k1/emu10k1_main.c
-@@ -887,12 +887,8 @@ static int snd_emu10k1_emu1010_init(stru
+--- a/sound/pci/emu10k1/emu10k1_main.c
++++ b/sound/pci/emu10k1/emu10k1_main.c
+@@ -901,12 +901,8 @@ static int snd_emu10k1_emu1010_init(stru
  		}
  
  		err = request_firmware(&emu->firmware, filename, &emu->pci->dev);
@@ -2925,11 +2608,9 @@ Index: linux-semplice-3.19.3/sound/pci/emu10k1/emu10k1_main.c
  		dev_info(emu->card->dev,
  			 "emu1010: firmware file = %s, size = 0x%zx\n",
  			   filename, emu->firmware->size);
-Index: linux-semplice-3.19.3/sound/pci/hda/hda_intel.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/pci/hda/hda_intel.c
-+++ linux-semplice-3.19.3/sound/pci/hda/hda_intel.c
-@@ -1671,10 +1671,8 @@ static void azx_firmware_cb(const struct
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -1619,10 +1619,8 @@ static void azx_firmware_cb(const struct
  	struct azx *chip = card->private_data;
  	struct pci_dev *pci = chip->pci;
  
@@ -2941,11 +2622,9 @@ Index: linux-semplice-3.19.3/sound/pci/hda/hda_intel.c
  
  	chip->fw = fw;
  	if (!chip->disabled) {
-Index: linux-semplice-3.19.3/sound/pci/korg1212/korg1212.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/pci/korg1212/korg1212.c
-+++ linux-semplice-3.19.3/sound/pci/korg1212/korg1212.c
-@@ -2334,7 +2334,6 @@ static int snd_korg1212_create(struct sn
+--- a/sound/pci/korg1212/korg1212.c
++++ b/sound/pci/korg1212/korg1212.c
+@@ -2330,7 +2330,6 @@ static int snd_korg1212_create(struct sn
  	err = request_firmware(&dsp_code, "korg/k1212.dsp", &pci->dev);
  	if (err < 0) {
  		release_firmware(dsp_code);
@@ -2953,10 +2632,8 @@ Index: linux-semplice-3.19.3/sound/pci/korg1212/korg1212.c
  		snd_korg1212_free(korg1212);
  		return err;
  	}
-Index: linux-semplice-3.19.3/sound/pci/mixart/mixart_hwdep.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/pci/mixart/mixart_hwdep.c
-+++ linux-semplice-3.19.3/sound/pci/mixart/mixart_hwdep.c
+--- a/sound/pci/mixart/mixart_hwdep.c
++++ b/sound/pci/mixart/mixart_hwdep.c
 @@ -571,11 +571,8 @@ int snd_mixart_setup_firmware(struct mix
  
  	for (i = 0; i < 3; i++) {
@@ -2970,10 +2647,8 @@ Index: linux-semplice-3.19.3/sound/pci/mixart/mixart_hwdep.c
  		/* fake hwdep dsp record */
  		err = mixart_dsp_load(mgr, i, fw_entry);
  		release_firmware(fw_entry);
-Index: linux-semplice-3.19.3/sound/pci/pcxhr/pcxhr_hwdep.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/pci/pcxhr/pcxhr_hwdep.c
-+++ linux-semplice-3.19.3/sound/pci/pcxhr/pcxhr_hwdep.c
+--- a/sound/pci/pcxhr/pcxhr_hwdep.c
++++ b/sound/pci/pcxhr/pcxhr_hwdep.c
 @@ -385,12 +385,8 @@ int pcxhr_setup_firmware(struct pcxhr_mg
  		if (!fw_files[fw_set][i])
  			continue;
@@ -2988,11 +2663,9 @@ Index: linux-semplice-3.19.3/sound/pci/pcxhr/pcxhr_hwdep.c
  		/* fake hwdep dsp record */
  		err = pcxhr_dsp_load(mgr, i, fw_entry);
  		release_firmware(fw_entry);
-Index: linux-semplice-3.19.3/sound/pci/riptide/riptide.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/pci/riptide/riptide.c
-+++ linux-semplice-3.19.3/sound/pci/riptide/riptide.c
-@@ -1245,11 +1245,8 @@ static int try_to_load_firmware(struct c
+--- a/sound/pci/riptide/riptide.c
++++ b/sound/pci/riptide/riptide.c
+@@ -1231,11 +1231,8 @@ static int try_to_load_firmware(struct c
  	if (!chip->fw_entry) {
  		err = request_firmware(&chip->fw_entry, "riptide.hex",
  				       &chip->pci->dev);
@@ -3005,11 +2678,9 @@ Index: linux-semplice-3.19.3/sound/pci/riptide/riptide.c
  	}
  	err = loadfirmware(cif, chip->fw_entry->data, chip->fw_entry->size);
  	if (err) {
-Index: linux-semplice-3.19.3/sound/pci/rme9652/hdsp.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/pci/rme9652/hdsp.c
-+++ linux-semplice-3.19.3/sound/pci/rme9652/hdsp.c
-@@ -5106,11 +5106,8 @@ static int hdsp_request_fw_loader(struct
+--- a/sound/pci/rme9652/hdsp.c
++++ b/sound/pci/rme9652/hdsp.c
+@@ -5102,11 +5102,8 @@ static int hdsp_request_fw_loader(struct
  		return -EINVAL;
  	}
  
@@ -3022,10 +2693,8 @@ Index: linux-semplice-3.19.3/sound/pci/rme9652/hdsp.c
  	if (fw->size < HDSP_FIRMWARE_SIZE) {
  		dev_err(hdsp->card->dev,
  			"too short firmware size %d (expected %d)\n",
-Index: linux-semplice-3.19.3/sound/soc/codecs/wm2000.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/soc/codecs/wm2000.c
-+++ linux-semplice-3.19.3/sound/soc/codecs/wm2000.c
+--- a/sound/soc/codecs/wm2000.c
++++ b/sound/soc/codecs/wm2000.c
 @@ -889,10 +889,8 @@ static int wm2000_i2c_probe(struct i2c_c
  	}
  
@@ -3038,10 +2707,8 @@ Index: linux-semplice-3.19.3/sound/soc/codecs/wm2000.c
  
  	/* Pre-cook the concatenation of the register address onto the image */
  	wm2000->anc_download_size = fw->size + 2;
-Index: linux-semplice-3.19.3/sound/usb/6fire/firmware.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/usb/6fire/firmware.c
-+++ linux-semplice-3.19.3/sound/usb/6fire/firmware.c
+--- a/sound/usb/6fire/firmware.c
++++ b/sound/usb/6fire/firmware.c
 @@ -219,8 +219,6 @@ static int usb6fire_fw_ezusb_upload(
  	ret = request_firmware(&fw, fwname, &device->dev);
  	if (ret < 0) {
@@ -3060,11 +2727,9 @@ Index: linux-semplice-3.19.3/sound/usb/6fire/firmware.c
  		kfree(buffer);
  		return -EIO;
  	}
-Index: linux-semplice-3.19.3/sound/pci/cs46xx/cs46xx_lib.c
-===================================================================
---- linux-semplice-3.19.3.orig/sound/pci/cs46xx/cs46xx_lib.c
-+++ linux-semplice-3.19.3/sound/pci/cs46xx/cs46xx_lib.c
-@@ -3284,11 +3284,8 @@ int snd_cs46xx_start_dsp(struct snd_cs46
+--- a/sound/pci/cs46xx/cs46xx_lib.c
++++ b/sound/pci/cs46xx/cs46xx_lib.c
+@@ -3253,11 +3253,8 @@ int snd_cs46xx_start_dsp(struct snd_cs46
  #ifdef CONFIG_SND_CS46XX_NEW_DSP
  	for (i = 0; i < CS46XX_DSP_MODULES; i++) {
  		err = load_firmware(chip, &chip->modules[i], module_names[i]);

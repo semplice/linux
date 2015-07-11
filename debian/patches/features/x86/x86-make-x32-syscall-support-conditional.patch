@@ -26,11 +26,9 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  arch/x86/kernel/syscall_64.c        | 43 +++++++++++++++++++++++++++++++++++++
  5 files changed, 88 insertions(+), 11 deletions(-)
 
-Index: linux-semplice-3.19.3/Documentation/kernel-parameters.txt
-===================================================================
---- linux-semplice-3.19.3.orig/Documentation/kernel-parameters.txt
-+++ linux-semplice-3.19.3/Documentation/kernel-parameters.txt
-@@ -3446,6 +3446,10 @@ bytes respectively. Such letter suffixes
+--- a/Documentation/kernel-parameters.txt
++++ b/Documentation/kernel-parameters.txt
+@@ -3516,6 +3516,10 @@ bytes respectively. Such letter suffixes
  
  	switches=	[HW,M68k]
  
@@ -41,11 +39,9 @@ Index: linux-semplice-3.19.3/Documentation/kernel-parameters.txt
  	sysfs.deprecated=0|1 [KNL]
  			Enable/disable old style sysfs layout for old udev
  			on older distributions. When this option is enabled
-Index: linux-semplice-3.19.3/arch/x86/Kconfig
-===================================================================
---- linux-semplice-3.19.3.orig/arch/x86/Kconfig
-+++ linux-semplice-3.19.3/arch/x86/Kconfig
-@@ -2504,6 +2504,14 @@ config X86_X32
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2540,6 +2540,14 @@ config X86_X32
  	  elf32_x86_64 support enabled to compile a kernel with this
  	  option set.
  
@@ -60,10 +56,8 @@ Index: linux-semplice-3.19.3/arch/x86/Kconfig
  config COMPAT
  	def_bool y
  	depends on IA32_EMULATION || X86_X32
-Index: linux-semplice-3.19.3/arch/x86/include/asm/elf.h
-===================================================================
---- linux-semplice-3.19.3.orig/arch/x86/include/asm/elf.h
-+++ linux-semplice-3.19.3/arch/x86/include/asm/elf.h
+--- a/arch/x86/include/asm/elf.h
++++ b/arch/x86/include/asm/elf.h
 @@ -154,6 +154,12 @@ do {						\
  
  #else /* CONFIG_X86_32 */
@@ -86,11 +80,9 @@ Index: linux-semplice-3.19.3/arch/x86/include/asm/elf.h
  
  #if __USER32_DS != __USER_DS
  # error "The following code assumes __USER32_DS == __USER_DS"
-Index: linux-semplice-3.19.3/arch/x86/kernel/entry_64.S
-===================================================================
---- linux-semplice-3.19.3.orig/arch/x86/kernel/entry_64.S
-+++ linux-semplice-3.19.3/arch/x86/kernel/entry_64.S
-@@ -417,8 +417,12 @@ system_call_fastpath:
+--- a/arch/x86/kernel/entry_64.S
++++ b/arch/x86/kernel/entry_64.S
+@@ -252,8 +252,12 @@ system_call_fastpath:
  #if __SYSCALL_MASK == ~0
  	cmpq $__NR_syscall_max,%rax
  #else
@@ -103,9 +95,9 @@ Index: linux-semplice-3.19.3/arch/x86/kernel/entry_64.S
 +	.byte P6_NOP4
 +system_call_fast_compare_end:
  #endif
- 	ja ret_from_sys_call  /* and return regs->ax */
+ 	ja	1f	/* return -ENOSYS (already in pt_regs->ax) */
  	movq %r10,%rcx
-@@ -523,8 +527,12 @@ tracesys_phase2:
+@@ -337,8 +341,12 @@ tracesys_phase2:
  #if __SYSCALL_MASK == ~0
  	cmpq $__NR_syscall_max,%rax
  #else
@@ -118,11 +110,11 @@ Index: linux-semplice-3.19.3/arch/x86/kernel/entry_64.S
 +	.byte P6_NOP4
 +system_call_trace_compare_end:
  #endif
- 	ja   int_ret_from_sys_call	/* RAX(%rsp) is already set */
+ 	ja	1f	/* return -ENOSYS (already in pt_regs->ax) */
  	movq %r10,%rcx	/* fixup for C */
-@@ -596,6 +604,16 @@ int_restore_rest:
- 	CFI_ENDPROC
+@@ -488,6 +496,16 @@ opportunistic_sysret_failed:
  END(system_call)
+ 
  
 +#if __SYSCALL_MASK != ~0
 +	/* This replaces the usual comparisons if syscall.x32 is set */
@@ -137,10 +129,8 @@ Index: linux-semplice-3.19.3/arch/x86/kernel/entry_64.S
  	.macro FORK_LIKE func
  ENTRY(stub_\func)
  	CFI_STARTPROC
-Index: linux-semplice-3.19.3/arch/x86/kernel/syscall_64.c
-===================================================================
---- linux-semplice-3.19.3.orig/arch/x86/kernel/syscall_64.c
-+++ linux-semplice-3.19.3/arch/x86/kernel/syscall_64.c
+--- a/arch/x86/kernel/syscall_64.c
++++ b/arch/x86/kernel/syscall_64.c
 @@ -3,8 +3,14 @@
  #include <linux/linkage.h>
  #include <linux/sys.h>

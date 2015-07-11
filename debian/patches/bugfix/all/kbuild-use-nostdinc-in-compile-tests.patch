@@ -3,7 +3,7 @@ Date: Sat, 19 Oct 2013 19:43:35 +0100
 Subject: kbuild: Use -nostdinc in compile tests
 Bug-Debian: https://bugs.debian.org/726861
 Bug-Debian: https://bugs.debian.org/717557
-Forwarded: no
+Forwarded: http://mid.gmane.org/1415235534.3398.35.camel@decadent.org.uk
 
 Debian's gcc 4.8 pre-includes <stdc-predef.h> by default, which in
 turn includes <bits/predefs.h>.  This fails when building a 64-bit
@@ -13,10 +13,8 @@ The -nostdinc option disables this, though it isn't explicitly
 documented.  This option is already used when actually building
 the kernel.
 
-Index: linux-semplice-3.19/scripts/Kbuild.include
-===================================================================
---- linux-semplice-3.19.orig/scripts/Kbuild.include
-+++ linux-semplice-3.19/scripts/Kbuild.include
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
 @@ -111,12 +111,12 @@ as-instr = $(call try-run,\
  # Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
  
@@ -32,7 +30,7 @@ Index: linux-semplice-3.19/scripts/Kbuild.include
  
  # cc-option-align
  # Prefix align with either -falign or -malign
-@@ -126,16 +126,17 @@ cc-option-align = $(subst -functions=0,,
+@@ -126,14 +126,15 @@ cc-option-align = $(subst -functions=0,,
  # cc-disable-warning
  # Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
  cc-disable-warning = $(call try-run,\
@@ -40,20 +38,18 @@ Index: linux-semplice-3.19/scripts/Kbuild.include
 +	$(CC) $(NOSTDINC_FLAGS) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -x c /dev/null -o "$$TMP",-Wno-$(strip $(1)))
  
  # cc-version
- # Usage gcc-ver := $(call cc-version)
 -cc-version = $(shell $(CONFIG_SHELL) $(srctree)/scripts/gcc-version.sh $(CC))
 +cc-version = $(shell $(CONFIG_SHELL) \
 +	$(srctree)/scripts/gcc-version.sh $(CC) $(NOSTDINC_FLAGS))
  
  # cc-fullversion
- # Usage gcc-ver := $(call cc-fullversion)
  cc-fullversion = $(shell $(CONFIG_SHELL) \
 -	$(srctree)/scripts/gcc-version.sh -p $(CC))
 +	$(srctree)/scripts/gcc-version.sh -p $(CC) $(NOSTDINC_FLAGS))
  
  # cc-ifversion
  # Usage:  EXTRA_CFLAGS += $(call cc-ifversion, -lt, 0402, -O1)
-@@ -149,7 +150,7 @@ cc-ldoption = $(call try-run,\
+@@ -147,7 +148,7 @@ cc-ldoption = $(call try-run,\
  # ld-option
  # Usage: LDFLAGS += $(call ld-option, -X)
  ld-option = $(call try-run,\
@@ -62,20 +58,18 @@ Index: linux-semplice-3.19/scripts/Kbuild.include
  
  # ar-option
  # Usage: KBUILD_ARFLAGS := $(call ar-option,D)
-Index: linux-semplice-3.19/Makefile
-===================================================================
---- linux-semplice-3.19.orig/Makefile
-+++ linux-semplice-3.19/Makefile
-@@ -624,6 +624,8 @@ endif
- # Tell gcc to never replace conditional load with a non-conditional one
- KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
+--- a/Makefile
++++ b/Makefile
+@@ -621,6 +621,8 @@ else
+ KBUILD_CFLAGS	+= -O2
+ endif
  
 +NOSTDINC_FLAGS += -nostdinc
 +
- ifdef CONFIG_READABLE_ASM
- # Disable optimizations that make assembler listings hard to read.
- # reorder blocks reorders the control in the function
-@@ -747,7 +749,7 @@ KBUILD_CFLAGS += $(call cc-option, -fno-
+ # Tell gcc to never replace conditional load with a non-conditional one
+ KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
+ 
+@@ -751,7 +753,7 @@ KBUILD_CFLAGS += $(call cc-option, -fno-
  endif
  
  # arch Makefile may override CC so keep this after arch Makefile is included
