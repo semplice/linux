@@ -26,9 +26,11 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  arch/x86/kernel/syscall_64.c        | 43 +++++++++++++++++++++++++++++++++++++
  5 files changed, 88 insertions(+), 11 deletions(-)
 
---- a/Documentation/kernel-parameters.txt
-+++ b/Documentation/kernel-parameters.txt
-@@ -3516,6 +3516,10 @@ bytes respectively. Such letter suffixes
+Index: linux-semplice-4.1.2/Documentation/kernel-parameters.txt
+===================================================================
+--- linux-semplice-4.1.2.orig/Documentation/kernel-parameters.txt
++++ linux-semplice-4.1.2/Documentation/kernel-parameters.txt
+@@ -3522,6 +3522,10 @@ bytes respectively. Such letter suffixes
  
  	switches=	[HW,M68k]
  
@@ -39,8 +41,10 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  	sysfs.deprecated=0|1 [KNL]
  			Enable/disable old style sysfs layout for old udev
  			on older distributions. When this option is enabled
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
+Index: linux-semplice-4.1.2/arch/x86/Kconfig
+===================================================================
+--- linux-semplice-4.1.2.orig/arch/x86/Kconfig
++++ linux-semplice-4.1.2/arch/x86/Kconfig
 @@ -2540,6 +2540,14 @@ config X86_X32
  	  elf32_x86_64 support enabled to compile a kernel with this
  	  option set.
@@ -56,8 +60,10 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  config COMPAT
  	def_bool y
  	depends on IA32_EMULATION || X86_X32
---- a/arch/x86/include/asm/elf.h
-+++ b/arch/x86/include/asm/elf.h
+Index: linux-semplice-4.1.2/arch/x86/include/asm/elf.h
+===================================================================
+--- linux-semplice-4.1.2.orig/arch/x86/include/asm/elf.h
++++ linux-semplice-4.1.2/arch/x86/include/asm/elf.h
 @@ -154,6 +154,12 @@ do {						\
  
  #else /* CONFIG_X86_32 */
@@ -80,8 +86,10 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  
  #if __USER32_DS != __USER_DS
  # error "The following code assumes __USER32_DS == __USER_DS"
---- a/arch/x86/kernel/entry_64.S
-+++ b/arch/x86/kernel/entry_64.S
+Index: linux-semplice-4.1.2/arch/x86/kernel/entry_64.S
+===================================================================
+--- linux-semplice-4.1.2.orig/arch/x86/kernel/entry_64.S
++++ linux-semplice-4.1.2/arch/x86/kernel/entry_64.S
 @@ -252,8 +252,12 @@ system_call_fastpath:
  #if __SYSCALL_MASK == ~0
  	cmpq $__NR_syscall_max,%rax
@@ -129,8 +137,10 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  	.macro FORK_LIKE func
  ENTRY(stub_\func)
  	CFI_STARTPROC
---- a/arch/x86/kernel/syscall_64.c
-+++ b/arch/x86/kernel/syscall_64.c
+Index: linux-semplice-4.1.2/arch/x86/kernel/syscall_64.c
+===================================================================
+--- linux-semplice-4.1.2.orig/arch/x86/kernel/syscall_64.c
++++ linux-semplice-4.1.2/arch/x86/kernel/syscall_64.c
 @@ -3,8 +3,14 @@
  #include <linux/linkage.h>
  #include <linux/sys.h>

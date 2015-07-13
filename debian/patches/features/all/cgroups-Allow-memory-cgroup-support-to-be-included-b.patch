@@ -17,9 +17,11 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  mm/memcontrol.c                     |    3 +++
  4 files changed, 29 insertions(+), 6 deletions(-)
 
---- a/Documentation/kernel-parameters.txt
-+++ b/Documentation/kernel-parameters.txt
-@@ -580,8 +580,8 @@ bytes respectively. Such letter suffixes
+Index: linux-semplice-4.1.2/Documentation/kernel-parameters.txt
+===================================================================
+--- linux-semplice-4.1.2.orig/Documentation/kernel-parameters.txt
++++ linux-semplice-4.1.2/Documentation/kernel-parameters.txt
+@@ -581,8 +581,8 @@ bytes respectively. Such letter suffixes
  	ccw_timeout_log [S390]
  			See Documentation/s390/CommonIO for details.
  
@@ -30,9 +32,11 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  			The effects of cgroup_disable=foo are:
  			- foo isn't auto-mounted if you mount all cgroups in
  			  a single hierarchy
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -990,6 +990,14 @@ config MEMCG
+Index: linux-semplice-4.1.2/init/Kconfig
+===================================================================
+--- linux-semplice-4.1.2.orig/init/Kconfig
++++ linux-semplice-4.1.2/init/Kconfig
+@@ -1005,6 +1005,14 @@ config MEMCG
  	  Provides a memory resource controller that manages both anonymous
  	  memory and page cache. (See Documentation/cgroups/memory.txt)
  
@@ -47,9 +51,11 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  config MEMCG_SWAP
  	bool "Memory Resource Controller Swap Extension"
  	depends on MEMCG && SWAP
---- a/kernel/cgroup.c
-+++ b/kernel/cgroup.c
-@@ -5370,7 +5370,7 @@ out_free:
+Index: linux-semplice-4.1.2/kernel/cgroup.c
+===================================================================
+--- linux-semplice-4.1.2.orig/kernel/cgroup.c
++++ linux-semplice-4.1.2/kernel/cgroup.c
+@@ -5372,7 +5372,7 @@ out_free:
  	kfree(pathbuf);
  }
  
@@ -58,7 +64,7 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  {
  	struct cgroup_subsys *ss;
  	char *token;
-@@ -5382,17 +5382,29 @@ static int __init cgroup_disable(char *s
+@@ -5384,17 +5384,29 @@ static int __init cgroup_disable(char *s
  
  		for_each_subsys(ss, i) {
  			if (!strcmp(token, ss->name)) {
@@ -91,9 +97,11 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  static int __init cgroup_set_legacy_files_on_dfl(char *str)
  {
  	printk("cgroup: using legacy files on the default hierarchy\n");
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5379,6 +5379,9 @@ static struct cftype memory_files[] = {
+Index: linux-semplice-4.1.2/mm/memcontrol.c
+===================================================================
+--- linux-semplice-4.1.2.orig/mm/memcontrol.c
++++ linux-semplice-4.1.2/mm/memcontrol.c
+@@ -5376,6 +5376,9 @@ static struct cftype memory_files[] = {
  };
  
  struct cgroup_subsys memory_cgrp_subsys = {

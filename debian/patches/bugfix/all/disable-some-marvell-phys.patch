@@ -14,9 +14,11 @@ correctness.
 [bwh: Also #if-out the init functions for these PHYs to avoid
  compiler warnings]
 
---- a/drivers/net/phy/marvell.c
-+++ b/drivers/net/phy/marvell.c
-@@ -591,6 +591,7 @@ static int m88e1118_config_init(struct p
+Index: linux-semplice-4.1.2/drivers/net/phy/marvell.c
+===================================================================
+--- linux-semplice-4.1.2.orig/drivers/net/phy/marvell.c
++++ linux-semplice-4.1.2/drivers/net/phy/marvell.c
+@@ -621,6 +621,7 @@ static int m88e1118_config_init(struct p
  	return phy_write(phydev, MII_BMCR, BMCR_RESET);
  }
  
@@ -24,7 +26,7 @@ correctness.
  static int m88e1149_config_init(struct phy_device *phydev)
  {
  	int err;
-@@ -616,7 +617,9 @@ static int m88e1149_config_init(struct p
+@@ -646,7 +647,9 @@ static int m88e1149_config_init(struct p
  
  	return phy_write(phydev, MII_BMCR, BMCR_RESET);
  }
@@ -34,7 +36,7 @@ correctness.
  static int m88e1145_config_init(struct phy_device *phydev)
  {
  	int err;
-@@ -682,6 +685,7 @@ static int m88e1145_config_init(struct p
+@@ -727,6 +730,7 @@ static int m88e1145_config_init(struct p
  
  	return 0;
  }
@@ -42,7 +44,7 @@ correctness.
  
  /* marvell_read_status
   *
-@@ -975,6 +979,7 @@ static struct phy_driver marvell_drivers
+@@ -1026,6 +1030,7 @@ static struct phy_driver marvell_drivers
  		.suspend = &genphy_suspend,
  		.driver = { .owner = THIS_MODULE },
  	},
@@ -50,7 +52,7 @@ correctness.
  	{
  		.phy_id = MARVELL_PHY_ID_88E1145,
  		.phy_id_mask = MARVELL_PHY_ID_MASK,
-@@ -990,6 +995,8 @@ static struct phy_driver marvell_drivers
+@@ -1041,6 +1046,8 @@ static struct phy_driver marvell_drivers
  		.suspend = &genphy_suspend,
  		.driver = { .owner = THIS_MODULE },
  	},
@@ -59,7 +61,7 @@ correctness.
  	{
  		.phy_id = MARVELL_PHY_ID_88E1149R,
  		.phy_id_mask = MARVELL_PHY_ID_MASK,
-@@ -1005,6 +1012,8 @@ static struct phy_driver marvell_drivers
+@@ -1056,6 +1063,8 @@ static struct phy_driver marvell_drivers
  		.suspend = &genphy_suspend,
  		.driver = { .owner = THIS_MODULE },
  	},
@@ -68,7 +70,7 @@ correctness.
  	{
  		.phy_id = MARVELL_PHY_ID_88E1240,
  		.phy_id_mask = MARVELL_PHY_ID_MASK,
-@@ -1020,6 +1029,7 @@ static struct phy_driver marvell_drivers
+@@ -1071,6 +1080,7 @@ static struct phy_driver marvell_drivers
  		.suspend = &genphy_suspend,
  		.driver = { .owner = THIS_MODULE },
  	},
@@ -76,7 +78,7 @@ correctness.
  	{
  		.phy_id = MARVELL_PHY_ID_88E1116R,
  		.phy_id_mask = MARVELL_PHY_ID_MASK,
-@@ -1073,9 +1083,9 @@ static struct mdio_device_id __maybe_unu
+@@ -1128,9 +1138,9 @@ static struct mdio_device_id __maybe_unu
  	{ MARVELL_PHY_ID_88E1111, MARVELL_PHY_ID_MASK },
  	{ MARVELL_PHY_ID_88E1118, MARVELL_PHY_ID_MASK },
  	{ MARVELL_PHY_ID_88E1121R, MARVELL_PHY_ID_MASK },

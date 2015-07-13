@@ -11,9 +11,11 @@ userland (modem-manager) to override this with a modprobe.conf file
 once it's ready to speak MBIM.
 
 ---
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -53,11 +53,7 @@
+Index: linux-semplice-4.1.2/drivers/net/usb/cdc_ncm.c
+===================================================================
+--- linux-semplice-4.1.2.orig/drivers/net/usb/cdc_ncm.c
++++ linux-semplice-4.1.2/drivers/net/usb/cdc_ncm.c
+@@ -52,11 +52,7 @@
  #include <linux/usb/cdc.h>
  #include <linux/usb/cdc_ncm.h>
  
