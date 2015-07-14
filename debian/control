@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Eugenio Paolantonio (g7) <me@medesimo.eu>
 Uploaders: Giuseppe Corti <giuseppe@infiniteloop.pro>
 Standards-Version: 3.9.5
-Build-Depends: debhelper (>= 9.20120115), bc, cpio, python, liblz4-tool, gcc-5 [amd64 i386]
+Build-Depends: debhelper (>= 9.20120115), bc, cpio, python, liblz4-tool, gcc-4.9 [amd64 i386]
 Vcs-Git: https://github.com/semplice/linux.git
 Vcs-Browser: https://github.com/semplice/linux
 Homepage: http://kernel.org/
@@ -43,7 +43,7 @@ Description: Linux headers for semplice on 64-bit PCs
 
 Package: linux-headers-4.1-2.semplice.0-desktop-amd64
 Architecture: amd64
-Depends: ${misc:Depends}, gcc-5
+Depends: ${misc:Depends}, gcc-4.9
 Conflicts: r8168-dkms
 Description: Header files for Linux 4.1-2.semplice.0-desktop-amd64
  This package provides the architecture-specific kernel header files for
@@ -95,7 +95,7 @@ Description: Linux headers for semplice on modern PCs
 
 Package: linux-headers-4.1-2.semplice.0-desktop-686
 Architecture: i386
-Depends: ${misc:Depends}, gcc-5
+Depends: ${misc:Depends}, gcc-4.9
 Conflicts: r8168-dkms
 Description: Header files for Linux 4.1-2.semplice.0-desktop-686
  This package provides the architecture-specific kernel header files for
