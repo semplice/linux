@@ -5,7 +5,7 @@ abiname: 2.semplice.0
 arches:
  amd64
  i386
-compiler: gcc-5
+compiler: gcc-4.9
 featuresets:
  none
 
