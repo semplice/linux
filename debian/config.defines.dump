@@ -120,11 +120,11 @@ tp60
 (dp61
 S'abiname'
 p62
-S'4.1-2.semplice.0'
+S'4.1-2.semplice.1'
 p63
 sS'source'
 p64
-V4.1.2-1
+V4.1.2-2
 p65
 ss(S'base'
 g27
@@ -171,7 +171,7 @@ tp87
 (dp88
 S'abiname'
 p89
-S'2.semplice.0'
+S'2.semplice.1'
 p90
 ss(S'image'
 g27
