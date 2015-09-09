@@ -13,8 +13,10 @@ issues are found, we have a fail-safe.
 Signed-off-by: Serge Hallyn <serge.hallyn@ubuntu.com>
 [bwh: Remove unneeded binary sysctl bits]
 ---
---- a/kernel/fork.c
-+++ b/kernel/fork.c
+Index: linux-semplice-4.1.6current/kernel/fork.c
+===================================================================
+--- linux-semplice-4.1.6current.orig/kernel/fork.c
++++ linux-semplice-4.1.6current/kernel/fork.c
 @@ -87,6 +87,11 @@
  
  #define CREATE_TRACE_POINTS
@@ -51,8 +53,10 @@ Signed-off-by: Serge Hallyn <serge.hallyn@ubuntu.com>
  	err = check_unshare_flags(unshare_flags);
  	if (err)
  		goto bad_unshare_out;
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
+Index: linux-semplice-4.1.6current/kernel/sysctl.c
+===================================================================
+--- linux-semplice-4.1.6current.orig/kernel/sysctl.c
++++ linux-semplice-4.1.6current/kernel/sysctl.c
 @@ -102,6 +102,9 @@ extern int core_uses_pid;
  extern char core_pattern[];
  extern unsigned int core_pipe_limit;
@@ -79,8 +83,10 @@ Signed-off-by: Serge Hallyn <serge.hallyn@ubuntu.com>
  #endif
  #ifdef CONFIG_PROC_SYSCTL
  	{
---- a/kernel/user_namespace.c
-+++ b/kernel/user_namespace.c
+Index: linux-semplice-4.1.6current/kernel/user_namespace.c
+===================================================================
+--- linux-semplice-4.1.6current.orig/kernel/user_namespace.c
++++ linux-semplice-4.1.6current/kernel/user_namespace.c
 @@ -23,6 +23,9 @@
  #include <linux/projid.h>
  #include <linux/fs_struct.h>

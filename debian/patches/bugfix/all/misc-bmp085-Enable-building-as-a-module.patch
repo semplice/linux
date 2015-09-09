@@ -14,10 +14,10 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  drivers/misc/Kconfig |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: linux-semplice-4.1.2/drivers/misc/Kconfig
+Index: linux-semplice-4.1.6current/drivers/misc/Kconfig
 ===================================================================
---- linux-semplice-4.1.2.orig/drivers/misc/Kconfig
-+++ linux-semplice-4.1.2/drivers/misc/Kconfig
+--- linux-semplice-4.1.6current.orig/drivers/misc/Kconfig
++++ linux-semplice-4.1.6current/drivers/misc/Kconfig
 @@ -429,7 +429,7 @@ config ARM_CHARLCD
  	  still useful.
  

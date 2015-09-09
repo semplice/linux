@@ -68,11 +68,10 @@ Signed-off-by: Arianna Avanzini <avanzini.arianna@gmail.com>
  create mode 100644 block/bfq-sched.c
  create mode 100644 block/bfq.h
 
-diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c
-new file mode 100644
-index 0000000..11e2f1d
+Index: linux-semplice-4.1.6current/block/bfq-cgroup.c
+===================================================================
 --- /dev/null
-+++ b/block/bfq-cgroup.c
++++ linux-semplice-4.1.6current/block/bfq-cgroup.c
 @@ -0,0 +1,936 @@
 +/*
 + * BFQ: CGROUPS support.
@@ -1010,11 +1009,10 @@ index 0000000..11e2f1d
 +	return bfqg;
 +}
 +#endif
-diff --git a/block/bfq-ioc.c b/block/bfq-ioc.c
-new file mode 100644
-index 0000000..7f6b000
+Index: linux-semplice-4.1.6current/block/bfq-ioc.c
+===================================================================
 --- /dev/null
-+++ b/block/bfq-ioc.c
++++ linux-semplice-4.1.6current/block/bfq-ioc.c
 @@ -0,0 +1,36 @@
 +/*
 + * BFQ: I/O context handling.
@@ -1052,11 +1050,10 @@ index 0000000..7f6b000
 +		return icq_to_bic(ioc_lookup_icq(ioc, bfqd->queue));
 +	return NULL;
 +}
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-new file mode 100644
-index 0000000..773b2ee
+Index: linux-semplice-4.1.6current/block/bfq-iosched.c
+===================================================================
 --- /dev/null
-+++ b/block/bfq-iosched.c
++++ linux-semplice-4.1.6current/block/bfq-iosched.c
 @@ -0,0 +1,3898 @@
 +/*
 + * Budget Fair Queueing (BFQ) disk scheduler.
@@ -4956,11 +4953,10 @@ index 0000000..773b2ee
 +
 +MODULE_AUTHOR("Fabio Checconi, Paolo Valente");
 +MODULE_LICENSE("GPL");
-diff --git a/block/bfq-sched.c b/block/bfq-sched.c
-new file mode 100644
-index 0000000..c343099
+Index: linux-semplice-4.1.6current/block/bfq-sched.c
+===================================================================
 --- /dev/null
-+++ b/block/bfq-sched.c
++++ linux-semplice-4.1.6current/block/bfq-sched.c
 @@ -0,0 +1,1208 @@
 +/*
 + * BFQ: Hierarchical B-WF2Q+ scheduler.
@@ -6170,11 +6166,10 @@ index 0000000..c343099
 +	if (bfqq->wr_coeff > 1)
 +		bfqd->wr_busy_queues++;
 +}
-diff --git a/block/bfq.h b/block/bfq.h
-new file mode 100644
-index 0000000..00feff7
+Index: linux-semplice-4.1.6current/block/bfq.h
+===================================================================
 --- /dev/null
-+++ b/block/bfq.h
++++ linux-semplice-4.1.6current/block/bfq.h
 @@ -0,0 +1,771 @@
 +/*
 + * BFQ-v7r8 for 4.1.0: data structures and common functions prototypes.
@@ -6947,6 +6942,3 @@ index 0000000..00feff7
 +static void bfq_exit_bfqq(struct bfq_data *bfqd, struct bfq_queue *bfqq);
 +
 +#endif /* _BFQ_H */
--- 
-2.1.4
-

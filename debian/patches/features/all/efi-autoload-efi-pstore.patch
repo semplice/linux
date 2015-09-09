@@ -7,8 +7,10 @@ Forwarded: no
 
 efi-pstore should be auto-loaded on EFI systems, same as efivars.
 
---- a/drivers/firmware/efi/efi-pstore.c
-+++ b/drivers/firmware/efi/efi-pstore.c
+Index: linux-semplice-4.1.6current/drivers/firmware/efi/efi-pstore.c
+===================================================================
+--- linux-semplice-4.1.6current.orig/drivers/firmware/efi/efi-pstore.c
++++ linux-semplice-4.1.6current/drivers/firmware/efi/efi-pstore.c
 @@ -400,3 +400,4 @@ module_exit(efivars_pstore_exit);
  
  MODULE_DESCRIPTION("EFI variable backend for pstore");

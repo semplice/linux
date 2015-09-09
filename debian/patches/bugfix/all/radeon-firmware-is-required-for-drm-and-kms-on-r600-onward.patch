@@ -26,10 +26,10 @@ Therefore, perform a basic check for the existence of
 missing, except for the pre-R600 KMS case.
 
 ---
-Index: linux-semplice-4.1.2/drivers/gpu/drm/radeon/radeon_drv.c
+Index: linux-semplice-4.1.6current/drivers/gpu/drm/radeon/radeon_drv.c
 ===================================================================
---- linux-semplice-4.1.2.orig/drivers/gpu/drm/radeon/radeon_drv.c
-+++ linux-semplice-4.1.2/drivers/gpu/drm/radeon/radeon_drv.c
+--- linux-semplice-4.1.6current.orig/drivers/gpu/drm/radeon/radeon_drv.c
++++ linux-semplice-4.1.6current/drivers/gpu/drm/radeon/radeon_drv.c
 @@ -42,6 +42,8 @@
  
  #include "drm_crtc_helper.h"

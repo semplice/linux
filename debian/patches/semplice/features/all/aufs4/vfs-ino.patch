@@ -1,7 +1,7 @@
-Index: linux-semplice-4.1.2/fs/inode.c
+Index: linux-semplice-4.1.6current/fs/inode.c
 ===================================================================
---- linux-semplice-4.1.2.orig/fs/inode.c
-+++ linux-semplice-4.1.2/fs/inode.c
+--- linux-semplice-4.1.6current.orig/fs/inode.c
++++ linux-semplice-4.1.6current/fs/inode.c
 @@ -831,6 +831,8 @@ unsigned int get_next_ino(void)
  	unsigned int *p = &get_cpu_var(last_ino);
  	unsigned int res = *p;

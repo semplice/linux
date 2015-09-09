@@ -15,10 +15,10 @@ Signed-off-by: Arianna Avanzini <avanzini.arianna@gmail.com>
  include/linux/cgroup_subsys.h |  4 ++++
  3 files changed, 37 insertions(+)
 
-diff --git a/block/Kconfig.iosched b/block/Kconfig.iosched
-index 421bef9..0ee5f0f 100644
---- a/block/Kconfig.iosched
-+++ b/block/Kconfig.iosched
+Index: linux-semplice-4.1.6current/block/Kconfig.iosched
+===================================================================
+--- linux-semplice-4.1.6current.orig/block/Kconfig.iosched
++++ linux-semplice-4.1.6current/block/Kconfig.iosched
 @@ -39,6 +39,27 @@ config CFQ_GROUP_IOSCHED
  	---help---
  	  Enable group IO scheduling in CFQ.
@@ -72,11 +72,11 @@ index 421bef9..0ee5f0f 100644
  	default "noop" if DEFAULT_NOOP
  
  endmenu
-diff --git a/block/Makefile b/block/Makefile
-index 00ecc97..1ed86d5 100644
---- a/block/Makefile
-+++ b/block/Makefile
-@@ -18,6 +18,7 @@ obj-$(CONFIG_BLK_DEV_THROTTLING)	+= blk-throttle.o
+Index: linux-semplice-4.1.6current/block/Makefile
+===================================================================
+--- linux-semplice-4.1.6current.orig/block/Makefile
++++ linux-semplice-4.1.6current/block/Makefile
+@@ -18,6 +18,7 @@ obj-$(CONFIG_BLK_DEV_THROTTLING)	+= blk-
  obj-$(CONFIG_IOSCHED_NOOP)	+= noop-iosched.o
  obj-$(CONFIG_IOSCHED_DEADLINE)	+= deadline-iosched.o
  obj-$(CONFIG_IOSCHED_CFQ)	+= cfq-iosched.o
@@ -84,10 +84,10 @@ index 00ecc97..1ed86d5 100644
  
  obj-$(CONFIG_BLOCK_COMPAT)	+= compat_ioctl.o
  obj-$(CONFIG_BLK_CMDLINE_PARSER)	+= cmdline-parser.o
-diff --git a/include/linux/cgroup_subsys.h b/include/linux/cgroup_subsys.h
-index e4a96fb..267d681 100644
---- a/include/linux/cgroup_subsys.h
-+++ b/include/linux/cgroup_subsys.h
+Index: linux-semplice-4.1.6current/include/linux/cgroup_subsys.h
+===================================================================
+--- linux-semplice-4.1.6current.orig/include/linux/cgroup_subsys.h
++++ linux-semplice-4.1.6current/include/linux/cgroup_subsys.h
 @@ -35,6 +35,10 @@ SUBSYS(freezer)
  SUBSYS(net_cls)
  #endif
@@ -99,6 +99,3 @@ index e4a96fb..267d681 100644
  #if IS_ENABLED(CONFIG_CGROUP_PERF)
  SUBSYS(perf_event)
  #endif
--- 
-2.1.4
-

@@ -7,8 +7,10 @@ xserver-xorg-video-cirrus, so do not enable it by default.  It will be
 enabled by a modprobe configuration file installed by
 xserver-xorg-video-modesetting.
 
---- a/drivers/gpu/drm/cirrus/cirrus_drv.c
-+++ b/drivers/gpu/drm/cirrus/cirrus_drv.c
+Index: linux-semplice-4.1.6current/drivers/gpu/drm/cirrus/cirrus_drv.c
+===================================================================
+--- linux-semplice-4.1.6current.orig/drivers/gpu/drm/cirrus/cirrus_drv.c
++++ linux-semplice-4.1.6current/drivers/gpu/drm/cirrus/cirrus_drv.c
 @@ -15,7 +15,7 @@
  
  #include "cirrus_drv.h"

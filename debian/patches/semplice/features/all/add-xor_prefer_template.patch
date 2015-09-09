@@ -10,11 +10,11 @@ Use XOR_PREFER_TEMPLATE can avoid xor template checking at bootup.
  arch/x86/include/asm/xor_64.h | 2 ++
  3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/xor.h b/arch/x86/include/asm/xor.h
-index d882975..dd2b820 100644
---- a/arch/x86/include/asm/xor.h
-+++ b/arch/x86/include/asm/xor.h
-@@ -494,6 +494,6 @@ static struct xor_block_template xor_block_sse_pf64 = {
+Index: linux-semplice-4.1.6current/arch/x86/include/asm/xor.h
+===================================================================
+--- linux-semplice-4.1.6current.orig/arch/x86/include/asm/xor.h
++++ linux-semplice-4.1.6current/arch/x86/include/asm/xor.h
+@@ -494,6 +494,6 @@ static struct xor_block_template xor_blo
  #endif
  
  #define XOR_SELECT_TEMPLATE(FASTEST) \
@@ -22,10 +22,10 @@ index d882975..dd2b820 100644
 +	AVX_SELECT((NULL==(FASTEST))? XOR_PREFER_TEMPLATE:FASTEST)
  
  #endif /* _ASM_X86_XOR_H */
-diff --git a/arch/x86/include/asm/xor_32.h b/arch/x86/include/asm/xor_32.h
-index ce05722..0c2910f 100644
---- a/arch/x86/include/asm/xor_32.h
-+++ b/arch/x86/include/asm/xor_32.h
+Index: linux-semplice-4.1.6current/arch/x86/include/asm/xor_32.h
+===================================================================
+--- linux-semplice-4.1.6current.orig/arch/x86/include/asm/xor_32.h
++++ linux-semplice-4.1.6current/arch/x86/include/asm/xor_32.h
 @@ -564,4 +564,7 @@ do {							\
  	}						\
  } while (0)
@@ -34,10 +34,10 @@ index ce05722..0c2910f 100644
 +#define XOR_PREFER_TEMPLATE (NULL)
 +
  #endif /* _ASM_X86_XOR_32_H */
-diff --git a/arch/x86/include/asm/xor_64.h b/arch/x86/include/asm/xor_64.h
-index 546f1e3..0e0f7ef 100644
---- a/arch/x86/include/asm/xor_64.h
-+++ b/arch/x86/include/asm/xor_64.h
+Index: linux-semplice-4.1.6current/arch/x86/include/asm/xor_64.h
+===================================================================
+--- linux-semplice-4.1.6current.orig/arch/x86/include/asm/xor_64.h
++++ linux-semplice-4.1.6current/arch/x86/include/asm/xor_64.h
 @@ -24,4 +24,6 @@ do {						\
  	xor_speed(&xor_block_sse);		\
  } while (0)

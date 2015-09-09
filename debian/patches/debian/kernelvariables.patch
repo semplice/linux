@@ -12,10 +12,10 @@ also CROSS_COMPILE, CFLAGS_KERNEL and CFLAGS_MODULE.
 This file can only be read after we establish the build tree, and all
 use of $(ARCH) needs to be moved after this.
 
-Index: linux-semplice-4.1.2/Makefile
+Index: linux-semplice-4.1.6current/Makefile
 ===================================================================
---- linux-semplice-4.1.2.orig/Makefile
-+++ linux-semplice-4.1.2/Makefile
+--- linux-semplice-4.1.6current.orig/Makefile
++++ linux-semplice-4.1.6current/Makefile
 @@ -252,42 +252,6 @@ SUBARCH := $(shell uname -m | sed -e s/i
  ARCH		?= $(SUBARCH)
  CROSS_COMPILE	?= $(CONFIG_CROSS_COMPILE:"%"=%)

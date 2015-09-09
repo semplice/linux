@@ -16,10 +16,10 @@ tell why.)
 
 Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
 ---
-Index: linux-semplice-4.1.2/drivers/base/firmware_class.c
+Index: linux-semplice-4.1.6current/drivers/base/firmware_class.c
 ===================================================================
---- linux-semplice-4.1.2.orig/drivers/base/firmware_class.c
-+++ linux-semplice-4.1.2/drivers/base/firmware_class.c
+--- linux-semplice-4.1.6current.orig/drivers/base/firmware_class.c
++++ linux-semplice-4.1.6current/drivers/base/firmware_class.c
 @@ -293,7 +293,7 @@ static int fw_read_file_contents(struct
  	int rc;
  
@@ -50,7 +50,7 @@ Index: linux-semplice-4.1.2/drivers/base/firmware_class.c
  		rc = fw_read_file_contents(file, buf);
  		fput(file);
  		if (rc)
-@@ -965,13 +967,6 @@ static void kill_requests_without_uevent
+@@ -975,13 +977,6 @@ static void kill_requests_without_uevent
  #endif
  
  #else /* CONFIG_FW_LOADER_USER_HELPER */
@@ -64,7 +64,7 @@ Index: linux-semplice-4.1.2/drivers/base/firmware_class.c
  
  /* No abort during direct loading */
  #define is_fw_load_aborted(buf) false
-@@ -1123,6 +1118,7 @@ _request_firmware(const struct firmware
+@@ -1133,6 +1128,7 @@ _request_firmware(const struct firmware
  	}
  
  	ret = fw_get_filesystem_firmware(device, fw->priv);
@@ -72,7 +72,7 @@ Index: linux-semplice-4.1.2/drivers/base/firmware_class.c
  	if (ret) {
  		if (!(opt_flags & FW_OPT_NO_WARN))
  			dev_warn(device,
-@@ -1134,6 +1130,7 @@ _request_firmware(const struct firmware
+@@ -1144,6 +1140,7 @@ _request_firmware(const struct firmware
  						       opt_flags, timeout);
  		}
  	}

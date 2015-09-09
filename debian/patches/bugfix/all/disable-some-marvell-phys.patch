@@ -14,10 +14,10 @@ correctness.
 [bwh: Also #if-out the init functions for these PHYs to avoid
  compiler warnings]
 
-Index: linux-semplice-4.1.2/drivers/net/phy/marvell.c
+Index: linux-semplice-4.1.6current/drivers/net/phy/marvell.c
 ===================================================================
---- linux-semplice-4.1.2.orig/drivers/net/phy/marvell.c
-+++ linux-semplice-4.1.2/drivers/net/phy/marvell.c
+--- linux-semplice-4.1.6current.orig/drivers/net/phy/marvell.c
++++ linux-semplice-4.1.6current/drivers/net/phy/marvell.c
 @@ -621,6 +621,7 @@ static int m88e1118_config_init(struct p
  	return phy_write(phydev, MII_BMCR, BMCR_RESET);
  }

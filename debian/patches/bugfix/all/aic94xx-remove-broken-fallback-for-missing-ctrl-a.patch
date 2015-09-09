@@ -19,11 +19,11 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  drivers/scsi/aic94xx/aic94xx_sds.c | 18 ++----------------
  1 file changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/scsi/aic94xx/aic94xx_sds.c b/drivers/scsi/aic94xx/aic94xx_sds.c
-index edb43fd..f5d51d2 100644
---- a/drivers/scsi/aic94xx/aic94xx_sds.c
-+++ b/drivers/scsi/aic94xx/aic94xx_sds.c
-@@ -981,29 +981,15 @@ static int asd_process_ctrla_phy_settings(struct asd_ha_struct *asd_ha,
+Index: linux-semplice-4.1.6current/drivers/scsi/aic94xx/aic94xx_sds.c
+===================================================================
+--- linux-semplice-4.1.6current.orig/drivers/scsi/aic94xx/aic94xx_sds.c
++++ linux-semplice-4.1.6current/drivers/scsi/aic94xx/aic94xx_sds.c
+@@ -981,29 +981,15 @@ static int asd_process_ctrla_phy_setting
  static int asd_process_ctrl_a_user(struct asd_ha_struct *asd_ha,
  				   struct asd_flash_dir *flash_dir)
  {
