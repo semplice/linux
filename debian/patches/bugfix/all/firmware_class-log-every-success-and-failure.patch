@@ -21,10 +21,10 @@ This does not cover the case where we fall back to a user-mode helper
 NOTE: hw-detect will depend on the "firmware: failed to load %s (%d)\n"
 format to detect missing firmware.
 ---
-Index: linux-semplice-4.1.2/drivers/base/firmware_class.c
+Index: linux-semplice-4.1.6current/drivers/base/firmware_class.c
 ===================================================================
---- linux-semplice-4.1.2.orig/drivers/base/firmware_class.c
-+++ linux-semplice-4.1.2/drivers/base/firmware_class.c
+--- linux-semplice-4.1.6current.orig/drivers/base/firmware_class.c
++++ linux-semplice-4.1.6current/drivers/base/firmware_class.c
 @@ -340,17 +340,20 @@ static int fw_get_filesystem_firmware(st
  		}
  		rc = fw_read_file_contents(file, buf);
@@ -51,7 +51,7 @@ Index: linux-semplice-4.1.2/drivers/base/firmware_class.c
  		mutex_lock(&fw_lock);
  		set_bit(FW_STATUS_DONE, &buf->status);
  		complete_all(&buf->completion);
-@@ -1017,7 +1020,8 @@ _request_firmware_prepare(struct firmwar
+@@ -1027,7 +1030,8 @@ _request_firmware_prepare(struct firmwar
  	}
  
  	if (fw_get_builtin_firmware(firmware, name)) {
@@ -61,7 +61,7 @@ Index: linux-semplice-4.1.2/drivers/base/firmware_class.c
  		return 0; /* assigned */
  	}
  
-@@ -1103,7 +1107,7 @@ _request_firmware(const struct firmware
+@@ -1113,7 +1117,7 @@ _request_firmware(const struct firmware
  	if (opt_flags & FW_OPT_NOWAIT) {
  		timeout = usermodehelper_read_lock_wait(timeout);
  		if (!timeout) {

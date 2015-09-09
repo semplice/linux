@@ -26,11 +26,11 @@ Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
  arch/x86/kernel/syscall_64.c        | 43 +++++++++++++++++++++++++++++++++++++
  5 files changed, 88 insertions(+), 11 deletions(-)
 
-Index: linux-semplice-4.1.2/Documentation/kernel-parameters.txt
+Index: linux-semplice-4.1.6current/Documentation/kernel-parameters.txt
 ===================================================================
---- linux-semplice-4.1.2.orig/Documentation/kernel-parameters.txt
-+++ linux-semplice-4.1.2/Documentation/kernel-parameters.txt
-@@ -3522,6 +3522,10 @@ bytes respectively. Such letter suffixes
+--- linux-semplice-4.1.6current.orig/Documentation/kernel-parameters.txt
++++ linux-semplice-4.1.6current/Documentation/kernel-parameters.txt
+@@ -3530,6 +3530,10 @@ bytes respectively. Such letter suffixes
  
  	switches=	[HW,M68k]
  
@@ -41,10 +41,10 @@ Index: linux-semplice-4.1.2/Documentation/kernel-parameters.txt
  	sysfs.deprecated=0|1 [KNL]
  			Enable/disable old style sysfs layout for old udev
  			on older distributions. When this option is enabled
-Index: linux-semplice-4.1.2/arch/x86/Kconfig
+Index: linux-semplice-4.1.6current/arch/x86/Kconfig
 ===================================================================
---- linux-semplice-4.1.2.orig/arch/x86/Kconfig
-+++ linux-semplice-4.1.2/arch/x86/Kconfig
+--- linux-semplice-4.1.6current.orig/arch/x86/Kconfig
++++ linux-semplice-4.1.6current/arch/x86/Kconfig
 @@ -2540,6 +2540,14 @@ config X86_X32
  	  elf32_x86_64 support enabled to compile a kernel with this
  	  option set.
@@ -60,10 +60,10 @@ Index: linux-semplice-4.1.2/arch/x86/Kconfig
  config COMPAT
  	def_bool y
  	depends on IA32_EMULATION || X86_X32
-Index: linux-semplice-4.1.2/arch/x86/include/asm/elf.h
+Index: linux-semplice-4.1.6current/arch/x86/include/asm/elf.h
 ===================================================================
---- linux-semplice-4.1.2.orig/arch/x86/include/asm/elf.h
-+++ linux-semplice-4.1.2/arch/x86/include/asm/elf.h
+--- linux-semplice-4.1.6current.orig/arch/x86/include/asm/elf.h
++++ linux-semplice-4.1.6current/arch/x86/include/asm/elf.h
 @@ -154,6 +154,12 @@ do {						\
  
  #else /* CONFIG_X86_32 */
@@ -86,10 +86,10 @@ Index: linux-semplice-4.1.2/arch/x86/include/asm/elf.h
  
  #if __USER32_DS != __USER_DS
  # error "The following code assumes __USER32_DS == __USER_DS"
-Index: linux-semplice-4.1.2/arch/x86/kernel/entry_64.S
+Index: linux-semplice-4.1.6current/arch/x86/kernel/entry_64.S
 ===================================================================
---- linux-semplice-4.1.2.orig/arch/x86/kernel/entry_64.S
-+++ linux-semplice-4.1.2/arch/x86/kernel/entry_64.S
+--- linux-semplice-4.1.6current.orig/arch/x86/kernel/entry_64.S
++++ linux-semplice-4.1.6current/arch/x86/kernel/entry_64.S
 @@ -252,8 +252,12 @@ system_call_fastpath:
  #if __SYSCALL_MASK == ~0
  	cmpq $__NR_syscall_max,%rax
@@ -137,10 +137,10 @@ Index: linux-semplice-4.1.2/arch/x86/kernel/entry_64.S
  	.macro FORK_LIKE func
  ENTRY(stub_\func)
  	CFI_STARTPROC
-Index: linux-semplice-4.1.2/arch/x86/kernel/syscall_64.c
+Index: linux-semplice-4.1.6current/arch/x86/kernel/syscall_64.c
 ===================================================================
---- linux-semplice-4.1.2.orig/arch/x86/kernel/syscall_64.c
-+++ linux-semplice-4.1.2/arch/x86/kernel/syscall_64.c
+--- linux-semplice-4.1.6current.orig/arch/x86/kernel/syscall_64.c
++++ linux-semplice-4.1.6current/arch/x86/kernel/syscall_64.c
 @@ -3,8 +3,14 @@
  #include <linux/linkage.h>
  #include <linux/sys.h>

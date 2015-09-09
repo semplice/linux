@@ -34,10 +34,10 @@ Signed-off-by: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
  drivers/net/ethernet/marvell/mv643xx_eth.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Index: linux-semplice-4.1.2/drivers/net/ethernet/marvell/mv643xx_eth.c
+Index: linux-semplice-4.1.6current/drivers/net/ethernet/marvell/mv643xx_eth.c
 ===================================================================
---- linux-semplice-4.1.2.orig/drivers/net/ethernet/marvell/mv643xx_eth.c
-+++ linux-semplice-4.1.2/drivers/net/ethernet/marvell/mv643xx_eth.c
+--- linux-semplice-4.1.6current.orig/drivers/net/ethernet/marvell/mv643xx_eth.c
++++ linux-semplice-4.1.6current/drivers/net/ethernet/marvell/mv643xx_eth.c
 @@ -3150,11 +3150,11 @@ static int mv643xx_eth_probe(struct plat
  	dev->watchdog_timeo = 2 * HZ;
  	dev->base_addr = 0;

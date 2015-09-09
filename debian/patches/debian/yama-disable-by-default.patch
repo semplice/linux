@@ -4,10 +4,10 @@ Date: Wed, 19 Jun 2013 04:35:28 +0100
 Bug-Debian: https://bugs.debian.org/712740
 Forwarded: not-needed
 
-Index: linux-semplice-4.1.2/security/yama/yama_lsm.c
+Index: linux-semplice-4.1.6current/security/yama/yama_lsm.c
 ===================================================================
---- linux-semplice-4.1.2.orig/security/yama/yama_lsm.c
-+++ linux-semplice-4.1.2/security/yama/yama_lsm.c
+--- linux-semplice-4.1.6current.orig/security/yama/yama_lsm.c
++++ linux-semplice-4.1.6current/security/yama/yama_lsm.c
 @@ -24,7 +24,7 @@
  #define YAMA_SCOPE_CAPABILITY	2
  #define YAMA_SCOPE_NO_ATTACH	3

@@ -14,11 +14,11 @@ hanging reads, we can drop this patch.]
  drivers/mmc/card/block.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: linux-semplice-4.1.2/drivers/mmc/card/block.c
+Index: linux-semplice-4.1.6current/drivers/mmc/card/block.c
 ===================================================================
---- linux-semplice-4.1.2.orig/drivers/mmc/card/block.c
-+++ linux-semplice-4.1.2/drivers/mmc/card/block.c
-@@ -2264,7 +2264,7 @@ static int mmc_blk_alloc_parts(struct mm
+--- linux-semplice-4.1.6current.orig/drivers/mmc/card/block.c
++++ linux-semplice-4.1.6current/drivers/mmc/card/block.c
+@@ -2268,7 +2268,7 @@ static int mmc_blk_alloc_parts(struct mm
  		return 0;
  
  	for (idx = 0; idx < card->nr_parts; idx++) {

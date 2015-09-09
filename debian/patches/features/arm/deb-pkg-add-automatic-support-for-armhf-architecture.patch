@@ -22,8 +22,10 @@ Ben.
  scripts/package/builddeb | 11 ++++++++++-
  1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/scripts/package/builddeb
-+++ b/scripts/package/builddeb
+Index: linux-semplice-4.1.6current/scripts/package/builddeb
+===================================================================
+--- linux-semplice-4.1.6current.orig/scripts/package/builddeb
++++ linux-semplice-4.1.6current/scripts/package/builddeb
 @@ -45,7 +45,16 @@ create_package() {
  	arm64)
  		debarch=arm64 ;;

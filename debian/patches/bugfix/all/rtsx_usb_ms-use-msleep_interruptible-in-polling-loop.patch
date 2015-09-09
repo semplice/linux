@@ -13,10 +13,10 @@ Change the sleep to be interruptible, but still ignore signals.
 
 A better fix might be to replace this loop with a delayed work item.
 
-diff --git a/drivers/memstick/host/rtsx_usb_ms.c b/drivers/memstick/host/rtsx_usb_ms.c
-index a7282b7..7356780 100644
---- a/drivers/memstick/host/rtsx_usb_ms.c
-+++ b/drivers/memstick/host/rtsx_usb_ms.c
+Index: linux-semplice-4.1.6current/drivers/memstick/host/rtsx_usb_ms.c
+===================================================================
+--- linux-semplice-4.1.6current.orig/drivers/memstick/host/rtsx_usb_ms.c
++++ linux-semplice-4.1.6current/drivers/memstick/host/rtsx_usb_ms.c
 @@ -706,7 +706,8 @@ poll_again:
  		if (host->eject)
  			break;
