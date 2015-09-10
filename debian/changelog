@@ -1,3 +1,9 @@
+linux-semplice (4.1.6-1~jethro0) jessie; urgency=medium
+
+  * Updated to 4.1.6.
+
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Fri, 11 Sep 2015 01:23:19 +0200
+
 linux-semplice (4.1.2-2~jethro0) jessie; urgency=medium
 
   * Restored AUFS.
