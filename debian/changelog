@@ -1,3 +1,9 @@
+linux-semplice (4.1.7-1) proposed-unstable; urgency=medium
+
+  * Updated to 4.1.7.
+
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Wed, 16 Sep 2015 23:18:48 +0200
+
 linux-semplice (4.1.6-1) proposed-unstable; urgency=medium
 
   * Updated to 4.1.6.
