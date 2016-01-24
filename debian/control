@@ -9,9 +9,9 @@ Vcs-Git: https://github.com/semplice/linux.git
 Vcs-Browser: https://github.com/semplice/linux
 Homepage: http://kernel.org/
 
-Package: linux-image-4.1-7.semplice.0-desktop-amd64
+Package: linux-image-4.1-16.semplice.0-desktop-amd64
 Architecture: amd64
-Provides: linux-modules-4.1-7.semplice.0-desktop-amd64
+Provides: linux-modules-4.1-16.semplice.0-desktop-amd64
 Pre-Depends: debconf | debconf-2.0
 Depends: kmod | module-init-tools (>= 3.16), ${misc:Depends}, initramfs-tools (>= 0.110~) [amd64] | linux-initramfs-tool [amd64]
 Recommends: firmware-linux-free (>= 3~)
@@ -26,7 +26,7 @@ Package: linux-image-desktop-amd64
 Architecture: amd64
 Section: metapackages
 Priority: extra
-Depends: linux-image-4.1-7.semplice.0-desktop-amd64 (= ${binary:Version}), ${misc:Depends}
+Depends: linux-image-4.1-16.semplice.0-desktop-amd64 (= ${binary:Version}), ${misc:Depends}
 Recommends: linux-headers-desktop-amd64 (= ${binary:Version})
 Description: Linux image for semplice on 64-bit PCs
  This metapackage depends on the latest binary image for Linux kernel on
@@ -36,26 +36,26 @@ Package: linux-headers-desktop-amd64
 Architecture: amd64
 Section: metapackages
 Priority: extra
-Depends: linux-headers-4.1-7.semplice.0-desktop-amd64 (= ${binary:Version}), ${misc:Depends}
+Depends: linux-headers-4.1-16.semplice.0-desktop-amd64 (= ${binary:Version}), ${misc:Depends}
 Description: Linux headers for semplice on 64-bit PCs
  This metapackage depends on the latest binary image for Linux kernel on
  PCs with AMD64 or Intel 64 processors machines for semplice.
 
-Package: linux-headers-4.1-7.semplice.0-desktop-amd64
+Package: linux-headers-4.1-16.semplice.0-desktop-amd64
 Architecture: amd64
 Depends: ${misc:Depends}, gcc-5
 Conflicts: r8168-dkms
-Description: Header files for Linux 4.1-7.semplice.0-desktop-amd64
+Description: Header files for Linux 4.1-16.semplice.0-desktop-amd64
  This package provides the architecture-specific kernel header files for
- Linux kernel 4.1-7.semplice.0-desktop-amd64, generally used for building
+ Linux kernel 4.1-16.semplice.0-desktop-amd64, generally used for building
  out-of-tree kernel modules.  These files are going to be installed into
- /usr/src/linux-headers-4.1-7.semplice.0-desktop-amd64, and can be used for
- building modules that load into the kernel provided by the
- linux-image-4.1-7.semplice.0-desktop-amd64 package.
+ /usr/src/linux-headers-4.1-16.semplice.0-desktop-amd64, and can be used
+ for building modules that load into the kernel provided by the
+ linux-image-4.1-16.semplice.0-desktop-amd64 package.
 
-Package: linux-image-4.1-7.semplice.0-desktop-686
+Package: linux-image-4.1-16.semplice.0-desktop-686
 Architecture: i386
-Provides: linux-modules-4.1-7.semplice.0-desktop-686
+Provides: linux-modules-4.1-16.semplice.0-desktop-686
 Pre-Depends: debconf | debconf-2.0
 Depends: kmod | module-init-tools (>= 3.16), ${misc:Depends}, initramfs-tools (>= 0.110~) [i386] | linux-initramfs-tool [i386]
 Recommends: firmware-linux-free (>= 3~), libc6-i686 [i386]
@@ -72,7 +72,7 @@ Package: linux-image-desktop-686
 Architecture: i386
 Section: metapackages
 Priority: extra
-Depends: linux-image-4.1-7.semplice.0-desktop-686 (= ${binary:Version}), ${misc:Depends}
+Depends: linux-image-4.1-16.semplice.0-desktop-686 (= ${binary:Version}), ${misc:Depends}
 Recommends: linux-headers-desktop-686 (= ${binary:Version})
 Description: Linux image for semplice on modern PCs
  This metapackage depends on the latest binary image for Linux kernel on
@@ -85,7 +85,7 @@ Package: linux-headers-desktop-686
 Architecture: i386
 Section: metapackages
 Priority: extra
-Depends: linux-headers-4.1-7.semplice.0-desktop-686 (= ${binary:Version}), ${misc:Depends}
+Depends: linux-headers-4.1-16.semplice.0-desktop-686 (= ${binary:Version}), ${misc:Depends}
 Description: Linux headers for semplice on modern PCs
  This metapackage depends on the latest binary image for Linux kernel on
  PCs with Intel Pentium Pro/II/III/4/4M/D/M, Xeon, Celeron, Core or Atom;
@@ -93,15 +93,15 @@ Description: Linux headers for semplice on modern PCs
  Transmeta Efficeon; VIA C3 "Nehemiah" or C7 processors machines for
  semplice.
 
-Package: linux-headers-4.1-7.semplice.0-desktop-686
+Package: linux-headers-4.1-16.semplice.0-desktop-686
 Architecture: i386
 Depends: ${misc:Depends}, gcc-5
 Conflicts: r8168-dkms
-Description: Header files for Linux 4.1-7.semplice.0-desktop-686
+Description: Header files for Linux 4.1-16.semplice.0-desktop-686
  This package provides the architecture-specific kernel header files for
- Linux kernel 4.1-7.semplice.0-desktop-686, generally used for building
+ Linux kernel 4.1-16.semplice.0-desktop-686, generally used for building
  out-of-tree kernel modules.  These files are going to be installed into
- /usr/src/linux-headers-4.1-7.semplice.0-desktop-686, and can be used for
+ /usr/src/linux-headers-4.1-16.semplice.0-desktop-686, and can be used for
  building modules that load into the kernel provided by the
- linux-image-4.1-7.semplice.0-desktop-686 package.
+ linux-image-4.1-16.semplice.0-desktop-686 package.
 
