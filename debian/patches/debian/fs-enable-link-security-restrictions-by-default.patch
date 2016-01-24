@@ -7,11 +7,11 @@ Forwarded: not-needed
 This reverts commit 561ec64ae67ef25cac8d72bb9c4bfc955edfd415
 ('VFS: don't do protected {sym,hard}links by default').
 
-Index: linux-semplice-4.1.6current/fs/namei.c
+Index: linux-semplice-4.1.16-current/fs/namei.c
 ===================================================================
---- linux-semplice-4.1.6current.orig/fs/namei.c
-+++ linux-semplice-4.1.6current/fs/namei.c
-@@ -733,8 +733,8 @@ static inline void put_link(struct namei
+--- linux-semplice-4.1.16-current.orig/fs/namei.c
++++ linux-semplice-4.1.16-current/fs/namei.c
+@@ -751,8 +751,8 @@ static inline void put_link(struct namei
  	path_put(link);
  }
  

@@ -13,10 +13,10 @@ issues are found, we have a fail-safe.
 Signed-off-by: Serge Hallyn <serge.hallyn@ubuntu.com>
 [bwh: Remove unneeded binary sysctl bits]
 ---
-Index: linux-semplice-4.1.6current/kernel/fork.c
+Index: linux-semplice-4.1.16-current/kernel/fork.c
 ===================================================================
---- linux-semplice-4.1.6current.orig/kernel/fork.c
-+++ linux-semplice-4.1.6current/kernel/fork.c
+--- linux-semplice-4.1.16-current.orig/kernel/fork.c
++++ linux-semplice-4.1.16-current/kernel/fork.c
 @@ -87,6 +87,11 @@
  
  #define CREATE_TRACE_POINTS
@@ -40,7 +40,7 @@ Index: linux-semplice-4.1.6current/kernel/fork.c
  	/*
  	 * Thread groups must share signals as well, and detached threads
  	 * can only be started up within the thread group.
-@@ -1944,6 +1953,12 @@ SYSCALL_DEFINE1(unshare, unsigned long,
+@@ -1952,6 +1961,12 @@ SYSCALL_DEFINE1(unshare, unsigned long,
  	if (unshare_flags & CLONE_NEWNS)
  		unshare_flags |= CLONE_FS;
  
@@ -53,10 +53,10 @@ Index: linux-semplice-4.1.6current/kernel/fork.c
  	err = check_unshare_flags(unshare_flags);
  	if (err)
  		goto bad_unshare_out;
-Index: linux-semplice-4.1.6current/kernel/sysctl.c
+Index: linux-semplice-4.1.16-current/kernel/sysctl.c
 ===================================================================
---- linux-semplice-4.1.6current.orig/kernel/sysctl.c
-+++ linux-semplice-4.1.6current/kernel/sysctl.c
+--- linux-semplice-4.1.16-current.orig/kernel/sysctl.c
++++ linux-semplice-4.1.16-current/kernel/sysctl.c
 @@ -102,6 +102,9 @@ extern int core_uses_pid;
  extern char core_pattern[];
  extern unsigned int core_pipe_limit;
@@ -83,10 +83,10 @@ Index: linux-semplice-4.1.6current/kernel/sysctl.c
  #endif
  #ifdef CONFIG_PROC_SYSCTL
  	{
-Index: linux-semplice-4.1.6current/kernel/user_namespace.c
+Index: linux-semplice-4.1.16-current/kernel/user_namespace.c
 ===================================================================
---- linux-semplice-4.1.6current.orig/kernel/user_namespace.c
-+++ linux-semplice-4.1.6current/kernel/user_namespace.c
+--- linux-semplice-4.1.16-current.orig/kernel/user_namespace.c
++++ linux-semplice-4.1.16-current/kernel/user_namespace.c
 @@ -23,6 +23,9 @@
  #include <linux/projid.h>
  #include <linux/fs_struct.h>

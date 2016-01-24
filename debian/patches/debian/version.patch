@@ -7,10 +7,10 @@ For distribution binary packages we assume
 $DISTRIBUTION_OFFICIAL_BUILD, $DISTRIBUTOR and $DISTRIBUTION_VERSION
 are set.
 
-Index: linux-semplice-4.1.6current/Makefile
+Index: linux-semplice-4.1.16-current/Makefile
 ===================================================================
---- linux-semplice-4.1.6current.orig/Makefile
-+++ linux-semplice-4.1.6current/Makefile
+--- linux-semplice-4.1.16-current.orig/Makefile
++++ linux-semplice-4.1.16-current/Makefile
 @@ -981,7 +981,7 @@ endif
  prepare2: prepare3 outputmakefile asm-generic
  
@@ -47,10 +47,10 @@ Index: linux-semplice-4.1.6current/Makefile
  PHONY += headerdep
  headerdep:
  	$(Q)find $(srctree)/include/ -name '*.h' | xargs --max-args 1 \
-Index: linux-semplice-4.1.6current/arch/x86/um/sysrq_64.c
+Index: linux-semplice-4.1.16-current/arch/x86/um/sysrq_64.c
 ===================================================================
---- linux-semplice-4.1.6current.orig/arch/x86/um/sysrq_64.c
-+++ linux-semplice-4.1.6current/arch/x86/um/sysrq_64.c
+--- linux-semplice-4.1.16-current.orig/arch/x86/um/sysrq_64.c
++++ linux-semplice-4.1.16-current/arch/x86/um/sysrq_64.c
 @@ -8,6 +8,7 @@
  #include <linux/module.h>
  #include <linux/sched.h>
@@ -71,10 +71,10 @@ Index: linux-semplice-4.1.6current/arch/x86/um/sysrq_64.c
  	printk(KERN_INFO "RIP: %04lx:[<%016lx>]\n", PT_REGS_CS(regs) & 0xffff,
  	       PT_REGS_IP(regs));
  	printk(KERN_INFO "RSP: %016lx  EFLAGS: %08lx\n", PT_REGS_SP(regs),
-Index: linux-semplice-4.1.6current/arch/ia64/kernel/process.c
+Index: linux-semplice-4.1.16-current/arch/ia64/kernel/process.c
 ===================================================================
---- linux-semplice-4.1.6current.orig/arch/ia64/kernel/process.c
-+++ linux-semplice-4.1.6current/arch/ia64/kernel/process.c
+--- linux-semplice-4.1.16-current.orig/arch/ia64/kernel/process.c
++++ linux-semplice-4.1.16-current/arch/ia64/kernel/process.c
 @@ -30,6 +30,7 @@
  #include <linux/utsname.h>
  #include <linux/tracehook.h>
@@ -95,10 +95,10 @@ Index: linux-semplice-4.1.6current/arch/ia64/kernel/process.c
  	print_symbol("ip is at %s\n", ip);
  	printk("unat: %016lx pfs : %016lx rsc : %016lx\n",
  	       regs->ar_unat, regs->ar_pfs, regs->ar_rsc);
-Index: linux-semplice-4.1.6current/arch/powerpc/kernel/process.c
+Index: linux-semplice-4.1.16-current/arch/powerpc/kernel/process.c
 ===================================================================
---- linux-semplice-4.1.6current.orig/arch/powerpc/kernel/process.c
-+++ linux-semplice-4.1.6current/arch/powerpc/kernel/process.c
+--- linux-semplice-4.1.16-current.orig/arch/powerpc/kernel/process.c
++++ linux-semplice-4.1.16-current/arch/powerpc/kernel/process.c
 @@ -38,6 +38,7 @@
  #include <linux/random.h>
  #include <linux/hw_breakpoint.h>
@@ -107,7 +107,7 @@ Index: linux-semplice-4.1.6current/arch/powerpc/kernel/process.c
  
  #include <asm/pgtable.h>
  #include <asm/io.h>
-@@ -1001,8 +1002,9 @@ void show_regs(struct pt_regs * regs)
+@@ -998,8 +999,9 @@ void show_regs(struct pt_regs * regs)
  
  	printk("NIP: "REG" LR: "REG" CTR: "REG"\n",
  	       regs->nip, regs->link, regs->ctr);
@@ -119,10 +119,10 @@ Index: linux-semplice-4.1.6current/arch/powerpc/kernel/process.c
  	printk("MSR: "REG" ", regs->msr);
  	printbits(regs->msr, msr_bits);
  	printk("  CR: %08lx  XER: %08lx\n", regs->ccr, regs->xer);
-Index: linux-semplice-4.1.6current/kernel/printk/printk.c
+Index: linux-semplice-4.1.16-current/kernel/printk/printk.c
 ===================================================================
---- linux-semplice-4.1.6current.orig/kernel/printk/printk.c
-+++ linux-semplice-4.1.6current/kernel/printk/printk.c
+--- linux-semplice-4.1.16-current.orig/kernel/printk/printk.c
++++ linux-semplice-4.1.16-current/kernel/printk/printk.c
 @@ -46,6 +46,7 @@
  #include <linux/utsname.h>
  #include <linux/ctype.h>
