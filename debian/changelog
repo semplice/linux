@@ -1,3 +1,9 @@
+linux-semplice (4.1.16-2) proposed-unstable; urgency=high
+
+  * [patches] Added debian/patches/semplice/features/all/bfs/bfs-009-add-preempt_offset-argument-to-should_resched().patch
+
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Mon, 25 Jan 2016 18:49:00 +0100
+
 linux-semplice (4.1.16-1) proposed-unstable; urgency=high
 
   * Updated to 4.1.16.
