@@ -72,6 +72,7 @@ features/all/efi-autoload-efi-pstore.patch
 semplice/features/all/aufs4/vfs-ino.patch
 semplice/features/all/aufs4/tmpfs-idr.patch
 semplice/features/all/bfs/4.1-sched-bfs-464.patch
+semplice/features/all/bfs/bfs-009-add-preempt_offset-argument-to-should_resched().patch
 semplice/features/all/bfq/0001-block-cgroups-kconfig-build-bits-for-BFQ-v7r8-4.1.patch
 semplice/features/all/bfq/0002-block-introduce-the-BFQ-v7r8-I-O-sched-for-4.1.patch
 semplice/features/all/bfq/0003-block-bfq-add-Early-Queue-Merge-EQM-to-BFQ-v7r8-for-4.1.0.patch
