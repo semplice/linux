@@ -1,3 +1,9 @@
+linux-semplice (4.1.16-1~jethro0) proposed-jessie; urgency=medium
+
+  * Updated to 4.1.16.
+
+ -- Eugenio Paolantonio (g7) <me@medesimo.eu>  Tue, 26 Jan 2016 18:25:16 +0100
+
 linux-semplice (4.1.7-1~jethro0) jessie; urgency=medium
 
   * Updated to 4.1.7.
