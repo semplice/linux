@@ -50,7 +50,6 @@ features/x86/x86-make-x32-syscall-support-conditional.patch
 features/arm/deb-pkg-add-automatic-support-for-armhf-architecture.patch
 
 # Miscellaneous bug fixes
-bugfix/all/misc-bmp085-Enable-building-as-a-module.patch
 bugfix/all/kbuild-use-nostdinc-in-compile-tests.patch
 bugfix/all/disable-some-marvell-phys.patch
 #debian/i2o-disable-i2o_ext_adaptec-on-64bit.patch
