@@ -13,10 +13,10 @@ The -nostdinc option disables this, though it isn't explicitly
 documented.  This option is already used when actually building
 the kernel.
 
-Index: linux-semplice-4.1.6current/scripts/Kbuild.include
+Index: linux-semplice-4.1.30current/scripts/Kbuild.include
 ===================================================================
---- linux-semplice-4.1.6current.orig/scripts/Kbuild.include
-+++ linux-semplice-4.1.6current/scripts/Kbuild.include
+--- linux-semplice-4.1.30current.orig/scripts/Kbuild.include
++++ linux-semplice-4.1.30current/scripts/Kbuild.include
 @@ -111,12 +111,12 @@ as-instr = $(call try-run,\
  # Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
  
@@ -60,10 +60,10 @@ Index: linux-semplice-4.1.6current/scripts/Kbuild.include
  
  # ar-option
  # Usage: KBUILD_ARFLAGS := $(call ar-option,D)
-Index: linux-semplice-4.1.6current/Makefile
+Index: linux-semplice-4.1.30current/Makefile
 ===================================================================
---- linux-semplice-4.1.6current.orig/Makefile
-+++ linux-semplice-4.1.6current/Makefile
+--- linux-semplice-4.1.30current.orig/Makefile
++++ linux-semplice-4.1.30current/Makefile
 @@ -619,6 +619,8 @@ else
  KBUILD_CFLAGS	+= -O2
  endif
@@ -73,7 +73,7 @@ Index: linux-semplice-4.1.6current/Makefile
  # Tell gcc to never replace conditional load with a non-conditional one
  KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
  
-@@ -749,7 +751,7 @@ KBUILD_CFLAGS += $(call cc-option, -fno-
+@@ -750,7 +752,7 @@ KBUILD_CFLAGS += $(call cc-option, -fno-
  endif
  
  # arch Makefile may override CC so keep this after arch Makefile is included

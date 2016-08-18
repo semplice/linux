@@ -8,10 +8,10 @@ Patch headers added by debian/patches/features/all/aufs4/gen-patch
 
 aufs4.1 mmap patch
 
-Index: linux-semplice-4.1.16-current/fs/buffer.c
+Index: linux-semplice-4.1.30current/fs/buffer.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/fs/buffer.c
-+++ linux-semplice-4.1.16-current/fs/buffer.c
+--- linux-semplice-4.1.30current.orig/fs/buffer.c
++++ linux-semplice-4.1.30current/fs/buffer.c
 @@ -2450,7 +2450,7 @@ int block_page_mkwrite(struct vm_area_st
  	 * Update file times before taking page lock. We may end up failing the
  	 * fault so this update may be superfluous but who really cares...
@@ -21,11 +21,11 @@ Index: linux-semplice-4.1.16-current/fs/buffer.c
  
  	ret = __block_page_mkwrite(vma, vmf, get_block);
  	sb_end_pagefault(sb);
-Index: linux-semplice-4.1.16-current/fs/proc/base.c
+Index: linux-semplice-4.1.30current/fs/proc/base.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/fs/proc/base.c
-+++ linux-semplice-4.1.16-current/fs/proc/base.c
-@@ -1741,7 +1741,7 @@ static int proc_map_files_get_link(struc
+--- linux-semplice-4.1.30current.orig/fs/proc/base.c
++++ linux-semplice-4.1.30current/fs/proc/base.c
+@@ -1743,7 +1743,7 @@ static int proc_map_files_get_link(struc
  	down_read(&mm->mmap_sem);
  	vma = find_exact_vma(mm, vm_start, vm_end);
  	if (vma && vma->vm_file) {
@@ -34,10 +34,10 @@ Index: linux-semplice-4.1.16-current/fs/proc/base.c
  		path_get(path);
  		rc = 0;
  	}
-Index: linux-semplice-4.1.16-current/fs/proc/nommu.c
+Index: linux-semplice-4.1.30current/fs/proc/nommu.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/fs/proc/nommu.c
-+++ linux-semplice-4.1.16-current/fs/proc/nommu.c
+--- linux-semplice-4.1.30current.orig/fs/proc/nommu.c
++++ linux-semplice-4.1.30current/fs/proc/nommu.c
 @@ -45,7 +45,10 @@ static int nommu_region_show(struct seq_
  	file = region->vm_file;
  
@@ -50,10 +50,10 @@ Index: linux-semplice-4.1.16-current/fs/proc/nommu.c
  		dev = inode->i_sb->s_dev;
  		ino = inode->i_ino;
  	}
-Index: linux-semplice-4.1.16-current/fs/proc/task_mmu.c
+Index: linux-semplice-4.1.30current/fs/proc/task_mmu.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/fs/proc/task_mmu.c
-+++ linux-semplice-4.1.16-current/fs/proc/task_mmu.c
+--- linux-semplice-4.1.30current.orig/fs/proc/task_mmu.c
++++ linux-semplice-4.1.30current/fs/proc/task_mmu.c
 @@ -279,7 +279,10 @@ show_map_vma(struct seq_file *m, struct
  	const char *name = NULL;
  
@@ -75,10 +75,10 @@ Index: linux-semplice-4.1.16-current/fs/proc/task_mmu.c
  	struct mm_struct *mm = vma->vm_mm;
  	struct mm_walk walk = {
  		.hugetlb_entry = gather_hugetlb_stats,
-Index: linux-semplice-4.1.16-current/fs/proc/task_nommu.c
+Index: linux-semplice-4.1.30current/fs/proc/task_nommu.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/fs/proc/task_nommu.c
-+++ linux-semplice-4.1.16-current/fs/proc/task_nommu.c
+--- linux-semplice-4.1.30current.orig/fs/proc/task_nommu.c
++++ linux-semplice-4.1.30current/fs/proc/task_nommu.c
 @@ -160,7 +160,10 @@ static int nommu_vma_show(struct seq_fil
  	file = vma->vm_file;
  
@@ -91,10 +91,10 @@ Index: linux-semplice-4.1.16-current/fs/proc/task_nommu.c
  		dev = inode->i_sb->s_dev;
  		ino = inode->i_ino;
  		pgoff = (loff_t)vma->vm_pgoff << PAGE_SHIFT;
-Index: linux-semplice-4.1.16-current/include/linux/mm.h
+Index: linux-semplice-4.1.30current/include/linux/mm.h
 ===================================================================
---- linux-semplice-4.1.16-current.orig/include/linux/mm.h
-+++ linux-semplice-4.1.16-current/include/linux/mm.h
+--- linux-semplice-4.1.30current.orig/include/linux/mm.h
++++ linux-semplice-4.1.30current/include/linux/mm.h
 @@ -1200,6 +1200,28 @@ static inline int fixup_user_fault(struc
  }
  #endif
@@ -124,10 +124,10 @@ Index: linux-semplice-4.1.16-current/include/linux/mm.h
  extern int access_process_vm(struct task_struct *tsk, unsigned long addr, void *buf, int len, int write);
  extern int access_remote_vm(struct mm_struct *mm, unsigned long addr,
  		void *buf, int len, int write);
-Index: linux-semplice-4.1.16-current/include/linux/mm_types.h
+Index: linux-semplice-4.1.30current/include/linux/mm_types.h
 ===================================================================
---- linux-semplice-4.1.16-current.orig/include/linux/mm_types.h
-+++ linux-semplice-4.1.16-current/include/linux/mm_types.h
+--- linux-semplice-4.1.30current.orig/include/linux/mm_types.h
++++ linux-semplice-4.1.30current/include/linux/mm_types.h
 @@ -232,6 +232,7 @@ struct vm_region {
  	unsigned long	vm_top;		/* region allocated to here */
  	unsigned long	vm_pgoff;	/* the offset in vm_file corresponding to vm_start */
@@ -144,10 +144,10 @@ Index: linux-semplice-4.1.16-current/include/linux/mm_types.h
  	void * vm_private_data;		/* was vm_pte (shared mem) */
  
  #ifndef CONFIG_MMU
-Index: linux-semplice-4.1.16-current/kernel/fork.c
+Index: linux-semplice-4.1.30current/kernel/fork.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/kernel/fork.c
-+++ linux-semplice-4.1.16-current/kernel/fork.c
+--- linux-semplice-4.1.30current.orig/kernel/fork.c
++++ linux-semplice-4.1.30current/kernel/fork.c
 @@ -456,7 +456,7 @@ static int dup_mmap(struct mm_struct *mm
  			struct inode *inode = file_inode(file);
  			struct address_space *mapping = file->f_mapping;
@@ -157,10 +157,10 @@ Index: linux-semplice-4.1.16-current/kernel/fork.c
  			if (tmp->vm_flags & VM_DENYWRITE)
  				atomic_dec(&inode->i_writecount);
  			i_mmap_lock_write(mapping);
-Index: linux-semplice-4.1.16-current/mm/Makefile
+Index: linux-semplice-4.1.30current/mm/Makefile
 ===================================================================
---- linux-semplice-4.1.16-current.orig/mm/Makefile
-+++ linux-semplice-4.1.16-current/mm/Makefile
+--- linux-semplice-4.1.30current.orig/mm/Makefile
++++ linux-semplice-4.1.30current/mm/Makefile
 @@ -21,7 +21,7 @@ obj-y			:= filemap.o mempool.o oom_kill.
  			   mm_init.o mmu_context.o percpu.o slab_common.o \
  			   compaction.o vmacache.o \
@@ -170,10 +170,10 @@ Index: linux-semplice-4.1.16-current/mm/Makefile
  
  obj-y += init-mm.o
  
-Index: linux-semplice-4.1.16-current/mm/filemap.c
+Index: linux-semplice-4.1.30current/mm/filemap.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/mm/filemap.c
-+++ linux-semplice-4.1.16-current/mm/filemap.c
+--- linux-semplice-4.1.30current.orig/mm/filemap.c
++++ linux-semplice-4.1.30current/mm/filemap.c
 @@ -2062,7 +2062,7 @@ int filemap_page_mkwrite(struct vm_area_
  	int ret = VM_FAULT_LOCKED;
  
@@ -183,10 +183,10 @@ Index: linux-semplice-4.1.16-current/mm/filemap.c
  	lock_page(page);
  	if (page->mapping != inode->i_mapping) {
  		unlock_page(page);
-Index: linux-semplice-4.1.16-current/mm/madvise.c
+Index: linux-semplice-4.1.30current/mm/madvise.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/mm/madvise.c
-+++ linux-semplice-4.1.16-current/mm/madvise.c
+--- linux-semplice-4.1.30current.orig/mm/madvise.c
++++ linux-semplice-4.1.30current/mm/madvise.c
 @@ -320,12 +320,12 @@ static long madvise_remove(struct vm_are
  	 * vma's reference to the file) can go away as soon as we drop
  	 * mmap_sem.
@@ -202,10 +202,10 @@ Index: linux-semplice-4.1.16-current/mm/madvise.c
  	down_read(&current->mm->mmap_sem);
  	return error;
  }
-Index: linux-semplice-4.1.16-current/mm/memory.c
+Index: linux-semplice-4.1.30current/mm/memory.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/mm/memory.c
-+++ linux-semplice-4.1.16-current/mm/memory.c
+--- linux-semplice-4.1.30current.orig/mm/memory.c
++++ linux-semplice-4.1.30current/mm/memory.c
 @@ -2034,7 +2034,7 @@ static inline int wp_page_reuse(struct m
  		}
  
@@ -215,10 +215,10 @@ Index: linux-semplice-4.1.16-current/mm/memory.c
  	}
  
  	return VM_FAULT_WRITE;
-Index: linux-semplice-4.1.16-current/mm/mmap.c
+Index: linux-semplice-4.1.30current/mm/mmap.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/mm/mmap.c
-+++ linux-semplice-4.1.16-current/mm/mmap.c
+--- linux-semplice-4.1.30current.orig/mm/mmap.c
++++ linux-semplice-4.1.30current/mm/mmap.c
 @@ -274,7 +274,7 @@ static struct vm_area_struct *remove_vma
  	if (vma->vm_ops && vma->vm_ops->close)
  		vma->vm_ops->close(vma);
@@ -228,7 +228,7 @@ Index: linux-semplice-4.1.16-current/mm/mmap.c
  	mpol_put(vma_policy(vma));
  	kmem_cache_free(vm_area_cachep, vma);
  	return next;
-@@ -886,7 +886,7 @@ again:			remove_next = 1 + (end > next->
+@@ -890,7 +890,7 @@ again:			remove_next = 1 + (end > next->
  	if (remove_next) {
  		if (file) {
  			uprobe_munmap(next, next->vm_start, next->vm_end);
@@ -237,7 +237,7 @@ Index: linux-semplice-4.1.16-current/mm/mmap.c
  		}
  		if (next->anon_vma)
  			anon_vma_merge(vma, next);
-@@ -1671,8 +1671,8 @@ out:
+@@ -1675,8 +1675,8 @@ out:
  	return addr;
  
  unmap_and_free_vma:
@@ -247,7 +247,7 @@ Index: linux-semplice-4.1.16-current/mm/mmap.c
  
  	/* Undo any partial mapping done by a device driver. */
  	unmap_region(mm, vma, prev, vma->vm_start, vma->vm_end);
-@@ -2473,7 +2473,7 @@ static int __split_vma(struct mm_struct
+@@ -2468,7 +2468,7 @@ static int __split_vma(struct mm_struct
  		goto out_free_mpol;
  
  	if (new->vm_file)
@@ -256,7 +256,7 @@ Index: linux-semplice-4.1.16-current/mm/mmap.c
  
  	if (new->vm_ops && new->vm_ops->open)
  		new->vm_ops->open(new);
-@@ -2492,7 +2492,7 @@ static int __split_vma(struct mm_struct
+@@ -2487,7 +2487,7 @@ static int __split_vma(struct mm_struct
  	if (new->vm_ops && new->vm_ops->close)
  		new->vm_ops->close(new);
  	if (new->vm_file)
@@ -265,7 +265,7 @@ Index: linux-semplice-4.1.16-current/mm/mmap.c
  	unlink_anon_vmas(new);
   out_free_mpol:
  	mpol_put(vma_policy(new));
-@@ -2635,7 +2635,6 @@ SYSCALL_DEFINE5(remap_file_pages, unsign
+@@ -2630,7 +2630,6 @@ SYSCALL_DEFINE5(remap_file_pages, unsign
  	struct vm_area_struct *vma;
  	unsigned long populate = 0;
  	unsigned long ret = -EINVAL;
@@ -273,8 +273,8 @@ Index: linux-semplice-4.1.16-current/mm/mmap.c
  
  	pr_warn_once("%s (%d) uses deprecated remap_file_pages() syscall. "
  			"See Documentation/vm/remap_file_pages.txt.\n",
-@@ -2679,10 +2678,10 @@ SYSCALL_DEFINE5(remap_file_pages, unsign
- 		munlock_vma_pages_range(vma, start, start + size);
+@@ -2698,10 +2697,10 @@ SYSCALL_DEFINE5(remap_file_pages, unsign
+ 		}
  	}
  
 -	file = get_file(vma->vm_file);
@@ -286,7 +286,7 @@ Index: linux-semplice-4.1.16-current/mm/mmap.c
  out:
  	up_write(&mm->mmap_sem);
  	if (populate)
-@@ -2949,7 +2948,7 @@ struct vm_area_struct *copy_vma(struct v
+@@ -2968,7 +2967,7 @@ struct vm_area_struct *copy_vma(struct v
  			if (anon_vma_clone(new_vma, vma))
  				goto out_free_mempol;
  			if (new_vma->vm_file)
@@ -295,10 +295,10 @@ Index: linux-semplice-4.1.16-current/mm/mmap.c
  			if (new_vma->vm_ops && new_vma->vm_ops->open)
  				new_vma->vm_ops->open(new_vma);
  			vma_link(mm, new_vma, prev, rb_link, rb_parent);
-Index: linux-semplice-4.1.16-current/mm/msync.c
+Index: linux-semplice-4.1.30current/mm/msync.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/mm/msync.c
-+++ linux-semplice-4.1.16-current/mm/msync.c
+--- linux-semplice-4.1.30current.orig/mm/msync.c
++++ linux-semplice-4.1.30current/mm/msync.c
 @@ -84,10 +84,10 @@ SYSCALL_DEFINE3(msync, unsigned long, st
  		start = vma->vm_end;
  		if ((flags & MS_SYNC) && file &&
@@ -312,10 +312,10 @@ Index: linux-semplice-4.1.16-current/mm/msync.c
  			if (error || start >= end)
  				goto out;
  			down_read(&mm->mmap_sem);
-Index: linux-semplice-4.1.16-current/mm/nommu.c
+Index: linux-semplice-4.1.30current/mm/nommu.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/mm/nommu.c
-+++ linux-semplice-4.1.16-current/mm/nommu.c
+--- linux-semplice-4.1.30current.orig/mm/nommu.c
++++ linux-semplice-4.1.30current/mm/nommu.c
 @@ -693,7 +693,7 @@ static void __put_nommu_region(struct vm
  		up_write(&nommu_region_sem);
  
@@ -356,10 +356,10 @@ Index: linux-semplice-4.1.16-current/mm/nommu.c
  	kmem_cache_free(vm_area_cachep, vma);
  	kleave(" = %d", ret);
  	return ret;
-Index: linux-semplice-4.1.16-current/mm/prfile.c
+Index: linux-semplice-4.1.30current/mm/prfile.c
 ===================================================================
 --- /dev/null
-+++ linux-semplice-4.1.16-current/mm/prfile.c
++++ linux-semplice-4.1.30current/mm/prfile.c
 @@ -0,0 +1,86 @@
 +/*
 + * Mainly for aufs which mmap(2) diffrent file and wants to print different path
