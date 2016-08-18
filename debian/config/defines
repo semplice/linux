@@ -5,7 +5,7 @@ abiname: 16.semplice.0
 arches:
  amd64
  i386
-compiler: gcc-5
+compiler: gcc-6
 featuresets:
  none
 
@@ -17,6 +17,7 @@ type: plain
 # compilers
 gcc-4.9: gcc-4.9
 gcc-5: gcc-5
+gcc-6: gcc-6
 
 # initramfs-generators
 initramfs-fallback: linux-initramfs-tool
