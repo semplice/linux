@@ -8,10 +8,10 @@ Patch headers added by debian/patches/features/all/aufs4/gen-patch
 
 aufs4.1 base patch
 
-Index: linux-semplice-4.1.30current/MAINTAINERS
+Index: linux-semplice-4.1.34-current/MAINTAINERS
 ===================================================================
---- linux-semplice-4.1.30current.orig/MAINTAINERS
-+++ linux-semplice-4.1.30current/MAINTAINERS
+--- linux-semplice-4.1.34-current.orig/MAINTAINERS
++++ linux-semplice-4.1.34-current/MAINTAINERS
 @@ -1880,6 +1880,19 @@ F:	include/linux/audit.h
  F:	include/uapi/linux/audit.h
  F:	kernel/audit*
@@ -32,10 +32,10 @@ Index: linux-semplice-4.1.30current/MAINTAINERS
  AUXILIARY DISPLAY DRIVERS
  M:	Miguel Ojeda Sandonis <miguel.ojeda.sandonis@gmail.com>
  W:	http://miguelojeda.es/auxdisplay.htm
-Index: linux-semplice-4.1.30current/drivers/block/loop.c
+Index: linux-semplice-4.1.34-current/drivers/block/loop.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/drivers/block/loop.c
-+++ linux-semplice-4.1.30current/drivers/block/loop.c
+--- linux-semplice-4.1.34-current.orig/drivers/block/loop.c
++++ linux-semplice-4.1.34-current/drivers/block/loop.c
 @@ -538,6 +538,24 @@ static inline int is_loop_device(struct
  	return i && S_ISBLK(i->i_mode) && MAJOR(i->i_rdev) == LOOP_MAJOR;
  }
@@ -61,11 +61,11 @@ Index: linux-semplice-4.1.30current/drivers/block/loop.c
  /* loop sysfs attributes */
  
  static ssize_t loop_attr_show(struct device *dev, char *page,
-Index: linux-semplice-4.1.30current/fs/dcache.c
+Index: linux-semplice-4.1.34-current/fs/dcache.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/dcache.c
-+++ linux-semplice-4.1.30current/fs/dcache.c
-@@ -1156,7 +1156,7 @@ enum d_walk_ret {
+--- linux-semplice-4.1.34-current.orig/fs/dcache.c
++++ linux-semplice-4.1.34-current/fs/dcache.c
+@@ -1159,7 +1159,7 @@ enum d_walk_ret {
   *
   * The @enter() and @finish() callbacks are called with d_lock held.
   */
@@ -74,10 +74,10 @@ Index: linux-semplice-4.1.30current/fs/dcache.c
  		   enum d_walk_ret (*enter)(void *, struct dentry *),
  		   void (*finish)(void *))
  {
-Index: linux-semplice-4.1.30current/fs/read_write.c
+Index: linux-semplice-4.1.34-current/fs/read_write.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/read_write.c
-+++ linux-semplice-4.1.30current/fs/read_write.c
+--- linux-semplice-4.1.34-current.orig/fs/read_write.c
++++ linux-semplice-4.1.34-current/fs/read_write.c
 @@ -494,6 +494,28 @@ ssize_t __vfs_write(struct file *file, c
  }
  EXPORT_SYMBOL(__vfs_write);
@@ -107,10 +107,10 @@ Index: linux-semplice-4.1.30current/fs/read_write.c
  ssize_t __kernel_write(struct file *file, const char *buf, size_t count, loff_t *pos)
  {
  	mm_segment_t old_fs;
-Index: linux-semplice-4.1.30current/fs/splice.c
+Index: linux-semplice-4.1.34-current/fs/splice.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/splice.c
-+++ linux-semplice-4.1.30current/fs/splice.c
+--- linux-semplice-4.1.34-current.orig/fs/splice.c
++++ linux-semplice-4.1.34-current/fs/splice.c
 @@ -1104,8 +1104,8 @@ EXPORT_SYMBOL(generic_splice_sendpage);
  /*
   * Attempt to initiate a splice from pipe to file.
@@ -135,10 +135,10 @@ Index: linux-semplice-4.1.30current/fs/splice.c
  {
  	ssize_t (*splice_read)(struct file *, loff_t *,
  			       struct pipe_inode_info *, size_t, unsigned int);
-Index: linux-semplice-4.1.30current/include/linux/file.h
+Index: linux-semplice-4.1.34-current/include/linux/file.h
 ===================================================================
---- linux-semplice-4.1.30current.orig/include/linux/file.h
-+++ linux-semplice-4.1.30current/include/linux/file.h
+--- linux-semplice-4.1.34-current.orig/include/linux/file.h
++++ linux-semplice-4.1.34-current/include/linux/file.h
 @@ -19,6 +19,7 @@ struct dentry;
  struct path;
  extern struct file *alloc_file(struct path *, fmode_t mode,
@@ -147,10 +147,10 @@ Index: linux-semplice-4.1.30current/include/linux/file.h
  
  static inline void fput_light(struct file *file, int fput_needed)
  {
-Index: linux-semplice-4.1.30current/include/linux/fs.h
+Index: linux-semplice-4.1.34-current/include/linux/fs.h
 ===================================================================
---- linux-semplice-4.1.30current.orig/include/linux/fs.h
-+++ linux-semplice-4.1.30current/include/linux/fs.h
+--- linux-semplice-4.1.34-current.orig/include/linux/fs.h
++++ linux-semplice-4.1.34-current/include/linux/fs.h
 @@ -1664,6 +1664,12 @@ ssize_t rw_copy_check_uvector(int type,
  			      struct iovec *fast_pointer,
  			      struct iovec **ret_pointer);
@@ -164,10 +164,10 @@ Index: linux-semplice-4.1.30current/include/linux/fs.h
  extern ssize_t __vfs_read(struct file *, char __user *, size_t, loff_t *);
  extern ssize_t __vfs_write(struct file *, const char __user *, size_t, loff_t *);
  extern ssize_t vfs_read(struct file *, char __user *, size_t, loff_t *);
-Index: linux-semplice-4.1.30current/include/linux/splice.h
+Index: linux-semplice-4.1.34-current/include/linux/splice.h
 ===================================================================
---- linux-semplice-4.1.30current.orig/include/linux/splice.h
-+++ linux-semplice-4.1.30current/include/linux/splice.h
+--- linux-semplice-4.1.34-current.orig/include/linux/splice.h
++++ linux-semplice-4.1.34-current/include/linux/splice.h
 @@ -83,4 +83,10 @@ extern void splice_shrink_spd(struct spl
  extern void spd_release_page(struct splice_pipe_desc *, unsigned int);
  
