@@ -8,11 +8,11 @@ Patch headers added by debian/patches/features/all/aufs4/gen-patch
 
 aufs4.1 standalone patch
 
-Index: linux-semplice-4.1.30current/fs/dcache.c
+Index: linux-semplice-4.1.34-current/fs/dcache.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/dcache.c
-+++ linux-semplice-4.1.30current/fs/dcache.c
-@@ -1261,6 +1261,7 @@ rename_retry:
+--- linux-semplice-4.1.34-current.orig/fs/dcache.c
++++ linux-semplice-4.1.34-current/fs/dcache.c
+@@ -1264,6 +1264,7 @@ rename_retry:
  	seq = 1;
  	goto again;
  }
@@ -20,10 +20,10 @@ Index: linux-semplice-4.1.30current/fs/dcache.c
  
  /*
   * Search for at least 1 mount point in the dentry's subdirs.
-Index: linux-semplice-4.1.30current/fs/file_table.c
+Index: linux-semplice-4.1.34-current/fs/file_table.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/file_table.c
-+++ linux-semplice-4.1.30current/fs/file_table.c
+--- linux-semplice-4.1.34-current.orig/fs/file_table.c
++++ linux-semplice-4.1.34-current/fs/file_table.c
 @@ -147,6 +147,7 @@ over:
  	}
  	return ERR_PTR(-ENFILE);
@@ -40,10 +40,10 @@ Index: linux-semplice-4.1.30current/fs/file_table.c
  
  void __init files_init(unsigned long mempages)
  { 
-Index: linux-semplice-4.1.30current/fs/inode.c
+Index: linux-semplice-4.1.34-current/fs/inode.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/inode.c
-+++ linux-semplice-4.1.30current/fs/inode.c
+--- linux-semplice-4.1.34-current.orig/fs/inode.c
++++ linux-semplice-4.1.34-current/fs/inode.c
 @@ -58,6 +58,7 @@ static struct hlist_head *inode_hashtabl
  static __cacheline_aligned_in_smp DEFINE_SPINLOCK(inode_hash_lock);
  
@@ -52,10 +52,10 @@ Index: linux-semplice-4.1.30current/fs/inode.c
  
  /*
   * Empty aops. Can be used for the cases where the user does not
-Index: linux-semplice-4.1.30current/fs/namespace.c
+Index: linux-semplice-4.1.34-current/fs/namespace.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/namespace.c
-+++ linux-semplice-4.1.30current/fs/namespace.c
+--- linux-semplice-4.1.34-current.orig/fs/namespace.c
++++ linux-semplice-4.1.34-current/fs/namespace.c
 @@ -463,6 +463,7 @@ void __mnt_drop_write(struct vfsmount *m
  	mnt_dec_writers(real_mount(mnt));
  	preempt_enable();
@@ -72,10 +72,10 @@ Index: linux-semplice-4.1.30current/fs/namespace.c
  
  static void cleanup_group_ids(struct mount *mnt, struct mount *end)
  {
-Index: linux-semplice-4.1.30current/fs/notify/group.c
+Index: linux-semplice-4.1.34-current/fs/notify/group.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/notify/group.c
-+++ linux-semplice-4.1.30current/fs/notify/group.c
+--- linux-semplice-4.1.34-current.orig/fs/notify/group.c
++++ linux-semplice-4.1.34-current/fs/notify/group.c
 @@ -22,6 +22,7 @@
  #include <linux/srcu.h>
  #include <linux/rculist.h>
@@ -84,7 +84,7 @@ Index: linux-semplice-4.1.30current/fs/notify/group.c
  
  #include <linux/fsnotify_backend.h>
  #include "fsnotify.h"
-@@ -72,6 +73,7 @@ void fsnotify_get_group(struct fsnotify_
+@@ -91,6 +92,7 @@ void fsnotify_get_group(struct fsnotify_
  {
  	atomic_inc(&group->refcnt);
  }
@@ -92,7 +92,7 @@ Index: linux-semplice-4.1.30current/fs/notify/group.c
  
  /*
   * Drop a reference to a group.  Free it if it's through.
-@@ -81,6 +83,7 @@ void fsnotify_put_group(struct fsnotify_
+@@ -100,6 +102,7 @@ void fsnotify_put_group(struct fsnotify_
  	if (atomic_dec_and_test(&group->refcnt))
  		fsnotify_final_destroy_group(group);
  }
@@ -100,7 +100,7 @@ Index: linux-semplice-4.1.30current/fs/notify/group.c
  
  /*
   * Create a new fsnotify_group and hold a reference for the group returned.
-@@ -109,6 +112,7 @@ struct fsnotify_group *fsnotify_alloc_gr
+@@ -128,6 +131,7 @@ struct fsnotify_group *fsnotify_alloc_gr
  
  	return group;
  }
@@ -108,10 +108,10 @@ Index: linux-semplice-4.1.30current/fs/notify/group.c
  
  int fsnotify_fasync(int fd, struct file *file, int on)
  {
-Index: linux-semplice-4.1.30current/fs/notify/mark.c
+Index: linux-semplice-4.1.34-current/fs/notify/mark.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/notify/mark.c
-+++ linux-semplice-4.1.30current/fs/notify/mark.c
+--- linux-semplice-4.1.34-current.orig/fs/notify/mark.c
++++ linux-semplice-4.1.34-current/fs/notify/mark.c
 @@ -109,6 +109,7 @@ void fsnotify_put_mark(struct fsnotify_m
  		mark->free_mark(mark);
  	}
@@ -144,10 +144,10 @@ Index: linux-semplice-4.1.30current/fs/notify/mark.c
  
  static int fsnotify_mark_destroy(void *ignored)
  {
-Index: linux-semplice-4.1.30current/fs/open.c
+Index: linux-semplice-4.1.34-current/fs/open.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/open.c
-+++ linux-semplice-4.1.30current/fs/open.c
+--- linux-semplice-4.1.34-current.orig/fs/open.c
++++ linux-semplice-4.1.34-current/fs/open.c
 @@ -62,6 +62,7 @@ int do_truncate(struct dentry *dentry, l
  	mutex_unlock(&dentry->d_inode->i_mutex);
  	return ret;
@@ -164,10 +164,10 @@ Index: linux-semplice-4.1.30current/fs/open.c
  
  static int do_dentry_open(struct file *f,
  			  struct inode *inode,
-Index: linux-semplice-4.1.30current/fs/read_write.c
+Index: linux-semplice-4.1.34-current/fs/read_write.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/read_write.c
-+++ linux-semplice-4.1.30current/fs/read_write.c
+--- linux-semplice-4.1.34-current.orig/fs/read_write.c
++++ linux-semplice-4.1.34-current/fs/read_write.c
 @@ -504,6 +504,7 @@ vfs_readf_t vfs_readf(struct file *file)
  		return new_sync_read;
  	return ERR_PTR(-ENOSYS);
@@ -184,10 +184,10 @@ Index: linux-semplice-4.1.30current/fs/read_write.c
  
  ssize_t __kernel_write(struct file *file, const char *buf, size_t count, loff_t *pos)
  {
-Index: linux-semplice-4.1.30current/fs/splice.c
+Index: linux-semplice-4.1.34-current/fs/splice.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/splice.c
-+++ linux-semplice-4.1.30current/fs/splice.c
+--- linux-semplice-4.1.34-current.orig/fs/splice.c
++++ linux-semplice-4.1.34-current/fs/splice.c
 @@ -1117,6 +1117,7 @@ long do_splice_from(struct pipe_inode_in
  
  	return splice_write(pipe, out, ppos, len, flags);
@@ -204,10 +204,10 @@ Index: linux-semplice-4.1.30current/fs/splice.c
  
  /**
   * splice_direct_to_actor - splices data directly between two non-pipes
-Index: linux-semplice-4.1.30current/fs/xattr.c
+Index: linux-semplice-4.1.34-current/fs/xattr.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/fs/xattr.c
-+++ linux-semplice-4.1.30current/fs/xattr.c
+--- linux-semplice-4.1.34-current.orig/fs/xattr.c
++++ linux-semplice-4.1.34-current/fs/xattr.c
 @@ -207,6 +207,7 @@ vfs_getxattr_alloc(struct dentry *dentry
  	*xattr_value = value;
  	return error;
@@ -216,10 +216,10 @@ Index: linux-semplice-4.1.30current/fs/xattr.c
  
  /* Compare an extended attribute value with the given value */
  int vfs_xattr_cmp(struct dentry *dentry, const char *xattr_name,
-Index: linux-semplice-4.1.30current/security/commoncap.c
+Index: linux-semplice-4.1.34-current/security/commoncap.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/security/commoncap.c
-+++ linux-semplice-4.1.30current/security/commoncap.c
+--- linux-semplice-4.1.34-current.orig/security/commoncap.c
++++ linux-semplice-4.1.34-current/security/commoncap.c
 @@ -980,9 +980,11 @@ int cap_mmap_addr(unsigned long addr)
  	}
  	return ret;
@@ -232,10 +232,10 @@ Index: linux-semplice-4.1.30current/security/commoncap.c
  	return 0;
  }
 +EXPORT_SYMBOL_GPL(cap_mmap_file);
-Index: linux-semplice-4.1.30current/security/device_cgroup.c
+Index: linux-semplice-4.1.34-current/security/device_cgroup.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/security/device_cgroup.c
-+++ linux-semplice-4.1.30current/security/device_cgroup.c
+--- linux-semplice-4.1.34-current.orig/security/device_cgroup.c
++++ linux-semplice-4.1.34-current/security/device_cgroup.c
 @@ -7,6 +7,7 @@
  #include <linux/device_cgroup.h>
  #include <linux/cgroup.h>
@@ -252,10 +252,10 @@ Index: linux-semplice-4.1.30current/security/device_cgroup.c
  
  int devcgroup_inode_mknod(int mode, dev_t dev)
  {
-Index: linux-semplice-4.1.30current/security/security.c
+Index: linux-semplice-4.1.34-current/security/security.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/security/security.c
-+++ linux-semplice-4.1.30current/security/security.c
+--- linux-semplice-4.1.34-current.orig/security/security.c
++++ linux-semplice-4.1.34-current/security/security.c
 @@ -430,6 +430,7 @@ int security_path_rmdir(struct path *dir
  		return 0;
  	return security_ops->path_rmdir(dir, dentry);
