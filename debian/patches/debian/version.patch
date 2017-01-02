@@ -7,11 +7,11 @@ For distribution binary packages we assume
 $DISTRIBUTION_OFFICIAL_BUILD, $DISTRIBUTOR and $DISTRIBUTION_VERSION
 are set.
 
-Index: linux-semplice-4.1.30current/Makefile
+Index: linux-semplice-4.1.37-current/Makefile
 ===================================================================
---- linux-semplice-4.1.30current.orig/Makefile
-+++ linux-semplice-4.1.30current/Makefile
-@@ -982,7 +982,7 @@ endif
+--- linux-semplice-4.1.37-current.orig/Makefile
++++ linux-semplice-4.1.37-current/Makefile
+@@ -984,7 +984,7 @@ endif
  prepare2: prepare3 outputmakefile asm-generic
  
  prepare1: prepare2 $(version_h) include/generated/utsrelease.h \
@@ -20,7 +20,7 @@ Index: linux-semplice-4.1.30current/Makefile
  	$(cmd_crmodverdir)
  
  archprepare: archheaders archscripts prepare1 scripts_basic
-@@ -1014,6 +1014,16 @@ define filechk_version.h
+@@ -1016,6 +1016,16 @@ define filechk_version.h
  	echo '#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + (c))';)
  endef
  
@@ -37,7 +37,7 @@ Index: linux-semplice-4.1.30current/Makefile
  $(version_h): $(srctree)/Makefile FORCE
  	$(call filechk,version.h)
  	$(Q)rm -f $(old_version_h)
-@@ -1021,6 +1031,9 @@ $(version_h): $(srctree)/Makefile FORCE
+@@ -1023,6 +1033,9 @@ $(version_h): $(srctree)/Makefile FORCE
  include/generated/utsrelease.h: include/config/kernel.release FORCE
  	$(call filechk,utsrelease.h)
  
@@ -47,10 +47,10 @@ Index: linux-semplice-4.1.30current/Makefile
  PHONY += headerdep
  headerdep:
  	$(Q)find $(srctree)/include/ -name '*.h' | xargs --max-args 1 \
-Index: linux-semplice-4.1.30current/arch/x86/um/sysrq_64.c
+Index: linux-semplice-4.1.37-current/arch/x86/um/sysrq_64.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/arch/x86/um/sysrq_64.c
-+++ linux-semplice-4.1.30current/arch/x86/um/sysrq_64.c
+--- linux-semplice-4.1.37-current.orig/arch/x86/um/sysrq_64.c
++++ linux-semplice-4.1.37-current/arch/x86/um/sysrq_64.c
 @@ -8,6 +8,7 @@
  #include <linux/module.h>
  #include <linux/sched.h>
@@ -71,10 +71,10 @@ Index: linux-semplice-4.1.30current/arch/x86/um/sysrq_64.c
  	printk(KERN_INFO "RIP: %04lx:[<%016lx>]\n", PT_REGS_CS(regs) & 0xffff,
  	       PT_REGS_IP(regs));
  	printk(KERN_INFO "RSP: %016lx  EFLAGS: %08lx\n", PT_REGS_SP(regs),
-Index: linux-semplice-4.1.30current/arch/ia64/kernel/process.c
+Index: linux-semplice-4.1.37-current/arch/ia64/kernel/process.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/arch/ia64/kernel/process.c
-+++ linux-semplice-4.1.30current/arch/ia64/kernel/process.c
+--- linux-semplice-4.1.37-current.orig/arch/ia64/kernel/process.c
++++ linux-semplice-4.1.37-current/arch/ia64/kernel/process.c
 @@ -30,6 +30,7 @@
  #include <linux/utsname.h>
  #include <linux/tracehook.h>
@@ -95,10 +95,10 @@ Index: linux-semplice-4.1.30current/arch/ia64/kernel/process.c
  	print_symbol("ip is at %s\n", ip);
  	printk("unat: %016lx pfs : %016lx rsc : %016lx\n",
  	       regs->ar_unat, regs->ar_pfs, regs->ar_rsc);
-Index: linux-semplice-4.1.30current/arch/powerpc/kernel/process.c
+Index: linux-semplice-4.1.37-current/arch/powerpc/kernel/process.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/arch/powerpc/kernel/process.c
-+++ linux-semplice-4.1.30current/arch/powerpc/kernel/process.c
+--- linux-semplice-4.1.37-current.orig/arch/powerpc/kernel/process.c
++++ linux-semplice-4.1.37-current/arch/powerpc/kernel/process.c
 @@ -38,6 +38,7 @@
  #include <linux/random.h>
  #include <linux/hw_breakpoint.h>
@@ -119,10 +119,10 @@ Index: linux-semplice-4.1.30current/arch/powerpc/kernel/process.c
  	printk("MSR: "REG" ", regs->msr);
  	printbits(regs->msr, msr_bits);
  	printk("  CR: %08lx  XER: %08lx\n", regs->ccr, regs->xer);
-Index: linux-semplice-4.1.30current/kernel/printk/printk.c
+Index: linux-semplice-4.1.37-current/kernel/printk/printk.c
 ===================================================================
---- linux-semplice-4.1.30current.orig/kernel/printk/printk.c
-+++ linux-semplice-4.1.30current/kernel/printk/printk.c
+--- linux-semplice-4.1.37-current.orig/kernel/printk/printk.c
++++ linux-semplice-4.1.37-current/kernel/printk/printk.c
 @@ -46,6 +46,7 @@
  #include <linux/utsname.h>
  #include <linux/ctype.h>

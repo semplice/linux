@@ -13,10 +13,10 @@ issues are found, we have a fail-safe.
 Signed-off-by: Serge Hallyn <serge.hallyn@ubuntu.com>
 [bwh: Remove unneeded binary sysctl bits]
 ---
-Index: linux-semplice-4.1.16-current/kernel/fork.c
+Index: linux-semplice-4.1.37-current/kernel/fork.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/kernel/fork.c
-+++ linux-semplice-4.1.16-current/kernel/fork.c
+--- linux-semplice-4.1.37-current.orig/kernel/fork.c
++++ linux-semplice-4.1.37-current/kernel/fork.c
 @@ -87,6 +87,11 @@
  
  #define CREATE_TRACE_POINTS
@@ -53,11 +53,11 @@ Index: linux-semplice-4.1.16-current/kernel/fork.c
  	err = check_unshare_flags(unshare_flags);
  	if (err)
  		goto bad_unshare_out;
-Index: linux-semplice-4.1.16-current/kernel/sysctl.c
+Index: linux-semplice-4.1.37-current/kernel/sysctl.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/kernel/sysctl.c
-+++ linux-semplice-4.1.16-current/kernel/sysctl.c
-@@ -102,6 +102,9 @@ extern int core_uses_pid;
+--- linux-semplice-4.1.37-current.orig/kernel/sysctl.c
++++ linux-semplice-4.1.37-current/kernel/sysctl.c
+@@ -103,6 +103,9 @@ extern int core_uses_pid;
  extern char core_pattern[];
  extern unsigned int core_pipe_limit;
  #endif
@@ -67,7 +67,7 @@ Index: linux-semplice-4.1.16-current/kernel/sysctl.c
  extern int pid_max;
  extern int pid_max_min, pid_max_max;
  extern int percpu_pagelist_fraction;
-@@ -489,6 +492,15 @@ static struct ctl_table kern_table[] = {
+@@ -490,6 +493,15 @@ static struct ctl_table kern_table[] = {
  		.mode		= 0644,
  		.proc_handler	= proc_dointvec,
  	},
@@ -83,10 +83,10 @@ Index: linux-semplice-4.1.16-current/kernel/sysctl.c
  #endif
  #ifdef CONFIG_PROC_SYSCTL
  	{
-Index: linux-semplice-4.1.16-current/kernel/user_namespace.c
+Index: linux-semplice-4.1.37-current/kernel/user_namespace.c
 ===================================================================
---- linux-semplice-4.1.16-current.orig/kernel/user_namespace.c
-+++ linux-semplice-4.1.16-current/kernel/user_namespace.c
+--- linux-semplice-4.1.37-current.orig/kernel/user_namespace.c
++++ linux-semplice-4.1.37-current/kernel/user_namespace.c
 @@ -23,6 +23,9 @@
  #include <linux/projid.h>
  #include <linux/fs_struct.h>
