@@ -108,11 +108,11 @@ tp57
 (dp58
 S'abiname'
 p59
-S'4.1-34.semplice.1'
+S'4.1-37.semplice.0'
 p60
 sS'source'
 p61
-V4.1.34-2
+V4.1.37-1
 p62
 ss(S'image'
 g6
@@ -157,7 +157,7 @@ tp80
 (dp81
 S'abiname'
 p82
-S'34.semplice.1'
+S'37.semplice.0'
 p83
 ss(S'image'
 g49
